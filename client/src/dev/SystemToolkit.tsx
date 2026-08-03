@@ -1,8 +1,8 @@
-import { Button } from '../../../components/Button'
-import { Panel } from '../../../components/Panel'
-import { StatusStamp } from '../../../components/StatusStamp'
-import { Icon } from '../../../components/icons'
-import { Field, TextInput, Textarea, CheckpointRow } from './form'
+import { Button } from '@/components/Button'
+import { Panel } from '@/components/Panel'
+import { StatusStamp } from '@/components/StatusStamp'
+import { Icon } from '@/components/icons'
+import { Field, TextInput, Textarea, CheckpointRow } from '@/dev/form'
 
 /**
  * Design-system reference panel. Demo content stays literal English —
