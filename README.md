@@ -1,77 +1,90 @@
-# React + TypeScript + Vite
+# FUNDI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Artisan services marketplace** — post a job, search artisans, get hired.
+Styled as **"The Signboard Wall"**: the entire product is built on the visual
+language of Nigerian hand-painted trade signage — the signs signwriters use to
+advertise barbershops, tailors, mechanics, and carpenters across Lagos and beyond.
 
-Currently, two official plugins are available:
+> Design spec: `design/` · Implementation guide: `guide/`
+> (both kept out of the repo via `.gitignore`)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Languages
 
-## React Compiler
+Selectable locales (flag-less `PCM · HA · YO · IG` pill in the header):
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+| Code | Language | Notes |
+|---|---|---|
+| `pcm` | Nigerian Pidgin | Default / fallback locale (brand voice) |
+| `ha` | Hausa | Plain Latin orthography (no hooked letters) |
+| `yo` | Yoruba | Subdot vowels (ẹ ọ ṣ) |
+| `ig` | Igbo | Subdot vowels (ị ọ ụ ṅ) |
 
-Note: This will impact Vite dev & build performances.
+- Bundles live in `client/public/locales/{lng}/{ns}.json` and are **lazy-loaded**
+  per locale + namespace via `i18next-http-backend` — a Hausa user never
+  downloads Yoruba or Igbo strings.
+- Detection order: localStorage preference → browser language → `pcm`.
+- User-generated content (job titles, offers, reviews, bios) is **never**
+  auto-translated — it stays in whatever language the author wrote it.
+- **Translation status:** `pcm` is complete; `ha`/`yo`/`ig` are best-effort
+  scaffolding and need review by fluent native speakers before shipping.
+- Yoruba/Igbo subdot diacritics are missing from Alfa Slab One/Caveat — the
+  `Display` component (`src/components/Display.tsx`) auto-falls such strings
+  back to the Work Sans/Noto Sans stack.
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **client** — React 19 · Vite 8 · TypeScript · Tailwind CSS v4 · React Router ·
+  TanStack Query · react-i18next
+- **server** — Node.js + Express (API skeleton; DB/Prisma land with Phase 3)
+- **fonts** — Alfa Slab One, Caveat, Work Sans (+ Noto Sans diacritic fallback)
+- **hosting (target)** — Vercel (frontend) + Railway/Render (API + Postgres)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Repository structure
 
 ```
+fundi/
+├── client/
+│   ├── public/
+│   │   ├── locales/            # lazy-loaded i18n bundles ({pcm,ha,yo,ig}/*.json)
+│   │   └── favicon.svg
+│   └── src/
+│       ├── components/         # shared primitives + app-shell components
+│       ├── features/           # page-scoped code
+│       │   └── landing/        #   landing page + its components
+│       ├── lib/                # i18n, theme/tilt helpers, cx, diacritics
+│       └── index.css           # design tokens + signboard component styles
+├── server/
+│   └── src/                    # Express API (health check)
+└── package.json                # pnpm workspace root
+```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Component convention
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `components/` holds **shared** components — used by more than one consumer —
+  plus app-shell components (`Header`, `BottomNav`, `LanguageSwitcher`) and
+  generic primitives (`Panel`, `Button`, `StatusStamp`, `Display`, icons).
+- `features/<name>/` holds **page-scoped** components, e.g.
+  `features/landing/components/CategoryTile.tsx`. A component used by exactly
+  one feature lives here and is promoted to `components/` when a second
+  consumer appears.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Design system in 30 seconds
 
+Ink-black borders, hard offset drop-shadows (no blur), a fixed rotation scale
+(`-2deg … +1.6deg`), flat saturated signboard colors, two registers
+(**Street** = full tilt/personality · **Workshop** = flattened, dense). Every
+status/reputation stamp pairs color with a text label; focus rings stay
+visible; `prefers-reduced-motion` is respected.
+
+## Running
+
+```sh
+pnpm install
+pnpm dev           # client  → http://localhost:5173
+pnpm dev:server    # API     → http://localhost:4000/api/v1/health
+```
+
+```sh
+pnpm build         # type-check + production build
+pnpm lint
 ```
