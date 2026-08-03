@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { cx } from '../lib/cx'
+import { hasDiacritics } from '../lib/diacritics'
 
 export type TagColor = 'red' | 'blue' | 'green' | 'yellow' | 'red-dark'
 
@@ -13,5 +14,17 @@ export function CategoryTag({
   children: ReactNode
   className?: string
 }) {
-  return <span className={cx('tag', `tag--${color}`, className)}>{children}</span>
+  const text = typeof children === 'string' ? children : ''
+  return (
+    <span
+      className={cx(
+        'tag',
+        `tag--${color}`,
+        hasDiacritics(text) && 'needs-diacritic-fallback',
+        className,
+      )}
+    >
+      {children}
+    </span>
+  )
 }

@@ -1,8 +1,9 @@
-import { Icon } from './icons'
-import type { IconName } from './icons'
-import { Panel } from './Panel'
-import { categoryColorFor, tiltFor, textOn } from '../lib/theme'
-import { cx } from '../lib/cx'
+import { Icon } from '../../../components/icons'
+import type { IconName } from '../../../components/icons'
+import { Panel } from '../../../components/Panel'
+import { Display } from '../../../components/Display'
+import { categoryColorFor, tiltFor, textOn } from '../../../lib/theme'
+import { cx } from '../../../lib/cx'
 
 export interface CategoryTileProps {
   index: number
@@ -29,7 +30,9 @@ export function CategoryTile({ index, icon, name, count }: CategoryTileProps) {
       )}
     >
       <Icon name={icon} size={34} className="stroke-current" />
-      <span className="font-display text-base leading-tight">{name}</span>
+      <Display as="span" className="font-display text-base leading-tight">
+        {name}
+      </Display>
       <span className="font-hand text-[17px] leading-none opacity-90">{count}</span>
     </Panel>
   )
