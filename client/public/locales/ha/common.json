@@ -17,7 +17,21 @@
   "status.cancelled": "Soke",
   "badge.availableNow": "Yana nan yanzu",
   "badge.booked": "An dauka",
+  "badge.available": "Akwai",
+  "badge.topPro": "Babban gwani",
   "card.view": "Duba",
+  "card.bookNow": "Book yanzu",
   "card.offers_one": "{{count}} tayi",
-  "card.offers_other": "{{count}} tayin"
+  "card.offers_other": "{{count}} tayin",
+  "footer.tagline": "Amincewa, aiki daya a lokaci daya. Gida ga gwanayen Najeriya.",
+  "footer.platform": "Dandali",
+  "footer.findPro": "Nemo gwani",
+  "footer.categories": "Rukuni",
+  "footer.pricing": "Farashi",
+  "footer.company": "Kamfani",
+  "footer.aboutUs": "Game da mu",
+  "footer.contact": "Sadarwa",
+  "footer.newsletter": "Labarai",
+  "footer.emailPlaceholder": "Adireshin imel",
+  "footer.subscribe": "Aika"
 }

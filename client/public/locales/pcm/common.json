@@ -17,7 +17,21 @@
   "status.cancelled": "Cancel",
   "badge.availableNow": "Dey here now",
   "badge.booked": "Don book",
+  "badge.available": "Dey here",
+  "badge.topPro": "Top pro",
   "card.view": "See",
+  "card.bookNow": "Book now",
   "card.offers_one": "{{count}} offer",
-  "card.offers_other": "{{count}} offers"
+  "card.offers_other": "{{count}} offers",
+  "footer.tagline": "De build trust, one job at a time. Di home for Nigeria finest artisans.",
+  "footer.platform": "Platform",
+  "footer.findPro": "Find a pro",
+  "footer.categories": "Trades",
+  "footer.pricing": "Pricing",
+  "footer.company": "Company",
+  "footer.aboutUs": "About us",
+  "footer.contact": "Contact us",
+  "footer.newsletter": "Newsletter",
+  "footer.emailPlaceholder": "Email address",
+  "footer.subscribe": "Subscribe"
 }

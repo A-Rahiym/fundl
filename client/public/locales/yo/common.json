@@ -17,7 +17,21 @@
   "status.cancelled": "Cancelled",
   "badge.availableNow": "Ó wà báyìí",
   "badge.booked": "Booked",
+  "badge.available": "Wà",
+  "badge.topPro": "Ọjọgbọ́n",
   "card.view": "Wo",
+  "card.bookNow": "Bóòkì báyìí",
   "card.offers_one": "{{count}} offer",
-  "card.offers_other": "{{count}} offers"
+  "card.offers_other": "{{count}} offers",
+  "footer.tagline": "Ní kíkọ́ ìgbẹ́kẹ̀lé, iṣẹ́ kan lẹ́ẹ̀kọ̀ọ̀kan. Ilé fún àwọn oníṣẹ́ tó tayọ ní Nàìjíríà.",
+  "footer.platform": "Pẹpẹ",
+  "footer.findPro": "Wá oníṣẹ́",
+  "footer.categories": "Àwọn ẹ̀ka",
+  "footer.pricing": "Ìdíyelé",
+  "footer.company": "Ilé-iṣẹ́",
+  "footer.aboutUs": "Nípa wa",
+  "footer.contact": "Kàn sí wa",
+  "footer.newsletter": "Ìwé ìròyìn",
+  "footer.emailPlaceholder": "Àdírẹ́sì iméèlì",
+  "footer.subscribe": "Ránṣẹ́"
 }

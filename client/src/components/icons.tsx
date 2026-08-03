@@ -29,6 +29,7 @@ export type IconName =
   | 'user'
   | 'clock'
   | 'mail'
+  | 'send'
   | 'eye'
   | 'chevron-right'
   | 'menu'
@@ -135,6 +136,12 @@ const PATHS: Record<IconName, ReactNode> = {
     <>
       <rect x="3.5" y="5" width="17" height="14" rx="2" />
       <path d="m4.5 7 7.5 5.5L19.5 7" />
+    </>
+  ),
+  send: (
+    <>
+      <path d="M20 4 9.2 11.5" />
+      <path d="M20 4l-6 16-3-6.5L4 10z" />
     </>
   ),
   eye: (

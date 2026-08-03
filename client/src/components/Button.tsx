@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react'
-import { cx } from '../lib/cx'
+import { cx } from '@/lib/cx'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'blue' | 'green' | 'red' | 'outline' | 'on-dark' | 'ghost'

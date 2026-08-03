@@ -1,20 +1,18 @@
 import { useTranslation } from 'react-i18next'
-import { Panel } from '../../components/Panel'
-import { Button } from '../../components/Button'
-import { StatusStamp } from '../../components/StatusStamp'
-import { Icon } from '../../components/icons'
-import type { IconName } from '../../components/icons'
-import { Display } from '../../components/Display'
-import { Logo } from '../../components/Logo'
-import type { TagColor } from '../../components/CategoryTag'
-import type { StampTone } from '../../components/StatusStamp'
-import { CategoryTile } from './components/CategoryTile'
-import { ArtisanCard } from './components/ArtisanCard'
-import { JobCard } from './components/JobCard'
-import { StickyNote } from './components/StickyNote'
-import { SectionHeading } from './components/SectionHeading'
-import { Stat } from './components/Stat'
-import { SystemToolkit } from './components/SystemToolkit'
+import { Panel } from '@/components/Panel'
+import { Button } from '@/components/Button'
+import { StatusStamp } from '@/components/StatusStamp'
+import { Icon } from '@/components/icons'
+import type { IconName } from '@/components/icons'
+import { Display } from '@/components/Display'
+import type { TagColor } from '@/components/CategoryTag'
+import type { StampTone } from '@/components/StatusStamp'
+import { CategoryTile } from '@/features/landing/components/CategoryTile'
+import { ArtisanCard } from '@/features/landing/components/ArtisanCard'
+import { JobCard } from '@/features/landing/components/JobCard'
+import { StickyNote } from '@/features/landing/components/StickyNote'
+import { SectionHeading } from '@/features/landing/components/SectionHeading'
+import { Stat } from '@/features/landing/components/Stat'
 
 const CATEGORIES: Array<{ key: string; icon: IconName; count: string }> = [
   { key: 'carpentry', icon: 'hammer', count: '480 fundis' },
@@ -30,16 +28,15 @@ const ARTISANS: Array<{
   categoryKey: string
   categoryColor: TagColor
   rating: number
-  reviews: number
-  rate: string
-  rateType: string
+  bio: string
+  photo: string
   available: boolean
-  photoVariant: 'red' | 'blue' | 'green'
+  topPro: boolean
 }> = [
-  { name: 'Adaeze Okafor', categoryKey: 'tailoring', categoryColor: 'red', rating: 4.8, reviews: 126, rate: '2,500', rateType: 'fix', available: true, photoVariant: 'red' },
-  { name: 'Musa Ibrahim', categoryKey: 'carpentry', categoryColor: 'green', rating: 4.9, reviews: 204, rate: '15,000', rateType: 'job', available: true, photoVariant: 'blue' },
-  { name: 'Kemi Adeyemi', categoryKey: 'electrical', categoryColor: 'yellow', rating: 4.7, reviews: 98, rate: '5,000', rateType: 'hr', available: false, photoVariant: 'green' },
-  { name: 'Chinedu Nwosu', categoryKey: 'masonry', categoryColor: 'blue', rating: 4.6, reviews: 73, rate: '20,000', rateType: 'job', available: true, photoVariant: 'red' },
+  { name: 'Adaeze Okafor', categoryKey: 'tailoring', categoryColor: 'red', rating: 4.8, bio: 'Custom bridal and traditional wear specialist.', photo: 'https://picsum.photos/seed/adaeze/600/600', available: true, topPro: true },
+  { name: 'Musa Ibrahim', categoryKey: 'carpentry', categoryColor: 'green', rating: 4.9, bio: 'Built-in wardrobes, doors and kitchen fittings. 12 years on the tools.', photo: 'https://picsum.photos/seed/musa/600/600', available: true, topPro: false },
+  { name: 'Kemi Adeyemi', categoryKey: 'electrical', categoryColor: 'yellow', rating: 4.7, bio: 'Commercial and domestic wiring, fault tracing and repairs.', photo: 'https://picsum.photos/seed/kemi/600/600', available: false, topPro: false },
+  { name: 'Chinedu Nwosu', categoryKey: 'masonry', categoryColor: 'blue', rating: 4.6, bio: 'Blockwork, tiling and structural repairs. On-site quotes are free.', photo: 'https://picsum.photos/seed/chinedu/600/600', available: true, topPro: false },
 ]
 
 const JOBS: Array<{
@@ -82,7 +79,7 @@ export function LandingPage() {
 
   return (
     <>
-      <main className="mx-auto w-full max-w-[1180px] px-4 tablet:px-8">
+      <main className="mx-auto w-full max-w-[1280px] px-4 tablet:px-8">
         {/* ---- Hero (Street) ---- */}
         <section className="mt-10 grid gap-8 desktop:grid-cols-2 desktop:items-center">
           <div className="text-left">
@@ -102,12 +99,6 @@ export function LandingPage() {
               <Button variant="primary">{t('cta.postJob')}</Button>
               <Button variant="outline">{t('cta.browseFundis')}</Button>
             </div>
-
-            <Panel variant="small" tilt="tilt-n8" inset className="mt-8 flex justify-around gap-4 bg-ink p-4 text-white">
-              <Stat value="1,200+" label={t('landing:stats.jobsDone')} />
-              <Stat value="480" label={t('landing:stats.fundis')} />
-              <Stat value="4.9" label={t('landing:stats.avgRating')} />
-            </Panel>
           </div>
 
           <div className="hidden justify-center desktop:flex">
@@ -132,6 +123,18 @@ export function LandingPage() {
           </div>
         </section>
 
+        {/* ---- Stats plank (mockup §9) ---- */}
+        <section className="mt-12">
+          <Panel className="relative overflow-hidden bg-ink p-6 text-white tablet:p-8">
+            <div className="pointer-events-none absolute inset-2 rounded-[6px] border-2 border-dashed border-white/25" aria-hidden="true" />
+            <div className="grid grid-cols-1 divide-y-2 divide-white/15 tablet:grid-cols-3 tablet:divide-x-2 tablet:divide-y-0">
+              <Stat value="1,200+" label={t('landing:stats.jobsDone')} />
+              <Stat value="480" label={t('landing:stats.fundis')} />
+              <Stat value="4.9" label={t('landing:stats.avgRating')} />
+            </div>
+          </Panel>
+        </section>
+
         {/* ---- Category wall (Street) ---- */}
         <section className="mt-20">
           <SectionHeading kicker={t('landing:categories.kicker')} title={t('landing:categories.title')} />
@@ -145,7 +148,7 @@ export function LandingPage() {
         {/* ---- Artisan cards (Street) ---- */}
         <section className="mt-20">
           <SectionHeading kicker={t('landing:artisans.kicker')} title={t('landing:artisans.title')} />
-          <div className="-mx-4 mt-6 flex gap-6 overflow-x-auto px-4 pb-6 pt-2">
+          <div className="mt-6 grid grid-cols-1 gap-6 tablet:grid-cols-2 desktop:grid-cols-4">
             {ARTISANS.map((a, i) => (
               <ArtisanCard key={a.name} index={i} {...a} category={t(`categories:${a.categoryKey}`)} />
             ))}
@@ -155,16 +158,20 @@ export function LandingPage() {
         {/* ---- How it works ---- */}
         <section className="mt-20">
           <SectionHeading kicker={t('landing:how.kicker')} title={t('landing:how.title')} />
-          <div className="mt-8 grid gap-6 tablet:grid-cols-2 desktop:grid-cols-4">
-            {STEPS.map((s, i) => (
-              <div key={s.titleKey} className="flex items-start gap-3 text-left desktop:flex-col desktop:items-center desktop:text-center">
-                <span className="checkpoint__stamp">{i + 1}</span>
-                <div className="desktop:mt-2">
-                  <h3 className="font-display text-base">{t(s.titleKey)}</h3>
-                  <p className="mt-1 text-sm text-ink/60">{t(s.descKey)}</p>
+          <div className="relative mt-8">
+            <div className="pointer-events-none absolute inset-x-9 top-[16px] hidden border-t-2 border-dashed border-ink/30 desktop:block" aria-hidden="true" />
+            <div className="pointer-events-none absolute bottom-4 left-[15px] top-4 border-l-2 border-dashed border-ink/30 tablet:hidden" aria-hidden="true" />
+            <div className="grid gap-10 desktop:grid-cols-4">
+              {STEPS.map((s, i) => (
+                <div key={s.titleKey} className="relative flex items-start gap-3 text-left desktop:flex-col desktop:items-center desktop:text-center">
+                  <span className="checkpoint__stamp relative z-10">{i + 1}</span>
+                  <div className="desktop:mt-3">
+                    <h3 className="font-display text-base">{t(s.titleKey)}</h3>
+                    <p className="mt-1 text-sm text-ink/60">{t(s.descKey)}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
@@ -192,23 +199,7 @@ export function LandingPage() {
             ))}
           </div>
         </section>
-
-        {/* ---- Design-system toolkit ---- */}
-        <section className="mt-20">
-          <SectionHeading kicker={t('landing:toolkit.kicker')} title={t('landing:toolkit.title')} />
-          <div className="mt-6">
-            <SystemToolkit />
-          </div>
-        </section>
       </main>
-
-      {/* ---- Footer ---- */}
-      <footer className="mx-auto mt-20 w-full max-w-[1180px] border-t-4 border-ink px-4 pb-4 pt-8 text-center tablet:px-8">
-        <Logo />
-        <p className="mt-3 text-xs text-ink/50">
-          Hand-painted trust, one sign at a time. © 2026 FUNDI
-        </p>
-      </footer>
     </>
   )
 }

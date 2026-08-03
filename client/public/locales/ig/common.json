@@ -17,7 +17,21 @@
   "status.cancelled": "Kachapụrụ",
   "badge.availableNow": "Nọ ebe a ugbu a",
   "badge.booked": "Edebela",
+  "badge.available": "Dị",
+  "badge.topPro": "Ọkachamara",
   "card.view": "Lee",
+  "card.bookNow": "Debe ugbu a",
   "card.offers_one": "atụmatụ {{count}}",
-  "card.offers_other": "atụmatụ {{count}}"
+  "card.offers_other": "atụmatụ {{count}}",
+  "footer.tagline": "Ịtụkwasị obi, otu ọrụ n'otu oge. Ụlọ maka ndị ọrụ kacha mma na Naịjịrịa.",
+  "footer.platform": "Ikpo",
+  "footer.findPro": "Chọọ ọkachamara",
+  "footer.categories": "Ụdị",
+  "footer.pricing": "Ọnụego",
+  "footer.company": "Ụlọ ọrụ",
+  "footer.aboutUs": "Banyere anyị",
+  "footer.contact": "Kpọtụrụ anyị",
+  "footer.newsletter": "Akụkọ",
+  "footer.emailPlaceholder": "Adreesị email",
+  "footer.subscribe": "Ziga"
 }

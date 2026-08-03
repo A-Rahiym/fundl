@@ -1,4 +1,4 @@
-import { cx } from '../../../lib/cx'
+import { cx } from '@/lib/cx'
 
 const STAR_PATH =
   'm12 3.2 2.7 5.6 6.2.9-4.5 4.3 1.1 6.1L12 17.2 6.5 20.1l1.1-6.1L3 9.7l6.2-.9z'

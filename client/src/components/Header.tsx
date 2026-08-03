@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { cx } from '../lib/cx'
-import { Logo } from './Logo'
-import { Button } from './Button'
-import { LanguageSwitcher } from './LanguageSwitcher'
+import { cx } from '@/lib/cx'
+import { Logo } from '@/components/Logo'
+import { Button } from '@/components/Button'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
 export interface HeaderProps {
   /** Street register tilts the signboard; Workshop keeps it flat (§1.2). */
@@ -19,7 +19,7 @@ export function Header({ register = 'street', onPostJob, onLogin }: HeaderProps)
   const { t } = useTranslation()
 
   return (
-    <header className="mx-auto w-full max-w-[1180px] px-4 tablet:px-8">
+    <header className="mx-auto w-full max-w-[1280px] px-4 tablet:px-8">
       <div
         className={cx(
           'header-sign flex items-center justify-between gap-4 px-5 py-3',

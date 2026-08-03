@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next'
-import { Icon } from '../../../components/icons'
-import { Panel } from '../../../components/Panel'
-import { CategoryTag } from '../../../components/CategoryTag'
-import type { TagColor } from '../../../components/CategoryTag'
-import { StatusStamp } from '../../../components/StatusStamp'
-import { Stars } from './Stars'
-import { cardTilt } from '../../../lib/theme'
-import { cx } from '../../../lib/cx'
+import { Icon } from '@/components/icons'
+import { Panel } from '@/components/Panel'
+import { Button } from '@/components/Button'
+import { CategoryTag } from '@/components/CategoryTag'
+import type { TagColor } from '@/components/CategoryTag'
+import { Display } from '@/components/Display'
+import { cardTilt } from '@/lib/theme'
+import { cx } from '@/lib/cx'
 
 export interface ArtisanCardProps {
   index: number
@@ -14,20 +14,18 @@ export interface ArtisanCardProps {
   category: string
   categoryColor?: TagColor
   rating: number
-  reviews: number
-  rate: string
-  rateType?: string
+  bio: string
+  photo: string
   available?: boolean
-  photoVariant?: 'red' | 'blue' | 'green'
+  topPro?: boolean
   /** Workshop-register flattening for dense lists (§7.3) */
   flattened?: boolean
 }
 
 /**
- * FUNDI's signature component — the artisan ID card (§7.3).
- * Fixed order: tape → Polaroid photo → brush category tag → name →
- * stars → status stamp → dashed divider → rate + "View →".
- * Alternating ±1.2° tilt; flattens to ±0.3° in dense lists.
+ * FUNDI's signature component — the artisan ID card (§7.3, mockup §9).
+ * Fixed order: square photo with rotated reputation chip → name + rating →
+ * brush category tag → bio → "Book now" button. Alternating ±1.2° tilt.
  */
 export function ArtisanCard({
   index,
@@ -35,54 +33,56 @@ export function ArtisanCard({
   category,
   categoryColor = 'red',
   rating,
-  reviews,
-  rate,
-  rateType = 'hr',
+  bio,
+  photo,
   available = true,
-  photoVariant = 'red',
+  topPro = false,
   flattened = false,
 }: ArtisanCardProps) {
   const { t } = useTranslation()
+
+  const chipLabel = topPro ? t('badge.topPro') : available ? t('badge.available') : t('badge.booked')
+
   return (
     <Panel
       tilt={flattened ? (index % 2 === 0 ? 'tilt-5' : 'tilt-n5') : cardTilt(index)}
       lift
-      className="flex w-56 flex-col gap-2.5 p-4 text-left"
+      className="flex h-full flex-col gap-2.5 p-4 text-left"
     >
-      <div className="tape" aria-hidden="true" />
-      <div
-        className={cx(
-          'photo-duotone',
-          photoVariant === 'blue' && 'photo-duotone--blue',
-          photoVariant === 'green' && 'photo-duotone--green',
-          'h-36 w-full border-[3px] border-ink',
-        )}
-        role="img"
-        aria-label={`Portrait of ${name}`}
-      />
-      <div className="flex justify-center">
-        <CategoryTag color={categoryColor}>{category}</CategoryTag>
-      </div>
-      <h4 className="text-center font-display text-[15px] leading-tight">{name}</h4>
-      <div className="flex items-center justify-center gap-2">
-        <Stars rating={rating} />
-        <span className="text-xs font-semibold text-ink/60">({reviews})</span>
-      </div>
-      <div className="flex justify-center">
-        <StatusStamp tone={available ? 'available' : 'unavailable'}>
-          {available ? t('badge.availableNow') : t('badge.booked')}
-        </StatusStamp>
-      </div>
-      <div className="mt-auto flex items-center justify-between border-t-2 border-dashed border-ink/30 pt-2.5">
-        <span className="text-sm font-extrabold tabular-nums">
-          ₦{rate}
-          <span className="text-[11px] font-semibold text-ink/50">/{rateType}</span>
-        </span>
-        <span className="flex items-center gap-0.5 text-[11px] font-extrabold uppercase tracking-wider text-blue">
-          {t('card.view')}
-          <Icon name="chevron-right" size={13} />
+      <div className="relative aspect-square w-full overflow-hidden rounded-[4px] border-[3px] border-ink">
+        <img
+          src={photo}
+          alt={`Portrait of ${name}`}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+        <span
+          className={cx(
+            'absolute right-2 top-2 rounded-[4px] border-2 border-ink px-2 py-1 text-[10px] font-bold uppercase tracking-wider -rotate-12',
+            topPro ? 'bg-red text-white' : 'bg-ink text-yellow',
+          )}
+        >
+          {chipLabel}
         </span>
       </div>
+
+      <div className="flex items-start justify-between gap-2">
+        <Display as="h5" className="font-display text-base leading-tight">
+          {name}
+        </Display>
+        <span className="mt-0.5 flex shrink-0 items-center gap-1 text-blue">
+          <Icon name="star" size={14} className="fill-current" />
+          <span className="text-sm font-extrabold tabular-nums">{rating.toFixed(1)}</span>
+        </span>
+      </div>
+
+      <CategoryTag color={categoryColor}>{category}</CategoryTag>
+
+      <p className="text-sm text-ink/60">{bio}</p>
+
+      <Button variant="blue" className="mt-auto w-full uppercase">
+        {t('card.bookNow')}
+      </Button>
     </Panel>
   )
 }

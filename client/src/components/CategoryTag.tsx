@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { cx } from '../lib/cx'
-import { hasDiacritics } from '../lib/diacritics'
+import { cx } from '@/lib/cx'
+import { hasDiacritics } from '@/lib/diacritics'
 
 export type TagColor = 'red' | 'blue' | 'green' | 'yellow' | 'red-dark'
 

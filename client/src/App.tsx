@@ -1,6 +1,7 @@
-import { Header } from './components/Header'
-import { BottomNav } from './components/BottomNav'
-import { LandingPage } from './features/landing/LandingPage'
+import { Header } from '@/components/Header'
+import { BottomNav } from '@/components/BottomNav'
+import { Footer } from '@/components/Footer'
+import { LandingPage } from '@/features/landing/LandingPage'
 
 /**
  * App shell: the signboard header and mobile bottom tab bar wrap every
@@ -12,6 +13,7 @@ export default function App() {
     <div className="min-h-screen pb-24 tablet:pb-12">
       <Header register="street" />
       <LandingPage />
+      <Footer />
       <BottomNav active="home" />
     </div>
   )

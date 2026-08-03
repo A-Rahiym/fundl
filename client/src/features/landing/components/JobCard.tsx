@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next'
-import { Icon } from '../../../components/icons'
-import { Panel } from '../../../components/Panel'
-import { CategoryTag } from '../../../components/CategoryTag'
-import type { TagColor } from '../../../components/CategoryTag'
-import { StatusStamp } from '../../../components/StatusStamp'
-import type { StampTone } from '../../../components/StatusStamp'
+import { Icon } from '@/components/icons'
+import { Panel } from '@/components/Panel'
+import { CategoryTag } from '@/components/CategoryTag'
+import type { TagColor } from '@/components/CategoryTag'
+import { StatusStamp } from '@/components/StatusStamp'
+import type { StampTone } from '@/components/StatusStamp'
 
 const STATUS_KEY: Record<StampTone, string> = {
   open: 'status.open',

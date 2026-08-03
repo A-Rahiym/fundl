@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
-import { cx } from '../lib/cx'
-import { hasDiacritics } from '../lib/diacritics'
+import { cx } from '@/lib/cx'
+import { hasDiacritics } from '@/lib/diacritics'
 
 export interface DisplayProps {
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span'
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'p' | 'span'
   children: ReactNode
   className?: string
 }

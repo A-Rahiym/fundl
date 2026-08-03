@@ -1,9 +1,9 @@
-import { Icon } from '../../../components/icons'
-import type { IconName } from '../../../components/icons'
-import { Panel } from '../../../components/Panel'
-import { Display } from '../../../components/Display'
-import { categoryColorFor, tiltFor, textOn } from '../../../lib/theme'
-import { cx } from '../../../lib/cx'
+import { Icon } from '@/components/icons'
+import type { IconName } from '@/components/icons'
+import { Panel } from '@/components/Panel'
+import { Display } from '@/components/Display'
+import { categoryColorFor, tiltFor, textOn } from '@/lib/theme'
+import { cx } from '@/lib/cx'
 
 export interface CategoryTileProps {
   index: number

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
-import { cx } from '../lib/cx'
-import { Icon } from './icons'
-import type { IconName } from './icons'
+import { cx } from '@/lib/cx'
+import { Icon } from '@/components/icons'
+import type { IconName } from '@/components/icons'
 
 export type BottomNavItem = 'home' | 'search' | 'post' | 'notifications' | 'profile'
 
