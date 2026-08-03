@@ -14,6 +14,7 @@ Selectable locales (flag-less `PCM · HA · YO · IG` pill in the header):
 
 | Code | Language | Notes |
 |---|---|---|
+| `en` | English | Full support |
 | `pcm` | Nigerian Pidgin | Default / fallback locale (brand voice) |
 | `ha` | Hausa | Plain Latin orthography (no hooked letters) |
 | `yo` | Yoruba | Subdot vowels (ẹ ọ ṣ) |
@@ -25,7 +26,7 @@ Selectable locales (flag-less `PCM · HA · YO · IG` pill in the header):
 - Detection order: localStorage preference → browser language → `pcm`.
 - User-generated content (job titles, offers, reviews, bios) is **never**
   auto-translated — it stays in whatever language the author wrote it.
-- **Translation status:** `pcm` is complete; `ha`/`yo`/`ig` are best-effort
+- **Translation status:** `en` and `pcm` are complete; `ha`/`yo`/`ig` are best-effort
   scaffolding and need review by fluent native speakers before shipping.
 - Yoruba/Igbo subdot diacritics are missing from Alfa Slab One/Caveat — the
   `Display` component (`src/components/Display.tsx`) auto-falls such strings

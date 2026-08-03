@@ -4,15 +4,15 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import HttpBackend from 'i18next-http-backend'
 
 /**
- * Multilingual setup (guide §2). Selectable locales are Nigerian Pidgin
- * (`pcm`, the default brand voice), Hausa, Yoruba, and Igbo. Bundles are
- * served from /public/locales and lazy-loaded per locale + namespace via
+ * Multilingual setup (guide §2). Selectable locales are English, Nigerian
+ * Pidgin (`pcm`, the default brand voice), Hausa, Yoruba, and Igbo. Bundles
+ * are served from /public/locales and lazy-loaded per locale + namespace via
  * i18next-http-backend, so a Hausa user never downloads Yoruba/Igbo strings.
  *
  * Detection order: saved localStorage preference → browser language → `pcm`.
  * A DB-backed `users.locale` override lands with the API (Phase 3).
  */
-export const SUPPORTED_LOCALES = ['pcm', 'ha', 'yo', 'ig'] as const
+export const SUPPORTED_LOCALES = ['en', 'pcm', 'ha', 'yo', 'ig'] as const
 export type LocaleCode = (typeof SUPPORTED_LOCALES)[number]
 
 export const NAMESPACES = ['common', 'categories', 'landing'] as const
