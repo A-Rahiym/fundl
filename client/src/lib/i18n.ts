@@ -1,19 +1,21 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
-
-import enCommon from '../locales/en/common.json'
-import haCommon from '../locales/ha/common.json'
-import yoCommon from '../locales/yo/common.json'
-import igCommon from '../locales/ig/common.json'
+import HttpBackend from 'i18next-http-backend'
 
 /**
- * Minimal i18n wiring for the design-system build.
- * Detection: saved localStorage preference → browser language → `en`.
- * DB-backed `users.locale` override arrives with the API (Phase 3).
+ * Multilingual setup (guide §2). Selectable locales are Nigerian Pidgin
+ * (`pcm`, the default brand voice), Hausa, Yoruba, and Igbo. Bundles are
+ * served from /public/locales and lazy-loaded per locale + namespace via
+ * i18next-http-backend, so a Hausa user never downloads Yoruba/Igbo strings.
+ *
+ * Detection order: saved localStorage preference → browser language → `pcm`.
+ * A DB-backed `users.locale` override lands with the API (Phase 3).
  */
-export const SUPPORTED_LOCALES = ['en', 'ha', 'yo', 'ig'] as const
+export const SUPPORTED_LOCALES = ['pcm', 'ha', 'yo', 'ig'] as const
 export type LocaleCode = (typeof SUPPORTED_LOCALES)[number]
+
+export const NAMESPACES = ['common', 'categories', 'landing'] as const
 
 const STORAGE_KEY = 'fundi.locale'
 
@@ -22,19 +24,18 @@ export function getStoredLocale(): LocaleCode | undefined {
   return SUPPORTED_LOCALES.includes(v as LocaleCode) ? (v as LocaleCode) : undefined
 }
 
-i18n
+void i18n
+  .use(HttpBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    resources: {
-      en: { common: enCommon },
-      ha: { common: haCommon },
-      yo: { common: yoCommon },
-      ig: { common: igCommon },
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
     lng: getStoredLocale() ?? undefined,
-    fallbackLng: 'en',
+    fallbackLng: 'pcm',
     defaultNS: 'common',
+    ns: [...NAMESPACES],
     supportedLngs: [...SUPPORTED_LOCALES],
     detection: {
       order: ['localStorage', 'navigator'],

@@ -2,6 +2,11 @@
   "nav.howItWorks": "Bó ṣe ń ṣiṣẹ́",
   "nav.trades": "Iṣẹ́ ọwọ́",
   "nav.meetFundis": "Wo àwọn oníṣẹ́ ọwọ́",
+  "nav.home": "Ilé",
+  "nav.search": "Ṣàwárí",
+  "nav.post": "Póstì",
+  "nav.alerts": "Àwọn ìròyìn",
+  "nav.profile": "Profáìlì",
   "cta.postJob": "Fi iṣẹ́ ránṣẹ́",
   "cta.browseFundis": "Wo àwọn oníṣẹ́",
   "cta.signUp": "Sign up",
@@ -11,5 +16,8 @@
   "status.completed": "Ó ti parí",
   "status.cancelled": "Cancelled",
   "badge.availableNow": "Ó wà báyìí",
-  "badge.booked": "Booked"
+  "badge.booked": "Booked",
+  "card.view": "Wo",
+  "card.offers_one": "{{count}} offer",
+  "card.offers_other": "{{count}} offers"
 }

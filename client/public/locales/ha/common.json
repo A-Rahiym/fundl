@@ -1,0 +1,23 @@
+{
+  "nav.howItWorks": "Yadda yake aiki",
+  "nav.trades": "Sana'a",
+  "nav.meetFundis": "Haɗu da gwanaye",
+  "nav.home": "Gida",
+  "nav.search": "Nema",
+  "nav.post": "Saka",
+  "nav.alerts": "Sanarwa",
+  "nav.profile": "Profile",
+  "cta.postJob": "Saka aiki",
+  "cta.browseFundis": "Bincika gwanaye",
+  "cta.signUp": "Rajista",
+  "cta.logIn": "Shiga",
+  "status.open": "Bude",
+  "status.inProgress": "Yana tafiya",
+  "status.completed": "Ya gama",
+  "status.cancelled": "Soke",
+  "badge.availableNow": "Yana nan yanzu",
+  "badge.booked": "An dauka",
+  "card.view": "Duba",
+  "card.offers_one": "{{count}} tayi",
+  "card.offers_other": "{{count}} tayin"
+}

@@ -6,14 +6,14 @@ import type { LocaleCode } from '../lib/i18n'
 import { Icon } from './icons'
 
 const LOCALES: Array<{ code: LocaleCode; label: string }> = [
-  { code: 'en', label: 'EN' },
+  { code: 'pcm', label: 'PCM' },
   { code: 'ha', label: 'HA' },
   { code: 'yo', label: 'YO' },
   { code: 'ig', label: 'IG' },
 ]
 
 /**
- * Flag-less language pill (guide §3): EN · HA · YO · IG — text only,
+ * Flag-less language pill (guide §3): PCM · HA · YO · IG — text only,
  * since the languages don't map to national flags. Persists to
  * localStorage now; DB-backed `users.locale` comes with the API.
  */
@@ -21,7 +21,8 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   const { i18n } = useTranslation()
   const [open, setOpen] = useState(false)
 
-  const current = (i18n.resolvedLanguage ?? 'en').slice(0, 2).toUpperCase()
+  const current =
+    LOCALES.find((l) => i18n.resolvedLanguage?.toLowerCase() === l.code)?.label ?? 'PCM'
 
   return (
     <div className={cx('relative', className)}>

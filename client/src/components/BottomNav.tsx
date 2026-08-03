@@ -1,15 +1,16 @@
+import { useTranslation } from 'react-i18next'
 import { cx } from '../lib/cx'
 import { Icon } from './icons'
 import type { IconName } from './icons'
 
 export type BottomNavItem = 'home' | 'search' | 'post' | 'notifications' | 'profile'
 
-const ITEMS: Array<{ key: BottomNavItem; label: string; icon: IconName }> = [
-  { key: 'home', label: 'Home', icon: 'home' },
-  { key: 'search', label: 'Search', icon: 'search' },
-  { key: 'post', label: 'Post', icon: 'plus' },
-  { key: 'notifications', label: 'Alerts', icon: 'bell' },
-  { key: 'profile', label: 'Profile', icon: 'user' },
+const ITEMS: Array<{ key: BottomNavItem; labelKey: string; icon: IconName }> = [
+  { key: 'home', labelKey: 'nav.home', icon: 'home' },
+  { key: 'search', labelKey: 'nav.search', icon: 'search' },
+  { key: 'post', labelKey: 'nav.post', icon: 'plus' },
+  { key: 'notifications', labelKey: 'nav.alerts', icon: 'bell' },
+  { key: 'profile', labelKey: 'nav.profile', icon: 'user' },
 ]
 
 /**
@@ -17,6 +18,7 @@ const ITEMS: Array<{ key: BottomNavItem; label: string; icon: IconName }> = [
  * background, yellow active icon. Hidden from tablet up.
  */
 export function BottomNav({ active = 'home' }: { active?: BottomNavItem }) {
+  const { t } = useTranslation()
   return (
     <nav className="bottom-nav tablet:hidden" aria-label="Primary">
       {ITEMS.map((item) => (
@@ -30,7 +32,7 @@ export function BottomNav({ active = 'home' }: { active?: BottomNavItem }) {
           )}
         >
           <Icon name={item.icon} size={22} />
-          {item.label}
+          {t(item.labelKey)}
         </a>
       ))}
     </nav>

@@ -1,0 +1,23 @@
+{
+  "nav.howItWorks": "Otú ọ si arụ ọrụ",
+  "nav.trades": "Ọrụ aka",
+  "nav.meetFundis": "Zute ndị ọrụ",
+  "nav.home": "Ụlọ",
+  "nav.search": "Chọọ",
+  "nav.post": "Zipụ",
+  "nav.alerts": "Ngosi",
+  "nav.profile": "Profaylụ",
+  "cta.postJob": "Zipu ọrụ",
+  "cta.browseFundis": "Chọọ ndị ọrụ",
+  "cta.signUp": "Debanye aha",
+  "cta.logIn": "Banye",
+  "status.open": "Meghere",
+  "status.inProgress": "N'aga n'ihu",
+  "status.completed": "Agwụla",
+  "status.cancelled": "Kachapụrụ",
+  "badge.availableNow": "Nọ ebe a ugbu a",
+  "badge.booked": "Edebela",
+  "card.view": "Lee",
+  "card.offers_one": "atụmatụ {{count}}",
+  "card.offers_other": "atụmatụ {{count}}"
+}
