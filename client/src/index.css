@@ -1,111 +1,527 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import "tailwindcss";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+/* ============================================================
+   FUNDI — "The Signboard Wall" design tokens
+   See design/FUNDI_DESIGN_SPEC.md §2, §3, §8
+   ============================================================ */
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@theme {
+  /* -- Palette (§2.1) ---------------------------------- */
+  --color-wall: #efe7d6;
+  --color-wall-dark: #e4d9c1;
+  --color-ink: #1a1610;
+  --color-red: #d33b2c;
+  --color-red-dark: #a82a1e;
+  --color-blue: #1e4d8c;
+  --color-blue-dark: #153a6b;
+  --color-yellow: #f5b324;
+  --color-yellow-dark: #d89a12;
+  --color-green: #2e7d46;
+  --color-green-dark: #1f5c33;
+  --color-white: #fbf6ea;
+  --color-tape: #eadfb8;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* -- Typography (§3) ---------------------------------- */
+  --font-display: "Alfa Slab One", "Noto Sans", serif;
+  --font-hand: "Caveat", "Noto Sans", cursive;
+  --font-body: "Work Sans", "Noto Sans", system-ui, sans-serif;
+
+  /* -- Hard shadows (§8.5) ------------------------------ */
+  --shadow-small: 3px 3px 0 var(--color-ink);
+  --shadow-standard: 5px 5px 0 var(--color-ink);
+  --shadow-large: 9px 9px 0 var(--color-ink);
+
+  /* -- Breakpoints (§8.1) ------------------------------- */
+  --breakpoint-tablet: 640px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1440px;
+
+  /* -- Irregular spacing additions (§8.3) --------------- */
+  --spacing-18: 18px;
+  --spacing-22: 22px;
+  --spacing-26: 26px;
+  --spacing-44: 44px;
+  --spacing-88: 88px;
 }
 
-@media (prefers-color-scheme: dark) {
+/* ============================================================
+   Base
+   ============================================================ */
+
+@layer base {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    color-scheme: light;
   }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-wall);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+
+  /* Visible focus ring (§10) — never removed, only restyled */
+  :focus-visible {
+    outline: 3px solid var(--color-blue);
+    outline-offset: 3px;
+  }
+
+  h1, h2, h3, h4 {
+    margin: 0;
+    font-weight: 400;
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  /* Reduced motion (§10): kill tilt/shadow transitions, keep state instant */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    [class*="tilt-"] {
+      transform: none !important;
+    }
+    .panel:hover, .panel--lift:hover, .btn:hover {
+      transform: none !important;
+      box-shadow: var(--shadow-standard) !important;
+    }
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+/* ============================================================
+   Panel primitive (§7.1)
+   ============================================================ */
+
+@layer components {
+  .panel {
+    position: relative;
+    background: var(--color-white);
+    border: 4px solid var(--color-ink);
+    border-radius: 7px;
+    box-shadow: var(--shadow-standard);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .panel--small {
+    border-width: 3px;
+    border-radius: 5px;
+    box-shadow: var(--shadow-small);
+  }
+
+  .panel--large {
+    box-shadow: var(--shadow-large);
+  }
+
+  /* Painted inner border — shown on dark/colored panels (§7.1) */
+  .panel--inset::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 2px dashed rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  /* Hover lift: grow shadow by 2px, translate -2px,-2px (§8.5) */
+  .panel--lift:hover,
+  .panel--lift:focus-visible {
+    transform: rotate(0deg) translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--color-ink);
+  }
+
+  /* -- Tilt scale (§8.4) ---------------------------------- */
+  .tilt-n2  { transform: rotate(-2deg); }
+  .tilt-n14 { transform: rotate(-1.4deg); }
+  .tilt-n8  { transform: rotate(-0.8deg); }
+  .tilt-n5  { transform: rotate(-0.5deg); }
+  .tilt-5   { transform: rotate(0.5deg); }
+  .tilt-9   { transform: rotate(0.9deg); }
+  .tilt-12  { transform: rotate(1.2deg); }
+  .tilt-16  { transform: rotate(1.6deg); }
 }
 
-body {
-  margin: 0;
-}
+/* ============================================================
+   Buttons (§7.2)
+   ============================================================ */
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 20px;
+    border: 3px solid var(--color-ink);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-ink);
+    box-shadow: var(--shadow-standard);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 90ms ease, box-shadow 90ms ease, background-color 120ms ease;
+  }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  .btn:hover {
+    transform: translate(-1px, -1px);
+  }
+
+  /* Press state: slide into its own shadow (§7.2) */
+  .btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--color-ink);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn--primary { background: var(--color-yellow); }
+  .btn--primary:hover:not(:disabled) { background: var(--color-yellow-dark); }
+
+  .btn--blue { background: var(--color-blue); color: var(--color-white); }
+  .btn--blue:hover:not(:disabled) { background: var(--color-blue-dark); }
+
+  .btn--green { background: var(--color-green); color: var(--color-white); }
+  .btn--green:hover:not(:disabled) { background: var(--color-green-dark); }
+
+  .btn--red { background: var(--color-red); color: var(--color-white); }
+  .btn--red:hover:not(:disabled) { background: var(--color-red-dark); }
+
+  /* For use on ink/dark panels (§7.2) */
+  .btn--on-dark {
+    border-color: var(--color-white);
+    color: var(--color-white);
+    box-shadow: 5px 5px 0 rgba(255, 255, 255, 0.85);
+  }
+  .btn--on-dark:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .btn--ghost {
+    border-style: dashed;
+    box-shadow: none;
+  }
+
+  .btn--sm {
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 12px;
+    box-shadow: var(--shadow-small);
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
+
+/* ============================================================
+   Status stamp (§7.6) — color + text label, never color alone
+   ============================================================ */
+
+@layer components {
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-white);
+    color: var(--color-ink);
+    box-shadow: 2px 2px 0 var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.15;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .stamp--open        { background: var(--color-yellow); color: var(--color-ink); }
+  .stamp--in-progress { background: var(--color-blue); color: var(--color-white); }
+  .stamp--completed   { background: var(--color-green); color: var(--color-white); }
+  .stamp--cancelled   { background: var(--color-red-dark); color: var(--color-white); }
+  .stamp--available   { background: var(--color-green); color: var(--color-white); }
+  .stamp--unavailable { background: var(--color-wall-dark); color: var(--color-ink); }
+  .stamp--neutral     { background: var(--color-white); color: var(--color-ink); }
+}
+
+/* ============================================================
+   Category hand-brush tag (§7.3)
+   ============================================================ */
+
+@layer components {
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-red);
+    color: var(--color-white);
+    font-family: var(--font-hand);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.2;
+    box-shadow: 2px 2px 0 var(--color-ink);
+    transform: rotate(-1.2deg);
+  }
+  .tag--blue  { background: var(--color-blue); }
+  .tag--green { background: var(--color-green); }
+  .tag--yellow { background: var(--color-yellow); color: var(--color-ink); }
+  .tag--red-dark { background: var(--color-red-dark); }
+}
+
+/* ============================================================
+   Forms (§7.8)
+   ============================================================ */
+
+@layer components {
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+
+  .field__label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .input,
+  .textarea,
+  .select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    background: var(--color-white);
+    border: 3px solid var(--color-ink);
+    border-radius: 6px;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.4;
+    transition: box-shadow 120ms ease;
+  }
+
+  .input::placeholder,
+  .textarea::placeholder {
+    color: rgba(26, 22, 16, 0.45);
+  }
+
+  .input:focus,
+  .textarea:focus,
+  .select:focus {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 3px var(--color-yellow);
+  }
+
+  .textarea {
+    min-height: 96px;
+    resize: vertical;
+  }
+
+  /* Checkpoint-stamp progress row (§7.8) */
+  .checkpoint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .checkpoint__stamp {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--color-ink);
+    border-radius: 50%;
+    background: var(--color-white);
+    color: var(--color-ink);
+    box-shadow: 3px 3px 0 var(--color-ink);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  .checkpoint__stamp--done {
+    background: var(--color-green);
+    color: var(--color-white);
+  }
+
+  .checkpoint__stamp--current {
+    background: var(--color-yellow);
+  }
+
+  .checkpoint__line {
+    flex: 1;
+    height: 3px;
+    background: var(--color-ink);
+  }
+}
+
+/* ============================================================
+   Header signboard (§7.9) & mobile bottom nav (§7.9)
+   ============================================================ */
+
+@layer components {
+  .header-sign {
+    background: var(--color-ink);
+    color: var(--color-white);
+    border: 4px solid var(--color-ink);
+    border-radius: 8px;
+    box-shadow: 0 7px 0 var(--color-yellow);
+  }
+
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-around;
+    background: var(--color-ink);
+    border-top: 4px solid var(--color-ink);
+    box-shadow: 0 -5px 0 var(--color-yellow);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .bottom-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    padding: 10px 0 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .bottom-nav__item--active {
+    color: var(--color-yellow);
+  }
+}
+
+/* ============================================================
+   Sticky note (§7.7) & tape / pin accents
+   ============================================================ */
+
+@layer components {
+  .note {
+    position: relative;
+    padding: 24px 16px 14px;
+    background: var(--color-tape);
+    border: 3px solid var(--color-ink);
+    border-radius: 2px;
+    box-shadow: 4px 4px 0 var(--color-ink);
+  }
+
+  .note__pin {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    transform: translateX(-50%) rotate(-6deg);
+    background: var(--color-red);
+    border: 2px solid var(--color-ink);
+    border-radius: 50%;
+    box-shadow: 1px 1px 0 var(--color-ink);
+  }
+
+  .note__quote {
+    margin: 0;
+    font-family: var(--font-hand);
+    font-weight: 700;
     font-size: 20px;
+    line-height: 1.25;
+  }
+
+  .note__attr {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 2px dashed rgba(26, 22, 16, 0.4);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .tape {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    width: 58px;
+    height: 20px;
+    transform: translateX(-50%) rotate(-2deg);
+    background: rgba(234, 223, 184, 0.85);
+    border-left: 1px dashed rgba(26, 22, 16, 0.2);
+    border-right: 1px dashed rgba(26, 22, 16, 0.2);
   }
 }
-p {
-  margin: 0;
+
+/* ============================================================
+   Duotone photo placeholder (gradients allowed here — §2.3)
+   ============================================================ */
+
+@layer components {
+  .photo-duotone {
+    background:
+      linear-gradient(155deg, #e4d9c1 0%, #e4d9c1 18%, #d33b2c 60%, #1a1610 100%);
+  }
+  .photo-duotone--blue {
+    background:
+      linear-gradient(155deg, #e4d9c1 0%, #e4d9c1 18%, #1e4d8c 60%, #1a1610 100%);
+  }
+  .photo-duotone--green {
+    background:
+      linear-gradient(155deg, #e4d9c1 0%, #e4d9c1 18%, #2e7d46 60%, #1a1610 100%);
+  }
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
+/* ============================================================
+   Diacritic fallback (§2.4 of implementation guide)
+   Headline/diplay faces lack Yoruba/Igbo subdot glyphs.
+   ============================================================ */
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+@layer utilities {
+  .needs-diacritic-fallback {
+    font-family: var(--font-body) !important;
+  }
 }
