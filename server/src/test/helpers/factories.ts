@@ -33,3 +33,21 @@ export async function createTestJob(clientId: string, categoryId: number) {
     },
   });
 }
+
+export async function createTestArtisan(
+  categoryId: number,
+  overrides: Partial<{ rateType: string; rateAmount: number; isAvailable: boolean; bio: string }> = {},
+) {
+  const user = await createTestUser({ role: "artisan" });
+  const profile = await prisma.artisanProfile.create({
+    data: {
+      userId: user.id,
+      categoryId,
+      bio: overrides.bio,
+      rateType: (overrides.rateType ?? "hourly") as "hourly",
+      rateAmount: overrides.rateAmount ?? 2000,
+      isAvailable: overrides.isAvailable ?? true,
+    },
+  });
+  return { user, profile };
+}

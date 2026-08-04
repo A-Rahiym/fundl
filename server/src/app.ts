@@ -6,6 +6,7 @@ import { resolveLocale } from "@/lib/locale";
 import { authRouter } from "@/modules/auth/auth.routes";
 import { usersRouter } from "@/modules/users/users.routes";
 import { categoriesRouter } from "@/modules/categories/categories.routes";
+import { artisansRouter } from "@/modules/artisans/artisans.routes";
 
 export const app = express();
 
@@ -24,5 +25,6 @@ app.get("/api/v1/health", (_req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/categories", categoriesRouter);
+app.use("/api/v1/artisans", artisansRouter);
 
 app.use(errorHandler);
