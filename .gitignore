@@ -31,3 +31,5 @@ screens/
 server/.env
 server/.env.*
 !server/.env.example
+
+logs/
