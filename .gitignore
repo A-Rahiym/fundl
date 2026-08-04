@@ -26,3 +26,8 @@ dist-ssr
 guide/
 design/
 screens/
+
+# Environment files
+server/.env
+server/.env.*
+!server/.env.example

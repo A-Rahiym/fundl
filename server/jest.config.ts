@@ -7,5 +7,6 @@ const config: Config = {
   testMatch: ["**/*.test.ts"],
   clearMocks: true,
   coveragePathIgnorePatterns: ["/node_modules/", "/prisma/"],
+  setupFiles: ["dotenv/config"],
 };
 export default config;

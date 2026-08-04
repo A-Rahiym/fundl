@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
+import type { Role } from "@prisma/client";
 import { env } from "../config/env";
 
 interface AccessTokenPayload {
   sub: string;
-  role: "client" | "artisan";
+  role: Role;
 }
 
 export function signAccessToken(payload: AccessTokenPayload) {

@@ -1,7 +1,9 @@
 import "dotenv/config";
 
 import { env } from "./config/env";
+import { app } from "./app";
+import { logger } from "./lib/logger";
 
-const { PORT } = env;
-
-console.log(`fundi-api listening on :${PORT}`);
+app.listen(env.PORT, () => {
+  logger.info(`fundi-api listening on :${env.PORT}`);
+});
