@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import { apiReference } from "@scalar/express-api-reference";
+import openapiSpec from "@/config/openapi.json";
 import { requestLogger } from "@/middleware/requestLogger";
 import { errorHandler } from "@/middleware/errorHandler";
 import { resolveLocale } from "@/lib/locale";
@@ -30,5 +32,7 @@ app.use("/api/v1/categories", categoriesRouter);
 app.use("/api/v1/artisans", artisansRouter);
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1", offersRouter);
+
+app.use("/api/v1/docs", apiReference({ content: openapiSpec }));
 
 app.use(errorHandler);
