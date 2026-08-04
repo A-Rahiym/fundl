@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { requireAuth } from "../../middleware/auth";
-import { validate } from "../../middleware/validate";
-import { asyncHandler } from "../../lib/asyncHandler";
-import { signupSchema, loginSchema } from "./auth.schema";
-import * as authController from "./auth.controller";
+import { requireAuth } from "@/middleware/auth";
+import { validate } from "@/middleware/validate";
+import { asyncHandler } from "@/lib/asyncHandler";
+import { signupSchema, loginSchema } from "@/modules/auth/auth.schema";
+import * as authController from "@/modules/auth/auth.controller";
 
 export const authRouter = Router();
 

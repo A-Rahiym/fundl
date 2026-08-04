@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { ok, created } from "../../lib/apiResponse";
-import * as authService from "./auth.service";
+import { ok, created } from "@/lib/apiResponse";
+import * as authService from "@/modules/auth/auth.service";
 
 export async function signup(req: Request, res: Response) {
   const result = await authService.signup(req.body);

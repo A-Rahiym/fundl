@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import type { Role } from "@prisma/client";
-import { prisma } from "../../lib/prisma";
-import { hashPassword } from "../../lib/password";
+import { prisma } from "@/lib/prisma";
+import { hashPassword } from "@/lib/password";
 
 export async function createTestUser(
   overrides: Partial<{ role: Role; email: string; name: string; password: string }> = {},

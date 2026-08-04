@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "../lib/jwt";
-import { UnauthorizedError } from "../lib/errors";
+import { verifyAccessToken } from "@/lib/jwt";
+import { UnauthorizedError } from "@/lib/errors";
 
 export function requireAuth(req: Request, _res: Response, next: NextFunction) {
   const header = req.headers.authorization;

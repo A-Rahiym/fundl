@@ -1,6 +1,6 @@
 import type { Request } from "express";
 import type { Locale } from "@prisma/client";
-import { LOCALES } from "../config/constants";
+import { LOCALES } from "@/config/constants";
 
 /** Resolves the request locale from the ?lang= override, then Accept-Language. */
 export function resolveLocale(req: Request): Locale {

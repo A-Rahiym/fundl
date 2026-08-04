@@ -8,5 +8,8 @@ const config: Config = {
   clearMocks: true,
   coveragePathIgnorePatterns: ["/node_modules/", "/prisma/"],
   setupFiles: ["dotenv/config"],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
 };
 export default config;

@@ -1,5 +1,5 @@
-import { authedApi } from "../helpers/testClient";
-import { createTestUser } from "../helpers/factories";
+import { authedApi } from "@/test/helpers/testClient";
+import { createTestUser } from "@/test/helpers/factories";
 
 describe("Users endpoints", () => {
   it("GET /users/me returns the current user incl. locale", async () => {

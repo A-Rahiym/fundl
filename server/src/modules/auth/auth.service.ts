@@ -1,10 +1,10 @@
 import type { User } from "@prisma/client";
-import { prisma } from "../../lib/prisma";
-import { ConflictError, UnauthorizedError } from "../../lib/errors";
-import { hashPassword, comparePassword } from "../../lib/password";
-import { signAccessToken } from "../../lib/jwt";
-import { toPublicUser } from "../../lib/user";
-import type { SignupInput, LoginInput } from "./auth.schema";
+import { prisma } from "@/lib/prisma";
+import { ConflictError, UnauthorizedError } from "@/lib/errors";
+import { hashPassword, comparePassword } from "@/lib/password";
+import { signAccessToken } from "@/lib/jwt";
+import { toPublicUser } from "@/lib/user";
+import type { SignupInput, LoginInput } from "@/modules/auth/auth.schema";
 
 export async function signup(input: SignupInput) {
   const existing = await prisma.user.findUnique({ where: { email: input.email } });

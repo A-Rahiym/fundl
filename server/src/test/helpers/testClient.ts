@@ -1,8 +1,8 @@
 import request from "supertest";
 import type { Role } from "@prisma/client";
-import { app } from "../../app";
-import { signAccessToken } from "../../lib/jwt";
-import { prisma } from "../../lib/prisma";
+import { app } from "@/app";
+import { signAccessToken } from "@/lib/jwt";
+import { prisma } from "@/lib/prisma";
 
 export const api = request(app);
 

@@ -1,7 +1,7 @@
-import { prisma } from "../../lib/prisma";
-import { NotFoundError } from "../../lib/errors";
-import { toPublicUser } from "../../lib/user";
-import type { UpdateLocaleInput } from "./users.schema";
+import { prisma } from "@/lib/prisma";
+import { NotFoundError } from "@/lib/errors";
+import { toPublicUser } from "@/lib/user";
+import type { UpdateLocaleInput } from "@/modules/users/users.schema";
 
 export async function getCurrentUser(userId: string) {
   const user = await prisma.user.findUnique({ where: { id: userId } });
