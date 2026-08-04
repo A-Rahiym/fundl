@@ -89,3 +89,17 @@ pnpm dev:server    # API     → http://localhost:4000/api/v1/health
 pnpm build         # type-check + production build
 pnpm lint
 ```
+
+## API reference & testing the API
+
+Interactive docs are served by the running server — [Scalar](https://scalar.com)
+renders the hand-written OpenAPI spec at `server/src/config/openapi.json`:
+
+```sh
+pnpm dev:server    # then open http://localhost:4000/api/v1/docs
+```
+
+A Postman collection (`server/postman_collection.json`) mirrors the same
+endpoints with auto-saved tokens and chained variables. Import it, run **Login**
+to populate `auth_token`, then step through **Categories → Jobs → Offers**.
+`.postman/resources.yaml` lists both artifacts for CI/pipeline consumption.

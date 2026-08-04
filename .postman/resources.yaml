@@ -1,0 +1,7 @@
+resources:
+  - name: FUNDI API Postman Collection
+    type: collection
+    path: server/postman_collection.json
+  - name: FUNDI OpenAPI Specification
+    type: openapi
+    path: server/src/config/openapi.json

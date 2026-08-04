@@ -1,0 +1,461 @@
+{
+  "info": {
+    "name": "FUNDI API",
+    "description": "FUNDI artisan services marketplace API. Collection-level Bearer auth uses the `auth_token` variable, which is auto-saved by the Signup/Login requests. Follow the folder order to chain requests: create a job, offer on it, then accept.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:4000/api/v1", "type": "string" },
+    { "key": "auth_token", "value": "", "type": "string" },
+    { "key": "user_id", "value": "", "type": "string" },
+    { "key": "category_key", "value": "carpentry", "type": "string" },
+    { "key": "job_id", "value": "", "type": "string" },
+    { "key": "offer_id", "value": "", "type": "string" },
+    { "key": "artisan_id", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "auth": null,
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/health", "host": ["{{base_url}}"], "path": ["health"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Signup",
+          "auth": null,
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ada Client\",\n  \"email\": \"client@example.com\",\n  \"password\": \"Password123!\",\n  \"role\": \"client\",\n  \"locale\": \"en\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/signup", "host": ["{{base_url}}"], "path": ["auth", "signup"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('auth_token', json.data.token);",
+                  "  pm.collectionVariables.set('user_id', json.data.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Login",
+          "auth": null,
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"client@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('auth_token', json.data.token);",
+                  "  pm.collectionVariables.set('user_id', json.data.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth", "me"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/users/me", "host": ["{{base_url}}"], "path": ["users", "me"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Locale",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"locale\": \"yo\"\n}" },
+            "url": {
+              "raw": "{{base_url}}/users/me/locale",
+              "host": ["{{base_url}}"],
+              "path": ["users", "me", "locale"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "auth": null,
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/categories", "host": ["{{base_url}}"], "path": ["categories"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.length) {",
+                  "  pm.collectionVariables.set('category_key', json.data[0].key);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Artisans",
+      "item": [
+        {
+          "name": "Search Artisans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/artisans?category={{category_key}}",
+              "host": ["{{base_url}}"],
+              "path": ["artisans"],
+              "query": [
+                { "key": "category", "value": "{{category_key}}" },
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "20" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.length) {",
+                  "  pm.collectionVariables.set('artisan_id', json.data[0].user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Get Artisan Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/artisans/{{artisan_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["artisans", "{{artisan_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Artisan Stamps",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/artisans/{{artisan_id}}/stamps",
+              "host": ["{{base_url}}"],
+              "path": ["artisans", "{{artisan_id}}", "stamps"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Furniture and repair specialist\",\n  \"categoryKey\": \"{{category_key}}\",\n  \"rateType\": \"hourly\",\n  \"rateAmount\": 2500,\n  \"isAvailable\": true\n}"
+            },
+            "url": { "raw": "{{base_url}}/artisans/me", "host": ["{{base_url}}"], "path": ["artisans", "me"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Portfolio Image",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"imageUrl\": \"https://example.com/portfolio.jpg\",\n  \"caption\": \"Finished wardrobe\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/artisans/me/portfolio",
+              "host": ["{{base_url}}"],
+              "path": ["artisans", "me", "portfolio"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Portfolio Image",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/artisans/me/portfolio/:imageId",
+              "host": ["{{base_url}}"],
+              "path": ["artisans", "me", "portfolio", ":imageId"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Create Job",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Fix kitchen sink\",\n  \"description\": \"Leaking pipe under the sink, needs urgent repair\",\n  \"categoryKey\": \"{{category_key}}\",\n  \"locationText\": \"Ikeja, Lagos\",\n  \"budgetMin\": 5000,\n  \"budgetMax\": 12000\n}"
+            },
+            "url": { "raw": "{{base_url}}/jobs", "host": ["{{base_url}}"], "path": ["jobs"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.id) {",
+                  "  pm.collectionVariables.set('job_id', json.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "List Jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/jobs?status=open",
+              "host": ["{{base_url}}"],
+              "path": ["jobs"],
+              "query": [
+                { "key": "status", "value": "open" },
+                { "key": "page", "value": "1" },
+                { "key": "pageSize", "value": "20" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Job Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/jobs/{{job_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "{{job_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"budgetMax\": 15000\n}" },
+            "url": {
+              "raw": "{{base_url}}/jobs/{{job_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "{{job_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Complete Job",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/jobs/{{job_id}}/complete",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "{{job_id}}", "complete"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/jobs/mine", "host": ["{{base_url}}"], "path": ["jobs", "mine"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Offers",
+      "item": [
+        {
+          "name": "Create Offer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 15000,\n  \"message\": \"Can do this Thursday\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/jobs/{{job_id}}/offers",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "{{job_id}}", "offers"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.id) {",
+                  "  pm.collectionVariables.set('offer_id', json.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "List Job Offers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/jobs/{{job_id}}/offers",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "{{job_id}}", "offers"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Accept Offer",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/offers/{{offer_id}}/accept",
+              "host": ["{{base_url}}"],
+              "path": ["offers", "{{offer_id}}", "accept"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Decline Offer",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/offers/{{offer_id}}/decline",
+              "host": ["{{base_url}}"],
+              "path": ["offers", "{{offer_id}}", "decline"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Offers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/offers/mine", "host": ["{{base_url}}"], "path": ["offers", "mine"] }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
