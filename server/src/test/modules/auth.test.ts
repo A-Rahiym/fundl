@@ -1,6 +1,5 @@
 import { api, authedApi } from "@/test/helpers/testClient";
 import { createTestUser } from "@/test/helpers/factories";
-import
 
 describe("Auth endpoints", () => {
   it("POST /auth/signup creates an account and returns a token", async () => {
