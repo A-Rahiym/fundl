@@ -1,0 +1,47 @@
+version: "3.9"
+services:
+  api:
+    build:
+      context: ..
+      target: build
+      dockerfile: server/Dockerfile
+    command: sh -c "cd server && npx tsx watch src/index.ts"
+    ports:
+      - "4000:4000"
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://fundi:fundi@db:5432/fundi_dev
+    volumes:
+      - ..:/app
+      - /app/node_modules
+      - /app/server/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fundi
+      POSTGRES_PASSWORD: fundi
+      POSTGRES_DB: fundi_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - fundi_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fundi"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  fundi_pg_data:

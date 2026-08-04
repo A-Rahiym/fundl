@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.env.*
+npm-debug.log
+coverage
+*.test.ts
+.git
+client
+guide
+design
+screens

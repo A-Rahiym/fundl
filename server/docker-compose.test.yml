@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  api:
+    command: sh -c "cd server && npx prisma migrate deploy && npm test"
+    environment:
+      DATABASE_URL: postgresql://fundi:fundi@postgres:5432/fundi_test
+      NODE_ENV: test
+    volumes:
+      - ..:/app
+      - /app/node_modules
+      - /app/server/node_modules
+  postgres:
+    environment:
+      POSTGRES_DB: fundi_test
+    tmpfs:
+      - /var/lib/postgresql/data
