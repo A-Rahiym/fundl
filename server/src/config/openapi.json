@@ -1,0 +1,986 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "FUNDI API",
+    "version": "1.0.0",
+    "description": "Artisan services marketplace API. Authenticated routes expect `Authorization: Bearer <JWT>`. All responses use the envelope `{ success, data, meta? }`; errors use `{ success: false, error: { code, message } }`."
+  },
+  "servers": [
+    { "url": "http://localhost:4000/api/v1", "description": "Local development" }
+  ],
+  "tags": [
+    { "name": "Health" },
+    { "name": "Auth" },
+    { "name": "Users" },
+    { "name": "Categories" },
+    { "name": "Artisans" },
+    { "name": "Jobs" },
+    { "name": "Offers" }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Service health check",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Service is up",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Create an account",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/SignupInput" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Account created",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/AuthResponse" } }
+            }
+          },
+          "409": { "$ref": "#/components/responses/Conflict" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Log in and receive a JWT",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/LoginInput" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/AuthResponse" } }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Current authenticated user",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Current user",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/UserResponse" } }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Current user profile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Current user",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/UserResponse" } }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/users/me/locale": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update the saved language preference",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateLocaleInput" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated user",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/UserResponse" } }
+            }
+          },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "List trade categories (client resolves keys to translated labels)",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Category" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artisans": {
+      "get": {
+        "tags": ["Artisans"],
+        "summary": "Search artisan profiles",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "category", "in": "query", "required": false, "schema": { "type": "string" }, "description": "Category key, e.g. `carpentry`" },
+          { "name": "location", "in": "query", "required": false, "schema": { "type": "string" }, "description": "Free-text location match" },
+          { "name": "minRating", "in": "query", "required": false, "schema": { "type": "number", "minimum": 0, "maximum": 5 } },
+          { "name": "maxPrice", "in": "query", "required": false, "schema": { "type": "number" }, "description": "Maximum hourly/fixed rate" },
+          { "name": "page", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "name": "pageSize", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 50, "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated artisans",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ArtisanSearchResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artisans/me": {
+      "put": {
+        "tags": ["Artisans"],
+        "summary": "Create or update the artisan's own profile",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateArtisanProfileInput" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/ArtisanProfile" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/artisans/me/portfolio": {
+      "post": {
+        "tags": ["Artisans"],
+        "summary": "Add a portfolio image",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/AddPortfolioImageInput" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Portfolio image added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/PortfolioImage" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/artisans/me/portfolio/{imageId}": {
+      "delete": {
+        "tags": ["Artisans"],
+        "summary": "Remove a portfolio image",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "imageId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": { "id": { "type": "string" } }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/artisans/{id}/stamps": {
+      "get": {
+        "tags": ["Artisans"],
+        "summary": "Earned reputation stamp keys for an artisan",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Artisan's user id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stamp keys",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "array",
+                      "items": { "type": "string", "enum": ["first_job", "on_a_roll", "five_star_streak"] }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/artisans/{id}": {
+      "get": {
+        "tags": ["Artisans"],
+        "summary": "Public artisan profile incl. reviews, portfolio and stamps",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Artisan's user id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artisan profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/ArtisanProfileDetail" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/jobs": {
+      "post": {
+        "tags": ["Jobs"],
+        "summary": "Client creates a job",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateJobInput" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Job created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Job" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      },
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "List/search jobs",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "category", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "location", "in": "query", "required": false, "schema": { "type": "string" } },
+          { "name": "status", "in": "query", "required": false, "schema": { "$ref": "#/components/schemas/JobStatus" } },
+          { "name": "budgetMax", "in": "query", "required": false, "schema": { "type": "number" } },
+          { "name": "page", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "name": "pageSize", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 50, "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated jobs",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/JobSearchResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/mine": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "The client's own jobs",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "page", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "name": "pageSize", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 50, "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated own jobs",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/JobSearchResponse" }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/jobs/{id}": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Job detail (offers visible only to the owner)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/JobDetail" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "tags": ["Jobs"],
+        "summary": "Update an open job (owner only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateJobInput" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated job",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Job" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      }
+    },
+    "/jobs/{id}/complete": {
+      "put": {
+        "tags": ["Jobs"],
+        "summary": "Mark an in-progress job complete (owner only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completed job",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Job" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      }
+    },
+    "/jobs/{jobId}/offers": {
+      "post": {
+        "tags": ["Offers"],
+        "summary": "Artisan submits an offer on a job",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateOfferInput" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Offer created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Offer" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      },
+      "get": {
+        "tags": ["Offers"],
+        "summary": "List offers for a job (job owner only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Offers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/OfferDetail" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/offers/mine": {
+      "get": {
+        "tags": ["Offers"],
+        "summary": "The artisan's sent offers",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "page", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "name": "pageSize", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 50, "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated offers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/OfferDetail" }
+                    },
+                    "meta": { "$ref": "#/components/schemas/PaginationMeta" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/offers/{id}/accept": {
+      "put": {
+        "tags": ["Offers"],
+        "summary": "Accept an offer — auto-declines the rest and moves the job to in-progress",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Accepted offer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Offer" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      }
+    },
+    "/offers/{id}/decline": {
+      "put": {
+        "tags": ["Offers"],
+        "summary": "Decline a pending offer",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Declined offer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Offer" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT returned by `POST /auth/login` or `POST /auth/signup`."
+      }
+    },
+    "schemas": {
+      "Role": { "type": "string", "enum": ["client", "artisan", "both"] },
+      "Locale": { "type": "string", "enum": ["en", "ha", "yo", "ig", "pcm"] },
+      "RateType": { "type": "string", "enum": ["hourly", "fixed", "negotiable"] },
+      "JobStatus": { "type": "string", "enum": ["open", "in_progress", "completed", "cancelled"] },
+      "OfferStatus": { "type": "string", "enum": ["pending", "accepted", "declined", "withdrawn"] },
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean", "example": true },
+          "service": { "type": "string", "example": "fundi-api" }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "role": { "$ref": "#/components/schemas/Role" },
+          "locale": { "$ref": "#/components/schemas/Locale" },
+          "phone": { "type": "string", "nullable": true },
+          "locationText": { "type": "string", "nullable": true },
+          "latitude": { "type": "number", "nullable": true },
+          "longitude": { "type": "number", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "data": { "$ref": "#/components/schemas/User" }
+        }
+      },
+      "SignupInput": {
+        "type": "object",
+        "required": ["name", "email", "password", "role"],
+        "properties": {
+          "name": { "type": "string", "minLength": 2, "maxLength": 120 },
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "minLength": 8, "format": "password" },
+          "role": { "$ref": "#/components/schemas/Role" },
+          "locale": { "$ref": "#/components/schemas/Locale", "default": "en" },
+          "phone": { "type": "string" }
+        }
+      },
+      "LoginInput": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "format": "password" }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": { "type": "string", "description": "Bearer JWT" },
+              "user": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        }
+      },
+      "UpdateLocaleInput": {
+        "type": "object",
+        "required": ["locale"],
+        "properties": { "locale": { "$ref": "#/components/schemas/Locale" } }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "key": { "type": "string", "example": "carpentry" },
+          "icon": { "type": "string", "nullable": true },
+          "sortOrder": { "type": "integer" }
+        }
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer" },
+          "pageSize": { "type": "integer" },
+          "total": { "type": "integer" },
+          "totalPages": { "type": "integer" }
+        }
+      },
+      "ArtisanProfile": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "userId": { "type": "string" },
+          "bio": { "type": "string", "nullable": true },
+          "categoryId": { "type": "integer" },
+          "category": { "$ref": "#/components/schemas/Category" },
+          "rateType": { "$ref": "#/components/schemas/RateType" },
+          "rateAmount": { "type": "number", "nullable": true },
+          "isAvailable": { "type": "boolean" },
+          "isVerified": { "type": "boolean" },
+          "avgRating": { "type": "number" },
+          "reviewCount": { "type": "integer" },
+          "user": { "$ref": "#/components/schemas/User" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "PortfolioImage": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "artisanProfileId": { "type": "string" },
+          "imageUrl": { "type": "string", "format": "uri" },
+          "caption": { "type": "string", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ArtisanProfileDetail": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ArtisanProfile" },
+          {
+            "type": "object",
+            "properties": {
+              "portfolio": { "type": "array", "items": { "$ref": "#/components/schemas/PortfolioImage" } },
+              "stamps": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        ]
+      },
+      "ArtisanSearchResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "data": { "type": "array", "items": { "$ref": "#/components/schemas/ArtisanProfile" } },
+          "meta": { "$ref": "#/components/schemas/PaginationMeta" }
+        }
+      },
+      "UpdateArtisanProfileInput": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "minLength": 2, "maxLength": 120 },
+          "phone": { "type": "string" },
+          "locationText": { "type": "string" },
+          "latitude": { "type": "number" },
+          "longitude": { "type": "number" },
+          "bio": { "type": "string", "maxLength": 1000 },
+          "categoryKey": { "type": "string", "description": "Category key; required when creating a profile" },
+          "rateType": { "$ref": "#/components/schemas/RateType" },
+          "rateAmount": { "type": "number", "exclusiveMinimum": 0 },
+          "isAvailable": { "type": "boolean" }
+        }
+      },
+      "AddPortfolioImageInput": {
+        "type": "object",
+        "required": ["imageUrl"],
+        "properties": {
+          "imageUrl": { "type": "string", "format": "uri" },
+          "caption": { "type": "string", "maxLength": 300 }
+        }
+      },
+      "Job": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "clientId": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "category": { "$ref": "#/components/schemas/Category" },
+          "locationText": { "type": "string", "nullable": true },
+          "latitude": { "type": "number", "nullable": true },
+          "longitude": { "type": "number", "nullable": true },
+          "budgetMin": { "type": "number", "nullable": true },
+          "budgetMax": { "type": "number", "nullable": true },
+          "preferredDate": { "type": "string", "format": "date", "nullable": true },
+          "photoUrl": { "type": "string", "format": "uri", "nullable": true },
+          "status": { "$ref": "#/components/schemas/JobStatus" },
+          "acceptedOfferId": { "type": "string", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Offer": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "jobId": { "type": "string" },
+          "artisanId": { "type": "string" },
+          "price": { "type": "number" },
+          "message": { "type": "string", "nullable": true },
+          "status": { "$ref": "#/components/schemas/OfferStatus" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "OfferDetail": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Offer" },
+          {
+            "type": "object",
+            "properties": {
+              "artisan": { "$ref": "#/components/schemas/User" },
+              "job": { "$ref": "#/components/schemas/Job" }
+            }
+          }
+        ]
+      },
+      "JobDetail": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Job" },
+          {
+            "type": "object",
+            "properties": {
+              "offers": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/OfferDetail" },
+                "description": "Empty for non-owners"
+              }
+            }
+          }
+        ]
+      },
+      "JobSearchResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "data": { "type": "array", "items": { "$ref": "#/components/schemas/Job" } },
+          "meta": { "$ref": "#/components/schemas/PaginationMeta" }
+        }
+      },
+      "CreateJobInput": {
+        "type": "object",
+        "required": ["title", "description", "categoryKey"],
+        "properties": {
+          "title": { "type": "string", "minLength": 5, "maxLength": 160 },
+          "description": { "type": "string", "minLength": 10 },
+          "categoryKey": { "type": "string", "example": "carpentry" },
+          "locationText": { "type": "string" },
+          "latitude": { "type": "number" },
+          "longitude": { "type": "number" },
+          "budgetMin": { "type": "number", "exclusiveMinimum": 0 },
+          "budgetMax": { "type": "number", "exclusiveMinimum": 0 },
+          "preferredDate": { "type": "string", "format": "date" },
+          "photoUrl": { "type": "string", "format": "uri" }
+        }
+      },
+      "UpdateJobInput": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "minLength": 5, "maxLength": 160 },
+          "description": { "type": "string", "minLength": 10 },
+          "categoryKey": { "type": "string" },
+          "locationText": { "type": "string" },
+          "latitude": { "type": "number" },
+          "longitude": { "type": "number" },
+          "budgetMin": { "type": "number", "exclusiveMinimum": 0 },
+          "budgetMax": { "type": "number", "exclusiveMinimum": 0 },
+          "preferredDate": { "type": "string", "format": "date" },
+          "photoUrl": { "type": "string", "format": "uri" }
+        }
+      },
+      "CreateOfferInput": {
+        "type": "object",
+        "required": ["price"],
+        "properties": {
+          "price": { "type": "number", "exclusiveMinimum": 0 },
+          "message": { "type": "string", "maxLength": 500 }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": false },
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": { "type": "string", "example": "NOT_FOUND" },
+              "message": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Missing or invalid token",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "Forbidden": {
+        "description": "Role/ownership not permitted",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "Conflict": {
+        "description": "State conflict (duplicate, job no longer open, etc.)",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "ValidationError": {
+        "description": "Request body/query failed validation",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      }
+    }
+  }
+}
