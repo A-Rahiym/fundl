@@ -1,17 +1,13 @@
 import { useTranslation } from 'react-i18next'
 import { cx } from '@/lib/cx'
 import type { Role } from '@/lib/api'
+import { ROLES } from '@/config/roles'
 
 export interface RolePickerProps {
   value: Role
   onChange: (role: Role) => void
   disabled?: boolean
 }
-
-const ROLES: Array<{ value: Role; labelKey: string }> = [
-  { value: 'client', labelKey: 'auth.roleClient' },
-  { value: 'artisan', labelKey: 'auth.roleArtisan' },
-]
 
 /** Two-button role toggle — the only real choice on signup. */
 export function RolePicker({ value, onChange, disabled }: RolePickerProps) {

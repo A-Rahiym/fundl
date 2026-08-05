@@ -2,16 +2,8 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cx } from '@/lib/cx'
 import { setLocale } from '@/lib/i18n'
-import type { LocaleCode } from '@/lib/i18n'
 import { Icon } from '@/components/ui/icons'
-
-const LOCALES: Array<{ code: LocaleCode; label: string }> = [
-  { code: 'en', label: 'EN' },
-  { code: 'pcm', label: 'PCM' },
-  { code: 'ha', label: 'HA' },
-  { code: 'yo', label: 'YO' },
-  { code: 'ig', label: 'IG' },
-]
+import { LOCALES } from '@/config/locales'
 
 /**
  * Flag-less language pill: EN · PCM · HA · YO · IG — text only,
