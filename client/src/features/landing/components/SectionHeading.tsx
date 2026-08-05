@@ -1,4 +1,4 @@
-import { Display } from '@/components/Display'
+import { Display } from '@/components/ui/Display'
 
 /** Landing section header: Caveat kicker over an Alfa Slab One title. */
 export function SectionHeading({ kicker, title }: { kicker: string; title: string }) {

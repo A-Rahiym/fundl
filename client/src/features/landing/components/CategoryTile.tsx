@@ -1,7 +1,7 @@
-import { Icon } from '@/components/icons'
-import type { IconName } from '@/components/icons'
-import { Panel } from '@/components/Panel'
-import { Display } from '@/components/Display'
+import { Icon } from '@/components/ui/icons'
+import type { IconName } from '@/components/ui/icons'
+import { Panel } from '@/components/ui/Panel'
+import { Display } from '@/components/ui/Display'
 import { categoryColorFor, tiltFor, textOn } from '@/lib/theme'
 import { cx } from '@/lib/cx'
 

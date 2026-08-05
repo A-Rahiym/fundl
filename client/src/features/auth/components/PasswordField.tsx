@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cx } from '@/lib/cx'
-import { Icon } from '@/components/icons'
+import { Icon } from '@/components/ui/icons'
 
 export interface PasswordFieldProps {
   label: string

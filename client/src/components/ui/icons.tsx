@@ -34,6 +34,8 @@ export type IconName =
   | 'eye-off'
   | 'chevron-right'
   | 'menu'
+  | 'calendar'
+  | 'wallet'
   /* stamps & badges */
   | 'flame'
   | 'shield-check'
@@ -160,6 +162,19 @@ const PATHS: Record<IconName, ReactNode> = {
   ),
   'chevron-right': <path d="m9 5.5 6.5 6.5L9 18.5" />,
   menu: <path d="M4 6.5h16M4 12h16M4 17.5h16" />,
+  calendar: (
+    <>
+      <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
+      <path d="M3.5 9.5h17M8 2.5v5M16 2.5v5" />
+    </>
+  ),
+  wallet: (
+    <>
+      <path d="M3.5 8A2.5 2.5 0 0 1 6 5.5h9.5" />
+      <rect x="3.5" y="8" width="17" height="11" rx="2" />
+      <circle cx="16.5" cy="13.5" r="1.4" />
+    </>
+  ),
 
   /* ----- stamps & badges ----- */
   flame: (

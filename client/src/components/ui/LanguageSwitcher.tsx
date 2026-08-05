@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { cx } from '@/lib/cx'
 import { setLocale } from '@/lib/i18n'
 import type { LocaleCode } from '@/lib/i18n'
-import { Icon } from '@/components/icons'
+import { Icon } from '@/components/ui/icons'
 
 const LOCALES: Array<{ code: LocaleCode; label: string }> = [
   { code: 'en', label: 'EN' },
@@ -14,10 +14,11 @@ const LOCALES: Array<{ code: LocaleCode; label: string }> = [
 ]
 
 /**
- * Flag-less language pill (guide §3): EN · PCM · HA · YO · IG — text only,
+ * Flag-less language pill: EN · PCM · HA · YO · IG — text only,
  * since the languages don't map to national flags. Persists to
  * localStorage now; DB-backed `users.locale` comes with the API.
  */
+
 export function LanguageSwitcher({ className }: { className?: string }) {
   const { i18n } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -42,7 +43,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
         <div
           role="listbox"
           aria-label="Language"
-          className="panel absolute right-0 top-[calc(100%+8px)] z-40 flex min-w-[120px] flex-col overflow-hidden py-1"
+          className="panel absolute right-0 top-[calc(100%+8px)] z-40 flex min-w-30 flex-col overflow-hidden py-1"
         >
           {LOCALES.map((l) => (
             <button
@@ -55,7 +56,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
                 setOpen(false)
               }}
               className={cx(
-                'px-4 py-2 text-left text-xs font-extrabold uppercase tracking-wider hover:bg-wall',
+                'px-4 py-2 text-left text-xs font-extrabold uppercase text-black tracking-wider hover:bg-wall',
                 current === l.label && 'bg-wall text-blue',
               )}
             >

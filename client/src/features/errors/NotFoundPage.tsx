@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Panel } from '@/components/Panel'
-import { Logo } from '@/components/Logo'
-import { Button } from '@/components/Button'
-import { LanguageSwitcher } from '@/components/LanguageSwitcher'
-import { Icon } from '@/components/icons'
+import { Panel } from '@/components/ui/Panel'
+import { Logo } from '@/components/ui/Logo'
+import { Button } from '@/components/ui/Button'
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
+import { Icon } from '@/components/ui/icons'
 
 /**
- * Route-not-found page (Street register, per design §9.2): a lone tilted
+ * Route-not-found page (Street register): a lone tilted
  * signboard on the wall with a couple of faint chalked tools behind it,
  * under the "nothing nailed up here" joke.
  */

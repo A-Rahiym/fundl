@@ -6,7 +6,7 @@ import type {
   TextareaHTMLAttributes,
 } from 'react'
 import { cx } from '@/lib/cx'
-import { Icon } from '@/components/icons'
+import { Icon } from '@/components/ui/icons'
 
 export interface FieldProps {
   label: string

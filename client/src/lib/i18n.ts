@@ -5,7 +5,7 @@ import HttpBackend from 'i18next-http-backend'
 import type { LocaleCode } from '@/lib/api'
 
 /**
- * Multilingual setup (guide §2). Selectable locales are English, Nigerian
+ * Multilingual setup. Selectable locales are English, Nigerian
  * Pidgin (`pcm`, the default brand voice), Hausa, Yoruba, and Igbo. Bundles
  * are served from /public/locales and lazy-loaded per locale + namespace via
  * i18next-http-backend, so a Hausa user never downloads Yoruba/Igbo strings.

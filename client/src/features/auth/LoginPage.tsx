@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@/components/Button'
+import { Button } from '@/components/ui/Button'
 import { isEmail } from '@/lib/utils/validators'
 import { AuthShell } from './components/AuthShell'
 import { AuthField } from './components/AuthField'

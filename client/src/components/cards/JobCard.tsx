@@ -1,10 +1,11 @@
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Icon } from '@/components/icons'
-import { Panel } from '@/components/Panel'
-import { CategoryTag } from '@/components/CategoryTag'
-import type { TagColor } from '@/components/CategoryTag'
-import { StatusStamp } from '@/components/StatusStamp'
-import type { StampTone } from '@/components/StatusStamp'
+import { Icon } from '@/components/ui/icons'
+import { Panel } from '@/components/ui/Panel'
+import { CategoryTag } from '@/components/ui/CategoryTag'
+import type { TagColor } from '@/components/ui/CategoryTag'
+import { StatusStamp } from '@/components/ui/StatusStamp'
+import type { StampTone } from '@/components/ui/StatusStamp'
 
 const STATUS_KEY: Record<StampTone, string> = {
   open: 'status.open',
@@ -25,6 +26,8 @@ export interface JobCardProps {
   budget: string
   statusTone: StampTone
   offers?: number
+  /** When set, the card renders as a router link to this path. */
+  to?: string
 }
 
 /**
@@ -41,10 +44,17 @@ export function JobCard({
   budget,
   statusTone,
   offers = 0,
+  to,
 }: JobCardProps) {
   const { t } = useTranslation()
-  return (
-    <Panel variant="small" tilt="tilt-5" className="flex flex-col gap-2 p-4 text-left">
+
+  const body = (
+    <Panel
+      variant="small"
+      tilt={to ? 'tilt-n5' : 'tilt-5'}
+      lift={!!to}
+      className="flex h-full flex-col gap-2 p-4 text-left"
+    >
       <div className="flex items-start justify-between gap-3">
         <h4 className="font-body text-[15px] font-bold leading-snug">{title}</h4>
         <StatusStamp tone={statusTone} className="mt-0.5 shrink-0">
@@ -72,5 +82,13 @@ export function JobCard({
         </span>
       </div>
     </Panel>
+  )
+
+  if (!to) return body
+
+  return (
+    <Link to={to} className="block h-full">
+      {body}
+    </Link>
   )
 }

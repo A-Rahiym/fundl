@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cx } from '@/lib/cx'
-import { Panel } from '@/components/Panel'
-import { Logo } from '@/components/Logo'
-import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { Panel } from '@/components/ui/Panel'
+import { Logo } from '@/components/ui/Logo'
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
 export interface AuthShellProps {
   title: string

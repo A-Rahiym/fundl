@@ -1,7 +1,7 @@
-import { Button } from '@/components/Button'
-import { Panel } from '@/components/Panel'
-import { StatusStamp } from '@/components/StatusStamp'
-import { Icon } from '@/components/icons'
+import { Button } from '@/components/ui/Button'
+import { Panel } from '@/components/ui/Panel'
+import { StatusStamp } from '@/components/ui/StatusStamp'
+import { Icon } from '@/components/ui/icons'
 import { Field, TextInput, Textarea, CheckpointRow } from '@/dev/form'
 
 /**

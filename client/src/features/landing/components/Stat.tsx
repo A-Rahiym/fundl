@@ -1,4 +1,4 @@
-import { Display } from '@/components/Display'
+import { Display } from '@/components/ui/Display'
 
 /** Stamped stat on the ink "stats plank" (mockup §9). */
 export function Stat({ value, label }: { value: string; label: string }) {
