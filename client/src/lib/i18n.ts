@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import HttpBackend from 'i18next-http-backend'
+import type { LocaleCode } from '@/lib/api'
 
 /**
  * Multilingual setup (guide §2). Selectable locales are English, Nigerian
@@ -13,7 +14,7 @@ import HttpBackend from 'i18next-http-backend'
  * A DB-backed `users.locale` override lands with the API (Phase 3).
  */
 export const SUPPORTED_LOCALES = ['en', 'pcm', 'ha', 'yo', 'ig'] as const
-export type LocaleCode = (typeof SUPPORTED_LOCALES)[number]
+export type { LocaleCode }
 
 export const NAMESPACES = ['common', 'categories', 'landing'] as const
 

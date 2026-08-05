@@ -31,6 +31,7 @@ export type IconName =
   | 'mail'
   | 'send'
   | 'eye'
+  | 'eye-off'
   | 'chevron-right'
   | 'menu'
   /* stamps & badges */
@@ -148,6 +149,13 @@ const PATHS: Record<IconName, ReactNode> = {
     <>
       <path d="M3.5 12s3.2-5.2 8.5-5.2 8.5 5.2 8.5 5.2-3.2 5.2-8.5 5.2S3.5 12 3.5 12z" />
       <circle cx="12" cy="12" r="2.5" />
+    </>
+  ),
+  'eye-off': (
+    <>
+      <path d="M4 5.5 20 18.5" />
+      <path d="M9.9 8.2A8.4 8.4 0 0 1 12 7.8c5.3 0 8.5 4.2 8.5 4.2a15.2 15.2 0 0 1-3.4 3.6" />
+      <path d="M6.6 10.1A15.6 15.6 0 0 0 3.5 12s3.2 5.2 8.5 5.2a8 8 0 0 0 3-.6" />
     </>
   ),
   'chevron-right': <path d="m9 5.5 6.5 6.5L9 18.5" />,
