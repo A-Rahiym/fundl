@@ -1,8 +1,9 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import { LoginPage } from '@/features/auth/LoginPage'
 import { SignupPage } from '@/features/auth/SignupPage'
 import { AuthGate } from '@/features/auth/components/AuthGate'
 import { SignedInHome } from '@/features/home/SignedInHome'
+import { NotFoundPage } from '@/features/errors/NotFoundPage'
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -15,5 +16,5 @@ export const router = createBrowserRouter([
       </AuthGate>
     ),
   },
-  { path: '*', element: <Navigate to="/" replace /> },
+  { path: '*', element: <NotFoundPage /> },
 ])

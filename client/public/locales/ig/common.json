@@ -64,5 +64,10 @@
   "auth.hidePassword": "Hide password",
   "api.errHttp": "The server couldn't be reached ({{status}}). Please try again.",
   "api.errNetwork": "Can't reach the server. Check your connection.",
-  "api.errUnknown": "Something went wrong. Please try again."
+  "api.errUnknown": "Something went wrong. Please try again.",
+  "notFound.tag": "Not found",
+  "notFound.kicker": "Page missing",
+  "notFound.heading": "Nothing nailed up here",
+  "notFound.body": "The page you're looking for isn't on this wall. Check the address or head back home.",
+  "notFound.backHome": "Back to home"
 }

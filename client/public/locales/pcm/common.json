@@ -64,5 +64,10 @@
   "auth.errPasswordMin": "Password must at least 8 characters",
   "api.errHttp": "We no fit reach di server ({{status}}). Abeg try again.",
   "api.errNetwork": "We no fit connect to di server. Check your network.",
-  "api.errUnknown": "Somtin no work. Abeg try again."
+  "api.errUnknown": "Somtin no work. Abeg try again.",
+  "notFound.tag": "No dey",
+  "notFound.kicker": "Page no dey",
+  "notFound.heading": "Nothing nail for here",
+  "notFound.body": "Di page wey you dey find no dey for dis wall. Check di address or go back.",
+  "notFound.backHome": "Go back home"
 }
