@@ -29,6 +29,9 @@ export function AppHeader() {
             {t('app.welcomeBack', { name: firstName })}
           </span>
           <LanguageSwitcher />
+          <Button size="sm" variant="outline" onClick={() => navigate('/offers/mine')} className="hidden sm:inline-flex text-white">
+            {t('app.myOffers')}
+          </Button>
           <Button size="sm" onClick={() => navigate('/post')} className="hidden sm:inline-flex">
             {t('app.postJob')}
           </Button>
