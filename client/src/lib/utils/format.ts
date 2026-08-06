@@ -1,7 +1,13 @@
-/** Formats a nullable naira amount as a plain number string (₦ added by callers). */
-export function formatNaira(value: number | null | undefined): string {
-  if (value === null || value === undefined) return ''
-  return value.toLocaleString('en-NG', { maximumFractionDigits: 0 })
+/**
+ * Formats a nullable naira amount as a plain number string (₦ added by
+ * callers). Coerces Decimal-as-string values the API returns (e.g.
+ * "8000") so they get proper thousand separators.
+ */
+export function formatNaira(value: number | string | null | undefined): string {
+  if (value === null || value === undefined || value === '') return ''
+  const n = typeof value === 'string' ? Number(value) : value
+  if (Number.isNaN(n)) return ''
+  return n.toLocaleString('en-NG', { maximumFractionDigits: 0 })
 }
 
 /** Short display date from an ISO string, e.g. "12 Aug". */
