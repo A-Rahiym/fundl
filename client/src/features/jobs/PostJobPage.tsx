@@ -8,6 +8,7 @@ import { POST_JOB_FIELDS } from '@/config/postJobForm'
 import { useCategories } from '@/features/home/hooks/useJobsQueries'
 import { CategoryPicker } from './components/CategoryPicker'
 import { usePostJob } from './hooks/useJobsMutations'
+import { t } from 'i18next'
 
 const F = POST_JOB_FIELDS
 
@@ -15,7 +16,7 @@ function FieldError({ error }: { error?: string }) {
   if (!error) return null
   return (
     <span role="alert" className="text-xs font-bold text-red">
-      {error}
+      {t(error)}
     </span>
   )
 }
@@ -65,7 +66,7 @@ export function PostJobPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[620px]">
+    <div className="mx-auto max-w-155">
       <div className="mb-5">
         <Link
           to="/"
