@@ -18,6 +18,7 @@ export function SignupPage() {
   const signup = useSignup()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState<Role>('client')
   const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({})
@@ -39,7 +40,7 @@ export function SignupPage() {
     const next = validate()
     setErrors(next)
     if (Object.keys(next).length > 0) return
-    signup.mutate({ name: name.trim(), email, password, role })
+    signup.mutate({ name: name.trim(), email, password, role, phone: phone.trim() || undefined })
   }
 
   return (
@@ -53,6 +54,7 @@ export function SignupPage() {
           onChange={(e) => setName(e.target.value)}
           error={errors.name}
         />
+
         <AuthField
           label={t('auth.email')}
           type="email"
@@ -61,6 +63,15 @@ export function SignupPage() {
           onChange={(e) => setEmail(e.target.value)}
           error={errors.email}
         />
+
+        <AuthField
+          label={t('auth.phone')}
+          type="tel"
+          autoComplete="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        
         <PasswordField
           label={t('auth.password')}
           value={password}

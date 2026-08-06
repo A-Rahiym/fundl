@@ -10,6 +10,7 @@ interface SignupInput {
   password: string
   role: Role
   locale?: LocaleCode
+  phone?: string
 }
 
 /** Log in: store the JWT, seed the session cache, then navigate home. */

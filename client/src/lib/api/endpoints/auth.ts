@@ -18,6 +18,7 @@ export interface SignupInput {
   password: string
   role: components['schemas']['Role']
   locale?: components['schemas']['Locale']
+  phone?: string
 }
 
 export const authApi = {

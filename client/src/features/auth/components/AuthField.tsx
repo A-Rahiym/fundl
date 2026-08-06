@@ -4,7 +4,7 @@ import { cx } from '@/lib/cx'
 
 export interface AuthFieldProps {
   label: string
-  type?: 'text' | 'email' | 'password'
+  type?: 'text' | 'email' | 'password' | 'tel'
   autoComplete?: string
   error?: string
 }
