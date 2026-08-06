@@ -24,3 +24,10 @@ export const OFFER_STATUS_TONE: Record<OfferStatus, StampTone> = {
   declined: 'cancelled',
   withdrawn: 'neutral',
 }
+
+/** Reputation stamp key → i18n label (server: src/config/constants.ts). */
+export const STAMP_LABEL: Record<string, string> = {
+  first_job: 'stamp.firstJob',
+  on_a_roll: 'stamp.onARoll',
+  five_star_streak: 'stamp.fiveStarStreak',
+}
