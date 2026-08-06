@@ -17,3 +17,17 @@ export function usePostJob() {
     },
   })
 }
+
+/** Marks an in-progress job as completed (`PUT /jobs/:id/complete`). */
+export function useCompleteJob() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: string) => jobsApi.complete(id),
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ['jobs'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.myJobs })
+      if (data.id) queryClient.invalidateQueries({ queryKey: queryKeys.job(data.id) })
+    },
+  })
+}

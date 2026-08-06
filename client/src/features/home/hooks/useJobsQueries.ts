@@ -7,7 +7,6 @@ export function useCategories() {
     queryKey: queryKeys.categories,
     queryFn: async (): Promise<ApiCategory[]> => {
       const response = await categoriesApi.list()
-      console.log('useCategories() response:', response) // Debugging log
       return response.data
     },
     staleTime: 5 * 60_000,
@@ -17,6 +16,20 @@ export function useCategories() {
 export function useJobs(filters?: { status?: JobStatus; category?: string }) {
   return useQuery({
     queryKey: queryKeys.jobs(filters),
-    queryFn: async (): Promise<ApiJob[]> =>{ console.log('useJobs() response:', (await jobsApi.list(filters)).data); return (await jobsApi.list(filters)).data},
+    queryFn: async (): Promise<ApiJob[]> => {
+      const response = await jobsApi.list(filters)
+      return response.data
+    },
+  })
+}
+
+/** Jobs the signed-in client has posted (`GET /jobs/mine`, client-only). */
+export function useMyJobs() {
+  return useQuery({
+    queryKey: queryKeys.myJobs,
+    queryFn: async (): Promise<ApiJob[]> => {
+      const response = await jobsApi.mine()
+      return response.data
+    },
   })
 }
