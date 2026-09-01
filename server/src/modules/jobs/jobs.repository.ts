@@ -8,14 +8,24 @@ const publicUserSelect = {
   locationText: true,
 } satisfies Prisma.UserSelect;
 
-export function findJobsByFilter(where: Prisma.JobWhereInput, skip: number, take: number) {
-  return prisma.job.findMany({
+type JobWithCount = Prisma.JobGetPayload<{
+  include: { category: true; _count: { select: { offers: true } } };
+}>;
+
+function toWire(job: JobWithCount) {
+  const { _count, ...rest } = job;
+  return { ...rest, offerCount: _count.offers };
+}
+
+export async function findJobsByFilter(where: Prisma.JobWhereInput, skip: number, take: number) {
+  const jobs = await prisma.job.findMany({
     where,
     skip,
     take,
     orderBy: { createdAt: "desc" },
-    include: { category: true },
+    include: { category: true, _count: { select: { offers: true } } },
   });
+  return jobs.map(toWire);
 }
 
 export function countJobsByFilter(where: Prisma.JobWhereInput) {
@@ -32,12 +42,13 @@ export function findJobById(id: string) {
   });
 }
 
-export function findJobsByClient(clientId: string, skip: number, take: number) {
-  return prisma.job.findMany({
+export async function findJobsByClient(clientId: string, skip: number, take: number) {
+  const jobs = await prisma.job.findMany({
     where: { clientId },
     skip,
     take,
     orderBy: { createdAt: "desc" },
-    include: { category: true },
+    include: { category: true, _count: { select: { offers: true } } },
   });
+  return jobs.map(toWire);
 }
