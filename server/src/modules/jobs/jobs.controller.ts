@@ -28,7 +28,7 @@ export async function listJobs(req: Request, res: Response) {
 }
 
 export async function getJob(req: Request, res: Response) {
-  const job = await jobsService.getJobDetail(req.params.id!, req.user!.id);
+  const job = await jobsService.getJobDetail(req.params.id!, req.user!.id, req.user!.role);
   return ok(res, job);
 }
 

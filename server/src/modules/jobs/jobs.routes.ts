@@ -10,7 +10,9 @@ export const jobsRouter = Router();
 
 jobsRouter.get("/mine", requireAuth, requireRole("client"), asyncHandler(jobsController.myJobs));
 jobsRouter.post("/", requireAuth, requireRole("client"), validate(createJobSchema), asyncHandler(jobsController.postJob));
-jobsRouter.get("/", requireAuth, validate(listJobsQuerySchema, "query"), asyncHandler(jobsController.listJobs));
+// The public job board is the artisan workspace. Clients manage their own
+// postings through /jobs/mine and review offers from each job detail page.
+jobsRouter.get("/", requireAuth, requireRole("artisan"), validate(listJobsQuerySchema, "query"), asyncHandler(jobsController.listJobs));
 jobsRouter.get("/:id", requireAuth, asyncHandler(jobsController.getJob));
 jobsRouter.put("/:id", requireAuth, requireRole("client"), validate(updateJobSchema), asyncHandler(jobsController.updateJob));
 jobsRouter.put("/:id/complete", requireAuth, requireRole("client"), asyncHandler(jobsController.completeJob));

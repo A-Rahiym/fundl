@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react'
+import { Navigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useCategories, useJobs } from './hooks/useJobsQueries'
 import { FilterBar } from './components/FilterBar'
 import { JobList } from './components/JobList'
+import { useSession } from '@/features/auth/hooks/useAuthQueries'
 
 /** Signed-in home: the job feed with search + trade filter. */
 export function HomePage() {
@@ -11,7 +13,13 @@ export function HomePage() {
   const [category, setCategory] = useState<string | null>(null)
 
   const categories = useCategories().data
-  const jobs = useJobs()
+  const session = useSession()
+  const user = session.data
+  const jobs = useJobs(undefined, user?.role === 'artisan')
+
+  if (user?.role === 'client') {
+    return <Navigate to="/app/my-jobs" replace />
+  }
 
   const filtered = useMemo(() => {
     const list = jobs.data ?? []

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type { Role } from "@prisma/client";
 import { NotFoundError, ForbiddenError, ConflictError } from "@/lib/errors";
 import { findJobsByFilter, countJobsByFilter, findJobById, findJobsByClient } from "./jobs.repository";
 import type { CreateJobInput, UpdateJobInput } from "./jobs.schema";
@@ -24,9 +25,12 @@ export async function createJob(clientId: string, input: CreateJobInput) {
   });
 }
 
-export async function getJobDetail(jobId: string, requesterId: string) {
+export async function getJobDetail(jobId: string, requesterId: string, requesterRole: Role) {
   const job = await findJobById(jobId);
   if (!job) throw new NotFoundError("Job");
+  if (requesterRole === "client" && job.clientId !== requesterId) {
+    throw new ForbiddenError("Clients can only view their own jobs");
+  }
   // Offers are only visible to the job owner
   if (job.clientId !== requesterId) {
     return { ...job, offers: [] };

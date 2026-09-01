@@ -13,13 +13,14 @@ export function useCategories() {
   })
 }
 
-export function useJobs(filters?: { status?: JobStatus; category?: string }) {
+export function useJobs(filters?: { status?: JobStatus; category?: string }, enabled = true) {
   return useQuery({
     queryKey: queryKeys.jobs(filters),
     queryFn: async (): Promise<ApiJob[]> => {
       const response = await jobsApi.list(filters)
       return response.data
     },
+    enabled,
   })
 }
 

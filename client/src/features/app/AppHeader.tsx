@@ -16,25 +16,34 @@ export function AppHeader() {
   const session = useSession()
   const user = session.data
   const firstName = (user?.name ?? '').split(' ')[0]
+  const isClient = user?.role === 'client'
 
   return (
     <header className="sticky top-0 z-20 px-4 tablet:px-8">
-      <div className="header-sign mx-auto flex w-full max-w-[1180px] items-center justify-between gap-4 px-5 py-3">
-        <Link to="/" aria-label="FUNDI home" className="shrink-0">
+      <div className="header-sign mx-auto flex w-full max-w-295 items-center justify-between gap-4 px-5 py-3">
+        <Link to="/app" aria-label="FUNDI home" className="shrink-0">
           <Logo onDark />
         </Link>
 
         <div className="flex items-center gap-3">
-          <span className="hidden max-w-[180px] truncate text-sm font-semibold text-white/70 sm:block">
+          <span className="hidden max-w-45 truncate text-sm font-semibold text-white/70 sm:block">
             {t('app.welcomeBack', { name: firstName })}
           </span>
           <LanguageSwitcher />
-          <Button size="sm" variant="outline" onClick={() => navigate('/offers/mine')} className="hidden sm:inline-flex text-white">
-            {t('app.myOffers')}
-          </Button>
-          <Button size="sm" onClick={() => navigate('/post')} className="hidden sm:inline-flex">
-            {t('app.postJob')}
-          </Button>
+          {isClient ? (
+            <>
+              <Button size="sm" variant="outline" onClick={() => navigate('/app/my-jobs')} className="hidden sm:inline-flex text-white">
+                {t('app.myJobs')}
+              </Button>
+              <Button size="sm" onClick={() => navigate('/app/post')} className="hidden sm:inline-flex">
+                {t('app.postJob')}
+              </Button>
+            </>
+          ) : (
+            <Button size="sm" variant="outline" onClick={() => navigate('/app/offers/mine')} className="hidden sm:inline-flex text-white">
+              {t('app.myOffers')}
+            </Button>
+          )}
         </div>
       </div>
     </header>

@@ -31,12 +31,13 @@ describe("Jobs endpoints", () => {
     expect(res.status).toBe(403);
   });
 
-  it("GET /jobs lists jobs", async () => {
+  it("GET /jobs lists jobs for an artisan", async () => {
     const client = await createTestUser({ role: "client" });
+    const artisan = await createTestUser({ role: "artisan" });
     const category = await createTestCategory();
     await createTestJob(client.id, category.id);
 
-    const res = await authedApi(client.id, "client").get("/api/v1/jobs");
+    const res = await authedApi(artisan.id, "artisan").get("/api/v1/jobs");
 
     expect(res.status).toBe(200);
     expect(res.body.data).toHaveLength(1);
@@ -46,17 +47,26 @@ describe("Jobs endpoints", () => {
     const carpentry = await prisma.category.create({ data: { key: "carpentry", icon: "hammer" } });
     const plumbing = await prisma.category.create({ data: { key: "plumbing", icon: "wrench" } });
     const client = await createTestUser({ role: "client" });
+    const artisan = await createTestUser({ role: "artisan" });
     await createTestJob(client.id, carpentry.id);
     await createTestJob(client.id, plumbing.id);
 
-    const res = await authedApi(client.id, "client").get("/api/v1/jobs?category=carpentry");
+    const res = await authedApi(artisan.id, "artisan").get("/api/v1/jobs?category=carpentry");
 
     expect(res.status).toBe(200);
     expect(res.body.data).toHaveLength(1);
     expect(res.body.data[0].category.key).toBe("carpentry");
   });
 
-  it("GET /jobs/:id hides offers from non-owners", async () => {
+  it("GET /jobs rejects a client account", async () => {
+    const client = await createTestUser({ role: "client" });
+
+    const res = await authedApi(client.id, "client").get("/api/v1/jobs");
+
+    expect(res.status).toBe(403);
+  });
+
+  it("GET /jobs/:id rejects a client viewing another client's job", async () => {
     const client = await createTestUser({ role: "client" });
     const otherClient = await createTestUser({ role: "client" });
     const category = await createTestCategory();
@@ -64,8 +74,7 @@ describe("Jobs endpoints", () => {
 
     const res = await authedApi(otherClient.id, "client").get(`/api/v1/jobs/${job.id}`);
 
-    expect(res.status).toBe(200);
-    expect(res.body.data.offers).toEqual([]);
+    expect(res.status).toBe(403);
   });
 
   it("GET /jobs/mine returns only the client's own jobs", async () => {

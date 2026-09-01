@@ -46,7 +46,7 @@ export function JobDetailPage() {
         title="jobDetail.notFound"
         action={
           <Link
-            to="/"
+            to="/app"
             className="text-xs font-extrabold uppercase tracking-wider text-blue underline underline-offset-2"
           >
             {t('jobDetail.backHome')}
@@ -65,7 +65,7 @@ export function JobDetailPage() {
   return (
     <div className="mx-auto max-w-[720px]">
       <Link
-        to="/"
+        to="/app"
         className="text-xs font-extrabold uppercase tracking-wider text-blue underline underline-offset-2"
       >
         {t('jobDetail.backHome')}
@@ -129,7 +129,7 @@ export function JobDetailPage() {
               ))}
             </ul>
           )
-        ) : jobOpen ? (
+        ) : user?.role === 'artisan' && jobOpen ? (
           <Panel className="mt-3 p-5" tilt="tilt-5">
             <OfferForm jobId={job.id!} />
           </Panel>

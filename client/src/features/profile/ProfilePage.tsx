@@ -125,14 +125,11 @@ export function ProfilePage() {
         <Panel className="p-5">
           <h3 className="font-display text-lg text-ink">{t('profile.quickActions')}</h3>
           <div className="mt-3 flex flex-wrap gap-3">
-            <Button variant="primary" onClick={() => navigate('/post')}>
+            <Button variant="primary" onClick={() => navigate('/app/post')}>
               {t('profile.postJob')}
             </Button>
-            <Button variant="outline" onClick={() => navigate('/my-jobs')}>
+            <Button variant="outline" onClick={() => navigate('/app/my-jobs')}>
               {t('profile.myJobs')}
-            </Button>
-            <Button variant="outline" onClick={() => navigate('/')}>
-              {t('profile.browseJobs')}
             </Button>
           </div>
         </Panel>
