@@ -23,7 +23,7 @@ export function LandingPage() {
   return (
     <>
       <Header onLogin={() => navigate('/login')} onPostJob={() => navigate('/signup')} />
-      <main className="mx-auto w-full max-w-[1280px] px-4 tablet:px-8">
+      <main id="top" className="mx-auto w-full max-w-[1280px] px-4 tablet:px-8">
         {/* ---- Hero (Street) ---- */}
         <section className="mt-10 grid gap-8 desktop:grid-cols-2 desktop:items-center">
           <div className="text-left">
@@ -80,7 +80,7 @@ export function LandingPage() {
         </section>
 
         {/* ---- Category wall (Street) ---- */}
-        <section className="mt-20">
+        <section id="trades" className="mt-20 scroll-mt-6">
           <SectionHeading kicker={t('landing:categories.kicker')} title={t('landing:categories.title')} />
           <div className="mt-6 grid grid-cols-2 gap-5 tablet:grid-cols-3 desktop:grid-cols-6">
             {LANDING_CATEGORIES.map((c, i) => (
@@ -90,7 +90,7 @@ export function LandingPage() {
         </section>
 
         {/* ---- Artisan cards (Street) ---- */}
-        <section className="mt-20">
+        <section id="fundis" className="mt-20 scroll-mt-6">
           <SectionHeading kicker={t('landing:artisans.kicker')} title={t('landing:artisans.title')} />
           <div className="mt-6 grid grid-cols-1 gap-6 tablet:grid-cols-2 desktop:grid-cols-4">
             {LANDING_ARTISANS.map((a, i) => (
@@ -100,7 +100,7 @@ export function LandingPage() {
         </section>
 
         {/* ---- How it works ---- */}
-        <section className="mt-20">
+        <section id="how-it-works" className="mt-20 scroll-mt-6">
           <SectionHeading kicker={t('landing:how.kicker')} title={t('landing:how.title')} />
           <div className="relative mt-8">
             <div className="pointer-events-none absolute inset-x-9 top-[16px] hidden border-t-2 border-dashed border-ink/30 desktop:block" aria-hidden="true" />

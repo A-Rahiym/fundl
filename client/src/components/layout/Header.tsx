@@ -26,18 +26,18 @@ export function Header({ register = 'street', onPostJob, onLogin }: HeaderProps)
           register === 'street' && 'tilt-n5',
         )}
       >
-        <a href="#" aria-label="FUNDI home" className="shrink-0">
+        <a href="#top" aria-label="FUNDI home" className="shrink-0">
           <Logo onDark />
         </a>
 
         <nav className="hidden items-center gap-6 text-sm font-semibold tablet:flex" aria-label="Main">
-          <a href="#" className="transition-colors hover:text-yellow">
+          <a href="#how-it-works" className="transition-colors hover:text-yellow">
             {t('nav.howItWorks')}
           </a>
-          <a href="#" className="transition-colors hover:text-yellow">
+          <a href="#trades" className="transition-colors hover:text-yellow">
             {t('nav.trades')}
           </a>
-          <a href="#" className="transition-colors hover:text-yellow">
+          <a href="#fundis" className="transition-colors hover:text-yellow">
             {t('nav.meetFundis')}
           </a>
         </nav>
