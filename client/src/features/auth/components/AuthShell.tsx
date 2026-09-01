@@ -26,7 +26,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
 
       <Logo className="mb-8" />
 
-      <Panel className="w-full max-w-[420px] p-6 sm:p-8" tilt="tilt-12">
+      <Panel className="w-full max-w-105 p-6 sm:p-8" tilt="tilt-12">
         <h1 className="font-display text-2xl text-ink">{title}</h1>
         {subtitle && (
           <p className="mt-1 text-sm font-medium text-ink/70">{subtitle}</p>
