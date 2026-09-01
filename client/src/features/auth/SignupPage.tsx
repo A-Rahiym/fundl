@@ -23,7 +23,7 @@ export function SignupPage() {
   const [role, setRole] = useState<Role>('client')
   const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({})
 
-  if (session.data) return <Navigate to="/" replace />
+  if (session.data) return <Navigate to="/app" replace />
 
   const validate = () => {
     const next: { name?: string; email?: string; password?: string } = {}

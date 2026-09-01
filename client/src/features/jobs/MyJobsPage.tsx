@@ -50,7 +50,7 @@ export function MyJobsPage() {
                   budget={budget}
                   statusTone={JOB_STATUS_TONE[job.status ?? 'open']}
                   offers={job.offers?.length ?? 0}
-                  to={`/jobs/${job.id}`}
+                  to={`/app/jobs/${job.id}`}
                 />
                 {job.status === 'in_progress' && job.id && (
                   <Button

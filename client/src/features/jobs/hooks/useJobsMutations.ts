@@ -13,7 +13,7 @@ export function usePostJob() {
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries({ queryKey: ['jobs'] })
       queryClient.invalidateQueries({ queryKey: queryKeys.myJobs })
-      navigate(`/jobs/${data.id}`, { replace: true })
+      navigate(`/app/jobs/${data.id}`, { replace: true })
     },
   })
 }

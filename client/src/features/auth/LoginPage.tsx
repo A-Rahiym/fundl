@@ -18,7 +18,7 @@ export function LoginPage() {
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
 
-  if (session.data) return <Navigate to="/" replace />
+  if (session.data) return <Navigate to="/app" replace />
 
   const validate = () => {
     const next: { email?: string; password?: string } = {}

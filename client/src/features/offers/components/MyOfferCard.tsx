@@ -13,7 +13,7 @@ export function MyOfferCard({ offer, language }: { offer: ApiOffer; language: st
   const job = offer.job
 
   return (
-    <Link to={`/jobs/${offer.jobId}`} className="block h-full">
+    <Link to={`/app/jobs/${offer.jobId}`} className="block h-full">
       <Panel variant="small" tilt="tilt-n5" lift className="flex h-full flex-col gap-2 p-4 text-left">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">

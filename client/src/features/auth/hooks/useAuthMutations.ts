@@ -23,7 +23,7 @@ export function useLogin() {
     onSuccess: ({ data }) => {
       setToken(data.token)
       queryClient.setQueryData<ApiUser>(queryKeys.session, data.user)
-      navigate('/', { replace: true })
+      navigate('/app', { replace: true })
     },
   })
 }
@@ -38,7 +38,7 @@ export function useSignup() {
     onSuccess: ({ data }) => {
       setToken(data.token)
       queryClient.setQueryData<ApiUser>(queryKeys.session, data.user)
-      navigate('/', { replace: true })
+      navigate('/app', { replace: true })
     },
   })
 }

@@ -16,7 +16,7 @@ export function ComingSoonPage() {
         <h1 className="mt-4 font-display text-2xl text-ink">{t('app.comingSoon')}</h1>
         <p className="mt-1 text-sm font-medium text-ink/70">{t('app.comingSoonHint')}</p>
         <div className="mt-6">
-          <Button onClick={() => navigate('/', { replace: true })} className="w-full">
+          <Button onClick={() => navigate('/app', { replace: true })} className="w-full">
             {t('app.backHome')}
           </Button>
         </div>

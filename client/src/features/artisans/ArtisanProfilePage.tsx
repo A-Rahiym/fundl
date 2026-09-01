@@ -40,7 +40,7 @@ export function ArtisanProfilePage() {
   return (
     <div className="mx-auto flex max-w-190 flex-col gap-5">
       <Link
-        to="/search"
+        to="/app/search"
         className="text-xs font-extrabold uppercase tracking-wider text-blue underline underline-offset-2"
       >
         {t('artisan.backToSearch')}

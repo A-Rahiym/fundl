@@ -69,7 +69,7 @@ export function PostJobPage() {
     <div className="mx-auto max-w-155">
       <div className="mb-5">
         <Link
-          to="/"
+          to="/app/my-jobs"
           className="text-xs font-extrabold uppercase tracking-wider text-blue underline underline-offset-2"
         >
           {t('jobDetail.backHome')}

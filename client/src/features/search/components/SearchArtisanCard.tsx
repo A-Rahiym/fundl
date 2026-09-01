@@ -29,7 +29,7 @@ export function SearchArtisanCard({ artisan, index }: { artisan: ApiArtisanProfi
     : t('rateType.negotiable')
 
   return (
-    <Link to={`/artisans/${artisan.id}`} className="block h-full">
+    <Link to={`/app/artisans/${artisan.id}`} className="block h-full">
       <Panel
         variant="small"
         tilt={index % 2 === 0 ? 'tilt-5' : 'tilt-n5'}
