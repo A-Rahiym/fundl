@@ -24,6 +24,7 @@ export interface SignupInput {
 export const authApi = {
   async signup(input: SignupInput): Promise<ApiResponse<AuthData>> {
     const res = await http.post<ApiEnvelope<AuthData>>('/auth/signup', input)
+    console.log('authApi.signup response:', res) // Debugging line
     return unwrap(res)
   },
   async login(input: LoginInput): Promise<ApiResponse<AuthData>> {

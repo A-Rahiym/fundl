@@ -19,7 +19,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:4000',
+        // target: 'http://localhost:4000',
+        target: 'https://fundl-1.onrender.com',
         changeOrigin: true,
       },
     },
