@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { ok, paginated } from "@/lib/apiResponse";
-import { parsePaginationParams, buildPaginationMeta } from "@/lib/pagination";
+import { ok, paginated } from "../../lib/apiResponse";
+import { parsePaginationParams, buildPaginationMeta } from "../../lib/pagination";
 import * as artisansService from "./artisans.service";
 import type { SearchArtisansQuery } from "./artisans.schema";
 

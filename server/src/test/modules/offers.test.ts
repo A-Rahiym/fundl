@@ -1,6 +1,6 @@
 import { authedApi } from "../helpers/testClient";
 import { createTestUser, createTestCategory, createTestJob } from "../helpers/factories";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 describe("Offers endpoints", () => {
   it("POST /jobs/:id/offers lets an artisan offer on an open job", async () => {

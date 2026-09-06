@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../lib/prisma";
 import { Prisma } from "@prisma/client";
-import { NotFoundError, ForbiddenError, ConflictError } from "@/lib/errors";
+import { NotFoundError, ForbiddenError, ConflictError } from "../../lib/errors";
 import type { CreateOfferInput } from "./offers.schema";
 
 const publicUserSelect = {

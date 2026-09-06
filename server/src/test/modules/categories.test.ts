@@ -1,5 +1,5 @@
-import { api } from "@/test/helpers/testClient";
-import { prisma } from "@/lib/prisma";
+import { api } from "../helpers/testClient";
+import { prisma } from "../../lib/prisma";
 
 describe("Categories endpoints", () => {
   it("GET /categories returns available categories", async () => {

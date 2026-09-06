@@ -1,6 +1,6 @@
 import { authedApi } from "../helpers/testClient";
 import { createTestUser, createTestCategory, createTestArtisan } from "../helpers/factories";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 describe("Artisans endpoints", () => {
   it("GET /artisans returns artisan profiles", async () => {

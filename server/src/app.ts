@@ -1,16 +1,16 @@
 import express from "express";
 import cors from "cors";
 import { apiReference } from "@scalar/express-api-reference";
-import openapiSpec from "@/config/openapi.json";
-import { requestLogger } from "@/middleware/requestLogger";
-import { errorHandler } from "@/middleware/errorHandler";
-import { resolveLocale } from "@/lib/locale";
-import { authRouter } from "@/modules/auth/auth.routes";
-import { usersRouter } from "@/modules/users/users.routes";
-import { categoriesRouter } from "@/modules/categories/categories.routes";
-import { artisansRouter } from "@/modules/artisans/artisans.routes";
-import { jobsRouter } from "@/modules/jobs/jobs.routes";
-import { offersRouter } from "@/modules/offers/offers.routes";
+import openapiSpec from "./config/openapi.json";
+import { requestLogger } from "./middleware/requestLogger";
+import { errorHandler } from "./middleware/errorHandler";
+import { resolveLocale } from "./lib/locale";
+import { authRouter } from "./modules/auth/auth.routes";
+import { usersRouter } from "./modules/users/users.routes";
+import { categoriesRouter } from "./modules/categories/categories.routes";
+import { artisansRouter } from "./modules/artisans/artisans.routes";
+import { jobsRouter } from "./modules/jobs/jobs.routes";
+import { offersRouter } from "./modules/offers/offers.routes";
 
 export const app = express();
 

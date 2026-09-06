@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { ok, created, paginated } from "@/lib/apiResponse";
-import { parsePaginationParams, buildPaginationMeta } from "@/lib/pagination";
+import { ok, created, paginated } from "../../lib/apiResponse";
+import { parsePaginationParams, buildPaginationMeta } from "../../lib/pagination";
 import * as offersService from "./offers.service";
 
 export async function createOffer(req: Request, res: Response) {

@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { requireAuth } from "@/middleware/auth";
-import { requireRole } from "@/middleware/requireRole";
-import { validate } from "@/middleware/validate";
-import { asyncHandler } from "@/lib/asyncHandler";
+import { requireAuth } from "../../middleware/auth";
+import { requireRole } from "../../middleware/requireRole";
+import { validate } from "../../middleware/validate";
+import { asyncHandler } from "../../lib/asyncHandler";
 import { createOfferSchema } from "./offers.schema";
 import * as offersController from "./offers.controller";
 

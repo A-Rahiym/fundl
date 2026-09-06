@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../lib/prisma";
 import type { Role } from "@prisma/client";
-import { NotFoundError, ForbiddenError, ConflictError } from "@/lib/errors";
+import { NotFoundError, ForbiddenError, ConflictError } from "../../lib/errors";
 import { findJobsByFilter, countJobsByFilter, findJobById, findJobsByClient } from "./jobs.repository";
 import type { CreateJobInput, UpdateJobInput } from "./jobs.schema";
 

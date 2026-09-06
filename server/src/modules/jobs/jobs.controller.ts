@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import type { Prisma } from "@prisma/client";
-import { ok, created, paginated } from "@/lib/apiResponse";
-import { parsePaginationParams, buildPaginationMeta } from "@/lib/pagination";
+import { ok, created, paginated } from "../../lib/apiResponse";
+import { parsePaginationParams, buildPaginationMeta } from "../../lib/pagination";
 import * as jobsService from "./jobs.service";
 import type { ListJobsQuery } from "./jobs.schema";
 
