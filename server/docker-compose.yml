@@ -9,8 +9,8 @@ services:
     ports:
       - "4000:4000"
     env_file: .env
-    environment:
-      DATABASE_URL: postgresql://fundi:fundi@db:5432/fundi_dev
+    # environment:
+      # DATABASE_URL: postgresql://fundi:fundi@db:5432/fundi_dev
     volumes:
       - ..:/app
       - /app/node_modules

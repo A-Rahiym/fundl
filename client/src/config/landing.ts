@@ -21,10 +21,46 @@ export const LANDING_ARTISANS: Array<{
   available: boolean
   topPro: boolean
 }> = [
-  { name: 'Adaeze Okafor', categoryKey: 'tailoring', categoryColor: 'red', rating: 4.8, bio: 'Custom bridal and traditional wear specialist.', photo: 'https://picsum.photos/seed/adaeze/600/600', available: true, topPro: true },
-  { name: 'Musa Ibrahim', categoryKey: 'carpentry', categoryColor: 'green', rating: 4.9, bio: 'Built-in wardrobes, doors and kitchen fittings. 12 years on the tools.', photo: 'https://picsum.photos/seed/musa/600/600', available: true, topPro: false },
-  { name: 'Kemi Adeyemi', categoryKey: 'electrical', categoryColor: 'yellow', rating: 4.7, bio: 'Commercial and domestic wiring, fault tracing and repairs.', photo: 'https://picsum.photos/seed/kemi/600/600', available: false, topPro: false },
-  { name: 'Chinedu Nwosu', categoryKey: 'masonry', categoryColor: 'blue', rating: 4.6, bio: 'Blockwork, tiling and structural repairs. On-site quotes are free.', photo: 'https://picsum.photos/seed/chinedu/600/600', available: true, topPro: false },
+  {
+    name: 'Adaeze Okafor',
+    categoryKey: 'tailoring',
+    categoryColor: 'red',
+    rating: 4.8,
+    bio: 'Custom bridal and traditional wear specialist.',
+    photo: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80',
+    available: true,
+    topPro: true,
+  },
+  {
+    name: 'Musa Ibrahim',
+    categoryKey: 'carpentry',
+    categoryColor: 'green',
+    rating: 4.9,
+    bio: 'Built-in wardrobes, doors and kitchen fittings. 12 years on the tools.',
+    photo: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80',
+    available: true,
+    topPro: false,
+  },
+  {
+    name: 'Kemi Adeyemi',
+    categoryKey: 'electrical',
+    categoryColor: 'yellow',
+    rating: 4.7,
+    bio: 'Commercial and domestic wiring, fault tracing and repairs.',
+    photo: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80',
+    available: false,
+    topPro: false,
+  },
+  {
+    name: 'Chinedu Nwosu',
+    categoryKey: 'masonry',
+    categoryColor: 'blue',
+    rating: 4.6,
+    bio: 'Blockwork, tiling and structural repairs. On-site quotes are free.',
+    photo: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=900&q=80',
+    available: true,
+    topPro: false,
+  },
 ]
 
 export const LANDING_JOBS: Array<{

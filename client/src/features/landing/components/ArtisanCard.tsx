@@ -49,12 +49,17 @@ export function ArtisanCard({
       lift
       className="flex h-full flex-col gap-2.5 p-4 text-left"
     >
-      <div className="relative aspect-square w-full overflow-hidden rounded-[4px] border-[3px] border-ink">
+      <div className="relative aspect-square w-full overflow-hidden rounded-[4px] border-[3px] border-ink bg-gradient-to-br from-yellow via-white to-red/20">
         <img
           src={photo}
           alt={`Portrait of ${name}`}
           loading="lazy"
           className="h-full w-full object-cover"
+          onError={(event) => {
+            event.currentTarget.style.display = 'none'
+            const fallback = event.currentTarget.nextElementSibling as HTMLElement | null
+            if (fallback) fallback.style.display = 'flex'
+          }}
         />
         <span
           className={cx(
@@ -63,6 +68,12 @@ export function ArtisanCard({
           )}
         >
           {chipLabel}
+        </span>
+        <span
+          aria-hidden="true"
+          className="hidden h-full w-full items-center justify-center bg-gradient-to-br from-yellow via-orange-100 to-red-100 text-3xl font-display text-ink"
+        >
+          {name.charAt(0).toUpperCase()}
         </span>
       </div>
 

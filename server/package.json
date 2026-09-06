@@ -16,6 +16,9 @@
     "prisma:studio": "prisma studio",
     "seed": "tsx prisma/seed.ts"
   },
+  "_moduleAliases": {
+    "@": "dist"
+  },
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "@scalar/express-api-reference": "^0.10.12",
