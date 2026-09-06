@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { authApi, clearToken, setToken, type ApiUser, type Role } from '@/lib/api'
+import { authApi, type ApiUser, type Role } from '@/lib/api'
 import { queryKeys } from '@/lib/queryKeys'
 import type { LocaleCode } from '@/lib/i18n'
 
@@ -13,7 +13,7 @@ interface SignupInput {
   phone?: string
 }
 
-/** Log in: store the JWT, seed the session cache, then navigate home. */
+/** Log in: the server sets the HttpOnly cookie; seed the session cache, then navigate home. */
 export function useLogin() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -21,14 +21,13 @@ export function useLogin() {
   return useMutation({
     mutationFn: (input: { email: string; password: string }) => authApi.login(input),
     onSuccess: ({ data }) => {
-      setToken(data.token)
       queryClient.setQueryData<ApiUser>(queryKeys.session, data.user)
       navigate('/app', { replace: true })
     },
   })
 }
 
-/** Sign up: same shape as login — the backend returns a token on signup too. */
+/** Sign up: same shape as login — the backend sets the cookie on signup too. */
 export function useSignup() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -36,23 +35,22 @@ export function useSignup() {
   return useMutation({
     mutationFn: (input: SignupInput) => authApi.signup(input),
     onSuccess: ({ data }) => {
-      setToken(data.token)
       queryClient.setQueryData<ApiUser>(queryKeys.session, data.user)
       navigate('/app', { replace: true })
     },
   })
 }
 
-/** Sign out: drop the token and evict the session from the cache. */
+/** Sign out: clear the server cookie and evict the session from the cache. */
 export function useLogout() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
   return useMutation({
-    mutationFn: async () => {
-      clearToken()
+    mutationFn: () => authApi.logout(),
+    onSettled: () => {
       queryClient.setQueryData(queryKeys.session, null)
+      navigate('/login', { replace: true })
     },
-    onSuccess: () => navigate('/login', { replace: true }),
   })
 }

@@ -8,11 +8,11 @@ import { StatusStamp } from '@/components/ui/StatusStamp'
 import { Icon } from '@/components/ui/icons'
 import { LoadingState } from '@/components/states/LoadingState'
 import { ErrorState } from '@/components/states/ErrorState'
-import { clearToken } from '@/lib/api'
 import { queryKeys } from '@/lib/queryKeys'
 import { STAMP_LABEL } from '@/config/status'
 import { formatDate, formatNaira } from '@/lib/utils/format'
 import { useSession } from '@/features/auth/hooks/useAuthQueries'
+import { useLogout } from '@/features/auth/hooks/useAuthMutations'
 import { useArtisanMe } from '@/features/artisans/hooks/useArtisansQueries'
 import { ArtisanAvatar } from '@/features/artisans/components/ArtisanAvatar'
 
@@ -26,14 +26,14 @@ export function ProfilePage() {
 
   const session = useSession()
   const user = session.data
+  const logout = useLogout()
 
   const isArtisan = user?.role === 'artisan'
   const artisanQuery = useArtisanMe()
 
   const handleLogout = () => {
-    clearToken()
+    logout.mutate()
     queryClient.removeQueries({ queryKey: queryKeys.session })
-    navigate('/login', { replace: true })
   }
 
   if (session.isLoading) return <LoadingState className="pt-10" />

@@ -1,6 +1,5 @@
 export { http } from './client'
 export { ApiError } from './errors'
-export { getToken, setToken, clearToken } from './token'
 export type { ApiEnvelope, ApiMeta, ApiResponse, ApiUser, ApiCategory, Role, LocaleCode, RateType, JobStatus, OfferStatus } from './types'
 export { authApi } from './endpoints/auth'
 export type { SignupInput, LoginInput, AuthData } from './endpoints/auth'

@@ -3,7 +3,7 @@
   "info": {
     "title": "FUNDI API",
     "version": "1.0.0",
-    "description": "Artisan services marketplace API. Authenticated routes expect `Authorization: Bearer <JWT>`. All responses use the envelope `{ success, data, meta? }`; errors use `{ success: false, error: { code, message } }`."
+    "description": "Artisan services marketplace API. Browser clients authenticate via the HttpOnly `fundi_token` cookie set by `POST /auth/signup|login` (sent automatically with `credentials: include`). Non-browser clients may still send `Authorization: Bearer <JWT>`. All responses use the envelope `{ success, data, meta? }`; errors use `{ success: false, error: { code, message } }`."
   },
   "servers": [
     { "url": "http://localhost:4000/api/v1", "description": "Local development" }
@@ -38,7 +38,7 @@
     "/auth/signup": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Create an account",
+        "summary": "Create an account (sets HttpOnly auth cookie)",
         "security": [],
         "requestBody": {
           "required": true,
@@ -48,7 +48,7 @@
         },
         "responses": {
           "201": {
-            "description": "Account created",
+            "description": "Account created (also sets `fundi_token` HttpOnly cookie)",
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/AuthResponse" } }
             }
@@ -61,7 +61,7 @@
     "/auth/login": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Log in and receive a JWT",
+        "summary": "Log in (sets HttpOnly auth cookie)",
         "security": [],
         "requestBody": {
           "required": true,
@@ -71,7 +71,7 @@
         },
         "responses": {
           "200": {
-            "description": "Logged in",
+            "description": "Logged in (also sets `fundi_token` HttpOnly cookie)",
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/AuthResponse" } }
             }
@@ -85,7 +85,7 @@
       "get": {
         "tags": ["Auth"],
         "summary": "Current authenticated user",
-        "security": [{ "bearerAuth": [] }],
+        "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Current user",
@@ -94,6 +94,34 @@
             }
           },
           "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Log out (clears the auth cookie)",
+        "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Logged out",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "loggedOut": { "type": "boolean", "example": true }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -662,7 +690,13 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT",
-        "description": "JWT returned by `POST /auth/login` or `POST /auth/signup`."
+        "description": "JWT returned by `POST /auth/login` or `POST /auth/signup` (for non-browser clients; browsers use the cookie)."
+      },
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "fundi_token",
+        "description": "HttpOnly `fundi_token` cookie set by signup/login and cleared by logout."
       }
     },
     "schemas": {

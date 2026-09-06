@@ -3,9 +3,9 @@ import { unwrap } from '../errors'
 import type { ApiEnvelope, ApiResponse, ApiUser } from '../types'
 import type { components } from '../generated'
 
-/** The backend always returns token + user together on signup/login. */
+/** The backend returns the user on signup/login; the JWT itself travels as an HttpOnly cookie. `token` is kept optional for back-compat (Postman/mobile) but the web client never reads or stores it. */
 export type AuthData = {
-  token: string
+  token?: string
   user: ApiUser
 }
 
@@ -24,7 +24,6 @@ export interface SignupInput {
 export const authApi = {
   async signup(input: SignupInput): Promise<ApiResponse<AuthData>> {
     const res = await http.post<ApiEnvelope<AuthData>>('/auth/signup', input)
-    console.log('authApi.signup response:', res) // Debugging line
     return unwrap(res)
   },
   async login(input: LoginInput): Promise<ApiResponse<AuthData>> {
@@ -33,6 +32,10 @@ export const authApi = {
   },
   async me(): Promise<ApiResponse<ApiUser>> {
     const res = await http.get<ApiEnvelope<ApiUser>>('/auth/me')
+    return unwrap(res)
+  },
+  async logout(): Promise<ApiResponse<{ loggedOut: boolean }>> {
+    const res = await http.post<ApiEnvelope<{ loggedOut: boolean }>>('/auth/logout')
     return unwrap(res)
   },
 }

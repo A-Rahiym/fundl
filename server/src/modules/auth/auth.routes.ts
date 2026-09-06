@@ -9,4 +9,5 @@ export const authRouter = Router();
 
 authRouter.post("/signup", validate(signupSchema), asyncHandler(authController.signup));
 authRouter.post("/login", validate(loginSchema), asyncHandler(authController.login));
+authRouter.post("/logout", asyncHandler(authController.logout));
 authRouter.get("/me", requireAuth, asyncHandler(authController.me));

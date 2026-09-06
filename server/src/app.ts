@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { apiReference } from "@scalar/express-api-reference";
 import openapiSpec from "./config/openapi.json";
+import { env } from "./config/env";
 import { requestLogger } from "./middleware/requestLogger";
 import { errorHandler } from "./middleware/errorHandler";
 import { resolveLocale } from "./lib/locale";
@@ -14,7 +16,13 @@ import { offersRouter } from "./modules/offers/offers.routes";
 
 export const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: env.CLIENT_ORIGIN.split(",").map((o) => o.trim()),
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
 app.use(express.json());
 app.use(requestLogger);
 app.use((req, _res, next) => {

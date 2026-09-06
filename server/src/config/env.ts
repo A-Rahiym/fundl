@@ -9,6 +9,11 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   JWT_SECRET: z.string().min(16),
   JWT_EXPIRES_IN: z.string().default("7d"),
+  CLIENT_ORIGIN: z.string().default("http://localhost:5173"),
+  COOKIE_SECURE: z
+    .string()
+    .optional()
+    .transform((v) => v === "true"),
   LOG_LEVEL: z.string().default("info"),
   CLOUDINARY_CLOUD_NAME: z.string().default(""),
   CLOUDINARY_API_KEY: z.string().default(""),
