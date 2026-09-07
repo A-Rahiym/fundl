@@ -1,7 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { categoriesApi, jobsApi, type ApiCategory, type ApiJob, type JobStatus } from '@/lib/api'
 import { queryKeys } from '@/lib/queryKeys'
+import { FALLBACK_CATEGORIES } from '@/config/categories'
 
+/**
+ * Trade categories. Renders instantly from the static fallback and refreshes
+ * from the API in the background (`initialDataUpdatedAt: 0` marks the
+ * fallback as stale so the refetch always fires). If the request fails,
+ * the fallback stays on screen instead of collapsing to empty.
+ */
 export function useCategories() {
   return useQuery({
     queryKey: queryKeys.categories,
@@ -9,7 +16,10 @@ export function useCategories() {
       const response = await categoriesApi.list()
       return response.data
     },
+    initialData: FALLBACK_CATEGORIES,
+    initialDataUpdatedAt: 0,
     staleTime: 5 * 60_000,
+    retry: 1,
   })
 }
 
