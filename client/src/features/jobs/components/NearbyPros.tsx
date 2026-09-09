@@ -48,14 +48,14 @@ export function NearbyPros({ categoryKey }: { categoryKey: string | null }) {
           return (
             <Link
               key={artisan.id}
-              to={`/app/artisans/${artisan.id}`}
+              to={`/app/artisans/${artisan.userId ?? artisan.id}`}
               className="flex items-center gap-3 rounded-2xl border-2 border-ink bg-paper p-3 shadow-small transition hover:bg-white"
             >
               <PhotoTile
                 src={fundiPhoto(artisan.userId ?? artisan.id)}
                 alt={name}
                 name={name}
-                className="h-12 w-12 !rounded-xl"
+                className="h-12 w-12"
               />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@/components/ui/Button'
 import { cx } from '@/lib/cx'
 import { useCreateOffer } from '../hooks/useOffersMutations'
 
@@ -35,14 +34,19 @@ export function OfferForm({ jobId }: { jobId: string }) {
     <form className="flex flex-col gap-3" onSubmit={onSubmit} noValidate>
       <label className="field">
         <span className="field__label">{t('offer.price')}</span>
-        <input
-          type="number"
-          min={0}
-          className={cx('input', error && 'border-red')}
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          aria-invalid={error ? true : undefined}
-        />
+        <div className="relative">
+          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-display text-lg text-red">
+            ₦
+          </span>
+          <input
+            type="number"
+            min={0}
+            className={cx('input pl-10', error && 'border-red')}
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            aria-invalid={error ? true : undefined}
+          />
+        </div>
         {error && (
           <span role="alert" className="text-xs font-bold text-red">
             {t(error)}
@@ -57,9 +61,13 @@ export function OfferForm({ jobId }: { jobId: string }) {
           onChange={(e) => setMessage(e.target.value)}
         />
       </label>
-      <Button type="submit" disabled={createOffer.isPending} className="self-start">
+      <button
+        type="submit"
+        disabled={createOffer.isPending}
+        className="self-start rounded-full border-2 border-ink bg-sun px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider text-ink shadow-small transition hover:brightness-95 disabled:opacity-60"
+      >
         {createOffer.isPending ? t('offer.submitting') : t('offer.submit')}
-      </Button>
+      </button>
     </form>
   )
 }
