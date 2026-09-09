@@ -26,7 +26,7 @@ export function CategoryTile({ index, icon, name, count }: CategoryTileProps) {
       className={cx(
         color,
         textOn(color),
-        'flex aspect-square w-full flex-col items-center justify-center gap-2 p-4 text-center',
+        'rounded-3xl flex aspect-square w-full flex-col items-center justify-center gap-2 p-4 text-center',
       )}
     >
       <Icon name={icon} size={34} className="stroke-current" />

@@ -1,13 +1,13 @@
 import { Display } from '@/components/ui/Display'
 
-/** Stamped stat on the ink "stats plank" (mockup §9). */
-export function Stat({ value, label }: { value: string; label: string }) {
+/** Stamped stat on the landing stats card — big colored display value. */
+export function Stat({ value, label, color = 'text-red' }: { value: string; label: string; color?: string }) {
   return (
     <div className="px-4 py-6 text-center tablet:py-2">
-      <Display as="p" className="font-display text-2xl leading-none text-yellow tablet:text-3xl">
+      <Display as="p" className={`font-display text-3xl leading-none tablet:text-4xl ${color}`}>
         {value}
       </Display>
-      <p className="mt-2 text-xs uppercase tracking-widest text-white/60">{label}</p>
+      <p className="mt-2 text-xs font-bold uppercase tracking-widest text-ink/60">{label}</p>
     </div>
   )
 }
