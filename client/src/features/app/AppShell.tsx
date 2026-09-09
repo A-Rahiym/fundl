@@ -11,7 +11,7 @@ import { BottomNav } from '@/components/layout/BottomNav'
  */
 export function AppShell() {
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-wall">
+    <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-blush via-lilac to-banner">
       <AppHeader />
       <div className="flex min-h-0 flex-1 gap-3 pl-3 pt-3 tablet:gap-6 tablet:pl-6 tablet:pt-3">
         <SideNav />

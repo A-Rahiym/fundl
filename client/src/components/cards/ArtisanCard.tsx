@@ -112,7 +112,7 @@ export function ArtisanCard({
       </div>
 
       <Link
-        to={`/app/artisans/${artisan.id}`}
+        to={`/app/artisans/${artisan.userId ?? artisan.id}`}
         state={{ from: action.from }}
         className={cx(
           'w-full rounded-full border-2 border-ink py-2.5 text-center text-xs font-extrabold uppercase tracking-wider text-ink shadow-small transition hover:brightness-95',

@@ -28,7 +28,7 @@ export function DashboardPage() {
   const active = all.filter((j) => j.status === 'open' || j.status === 'in_progress').slice(0, 2)
   const activeCount = all.filter((j) => j.status === 'open' || j.status === 'in_progress').length
   const top = [...(artisans.data ?? [])]
-    .sort((a, b) => Number(b.avgRating ?? 0) - Number(a.avgRating ?? 0))
+    .sort((a, b) => Number(b.avgRating ?? 0) - Number(a.avgRating ?? 0)) 
     .slice(0, 3)
 
   return (

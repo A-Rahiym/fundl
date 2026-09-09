@@ -16,7 +16,7 @@ export function NotFoundPage() {
   const navigate = useNavigate()
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-wall px-4 py-12">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-blush via-lilac to-banner px-4 py-12">
       {/* faint chalked tools, oversized at low opacity (§9.2) */}
       <Icon
         name="hammer"

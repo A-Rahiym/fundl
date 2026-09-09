@@ -114,12 +114,12 @@ export function JobRow({ job }: { job: ApiJob }) {
       to={`/app/jobs/${job.id}`}
       className="flex items-center gap-3 rounded-2xl border-2 border-ink bg-white px-4 py-3 shadow-small transition hover:bg-paper"
     >
-      <PhotoTile
-        src={job.photoUrl ?? jobPhoto(job.id)}
-        alt={job.title ?? ''}
-        name={job.title ?? ''}
-        className="h-12 w-12 !rounded-xl"
-      />
+          <PhotoTile
+            src={job.photoUrl ?? jobPhoto(job.id)}
+            alt={job.title ?? ''}
+            name={job.title ?? ''}
+            className="h-12 w-12"
+          />
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm font-extrabold text-ink">
           {job.title ?? t('jobs.untitled')}

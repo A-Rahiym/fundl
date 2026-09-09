@@ -93,7 +93,8 @@ export function AppHeader() {
               src={fundiPhoto(user?.id)}
               alt={name}
               name={name}
-              className="h-9 w-9 !rounded-full"
+              shape="circle"
+              className="h-9 w-9"
               textClassName="text-sm"
             />
           </Link>

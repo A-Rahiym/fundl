@@ -91,7 +91,8 @@ export function ProfilePage() {
               src={fundiPhoto(user.id)}
               alt={user.name ?? ''}
               name={user.name ?? ''}
-              className="mx-auto h-24 w-24 !rounded-full sm:mx-0"
+              shape="circle"
+              className="mx-auto h-24 w-24 sm:mx-0"
             />
 
             <div className="min-w-0 flex-1 text-center sm:text-left">
@@ -249,7 +250,7 @@ export function ProfilePage() {
                         src={fundiPhoto(g.id)}
                         alt={g.name}
                         name={g.name}
-                        className="h-16 w-16 !rounded-xl"
+                        className="h-16 w-16"
                       />
                       <div className="min-w-0">
                         <h4 className="truncate text-base font-extrabold text-ink">{g.name}</h4>
