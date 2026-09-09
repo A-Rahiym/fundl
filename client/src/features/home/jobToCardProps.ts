@@ -24,6 +24,8 @@ export function toJobCardProps(job: ApiJob, language: string, t: (key: string) =
     budget: min && max ? `${min}–${max}` : max || min || '—',
     statusTone: JOB_TONE[job.status ?? 'open'],
     offers: job.offers?.length ?? 0,
+    photoUrl: job.photoUrl ?? null,
+    photoSeed: job.id ?? job.title ?? 'job',
     to: `/app/jobs/${job.id}`,
   }
 }
