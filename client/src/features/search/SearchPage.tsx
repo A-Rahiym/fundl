@@ -9,7 +9,7 @@ import { ErrorState } from '@/components/states/ErrorState'
 import { EmptyState } from '@/components/states/EmptyState'
 import { useCategories } from '@/features/home/hooks/useJobsQueries'
 import { useArtisans } from '@/features/artisans/hooks/useArtisansQueries'
-import { SearchArtisanCard } from './components/SearchArtisanCard'
+import { ArtisanCard } from '@/components/cards/ArtisanCard'
 
 const MIN_RATINGS = [
   { value: '', labelKey: 'search.any' },
@@ -161,8 +161,12 @@ export function SearchPage() {
 
       {!artisans.isLoading && !artisans.isError && resultCount > 0 && (
         <div className="grid gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
-          {artisans.data?.map((artisan, i) => (
-            <SearchArtisanCard key={artisan.id} artisan={artisan} index={i} />
+          {artisans.data?.map((artisan) => (
+            <ArtisanCard
+              key={artisan.id}
+              artisan={artisan}
+              action={{ labelKey: 'card.view', tone: 'white', from: 'search' }}
+            />
           ))}
         </div>
       )}
