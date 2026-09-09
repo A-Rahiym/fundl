@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { LoadingState } from '@/components/states/LoadingState'
 import { ErrorState } from '@/components/states/ErrorState'
+import { EmptyState } from '@/components/states/EmptyState'
 import { Icon } from '@/components/ui/icons'
 import { PhotoTile } from '@/components/ui/PhotoTile'
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs'
@@ -164,9 +165,7 @@ export function JobDetailPage() {
 
           {isOwner ? (
             offers.length === 0 ? (
-              <div className="rounded-3xl border-[2.5px] border-ink bg-white p-5 text-center text-sm font-medium text-ink/60 shadow-standard">
-                {t('jobDetail.noOffers')}
-              </div>
+              <EmptyState title="jobDetail.noOffers" icon="chat" />
             ) : (
               <ul className="flex flex-col gap-3">
                 {offers.map((offer) => (

@@ -1,6 +1,7 @@
 import { cx } from '@/lib/cx'
+import { Icon } from '@/components/ui/icons'
 
-/** Centered signboard loading state (skeleton or "fundi…" text). */
+/** Centered signboard loading state (skeleton or the fundi-at-work loader). */
 export function LoadingState({
   label,
   skeleton = false,
@@ -24,9 +25,28 @@ export function LoadingState({
   }
 
   return (
-    <div className={cx('flex items-center justify-center py-10', className)} role="status">
-      <span className="font-display text-sm uppercase tracking-wider text-ink/60">
-        {label || 'fundi…'}
+    <div className={cx('flex flex-col items-center justify-center gap-3 py-10', className)} role="status">
+      <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl border-[3px] border-ink bg-white shadow-standard">
+        <span className="animate-hammer inline-flex">
+          <Icon name="hammer" size={34} />
+        </span>
+        <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2">
+          <span className="animate-stamp inline-block whitespace-nowrap rounded-full border-2 border-ink bg-red px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-small">
+            Loading
+          </span>
+        </span>
+      </div>
+      <div className="flex items-center gap-1.5" aria-hidden="true">
+        {['bg-red', 'bg-sun', 'bg-blue'].map((bg, i) => (
+          <span
+            key={bg}
+            className={cx('animate-dot-bounce inline-block h-2.5 w-2.5 rounded-full border border-ink', bg)}
+            style={{ animationDelay: `${i * 0.15}s` }}
+          />
+        ))}
+      </div>
+      <span className="font-hand text-xl leading-none text-ink/70">
+        {label || 'Sharp sharp…'}
       </span>
     </div>
   )
