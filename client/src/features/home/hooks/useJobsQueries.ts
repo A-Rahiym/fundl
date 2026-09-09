@@ -35,12 +35,13 @@ export function useJobs(filters?: { status?: JobStatus; category?: string }, ena
 }
 
 /** Jobs the signed-in client has posted (`GET /jobs/mine`, client-only). */
-export function useMyJobs() {
+export function useMyJobs(enabled = true) {
   return useQuery({
     queryKey: queryKeys.myJobs,
     queryFn: async (): Promise<ApiJob[]> => {
       const response = await jobsApi.mine()
       return response.data
     },
+    enabled,
   })
 }
