@@ -35,10 +35,12 @@ export interface JobCardProps {
   budget: string
   statusTone: StampTone
   offers?: number
-  /** Photo URL — falls back to a deterministic placeholder, then initials. */
+  /** Photo URL — falls back to a trade-matched placeholder, then initials. */
   photoUrl?: string | null
   /** Seed for the placeholder photo (e.g. job id or title). */
   photoSeed?: string
+  /** Trade key to match the placeholder photo (e.g. plumbing). */
+  categoryKey?: string | null
   /** When set, the card renders as a router link to this path. */
   to?: string
 }
@@ -58,6 +60,7 @@ export function JobCard({
   offers = 0,
   photoUrl,
   photoSeed,
+  categoryKey,
   to,
 }: JobCardProps) {
   const { t } = useTranslation()
@@ -70,7 +73,7 @@ export function JobCard({
       )}
     >
       <PhotoTile
-        src={photoUrl ?? jobPhoto(photoSeed)}
+        src={photoUrl ?? jobPhoto(photoSeed, categoryKey)}
         alt={title}
         name={title}
         className="h-36 w-full"

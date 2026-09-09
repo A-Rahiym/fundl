@@ -98,7 +98,7 @@ export function JobDetailPage() {
 
         <section className="overflow-hidden rounded-3xl border-[2.5px] border-ink bg-white shadow-window">
           <PhotoTile
-            src={job.photoUrl ?? jobPhoto(job.id)}
+            src={job.photoUrl ?? jobPhoto(job.id, job.category?.key)}
             alt={job.title ?? ''}
             name={job.title ?? ''}
             flat

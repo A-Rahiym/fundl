@@ -38,7 +38,7 @@ export function ActiveJobCard({ job }: { job: ApiJob }) {
     <div className="flex flex-col justify-between gap-4 rounded-3xl border-[2.5px] border-ink bg-white p-5 shadow-standard transition hover:-translate-y-0.5">
       <div className="flex gap-4">
         <PhotoTile
-          src={job.photoUrl ?? jobPhoto(job.id)}
+          src={job.photoUrl ?? jobPhoto(job.id, job.category?.key)}
           alt={job.title ?? ''}
           name={job.title ?? ''}
           className="h-24 w-24 sm:h-28 sm:w-28"
@@ -115,7 +115,7 @@ export function JobRow({ job }: { job: ApiJob }) {
       className="flex items-center gap-3 rounded-2xl border-2 border-ink bg-white px-4 py-3 shadow-small transition hover:bg-paper"
     >
           <PhotoTile
-            src={job.photoUrl ?? jobPhoto(job.id)}
+            src={job.photoUrl ?? jobPhoto(job.id, job.category?.key)}
             alt={job.title ?? ''}
             name={job.title ?? ''}
             className="h-12 w-12"

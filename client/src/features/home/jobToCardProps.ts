@@ -26,6 +26,7 @@ export function toJobCardProps(job: ApiJob, language: string, t: (key: string) =
     offers: job.offers?.length ?? 0,
     photoUrl: job.photoUrl ?? null,
     photoSeed: job.id ?? job.title ?? 'job',
+    categoryKey: job.category?.key ?? null,
     to: `/app/jobs/${job.id}`,
   }
 }
