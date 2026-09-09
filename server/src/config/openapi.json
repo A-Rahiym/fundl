@@ -15,7 +15,9 @@
     { "name": "Categories" },
     { "name": "Artisans" },
     { "name": "Jobs" },
-    { "name": "Offers" }
+    { "name": "Offers" },
+    { "name": "Reviews" },
+    { "name": "Notifications" }
   ],
   "paths": {
     "/health": {
@@ -339,8 +341,8 @@
     "/artisans/{id}": {
       "get": {
         "tags": ["Artisans"],
-        "summary": "Public artisan profile incl. reviews, portfolio and stamps",
-        "security": [{ "bearerAuth": [] }],
+        "summary": "Public artisan profile incl. reviews, portfolio and stamps. Accepts a user id or a profile id",
+        "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Artisan's user id" }
         ],
@@ -682,6 +684,130 @@
           "409": { "$ref": "#/components/responses/Conflict" }
         }
       }
+    },
+    "/jobs/{jobId}/review": {
+      "post": {
+        "tags": ["Reviews"],
+        "summary": "Review a completed job (owner only, once)",
+        "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateReviewInput" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Review created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Review" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" },
+          "422": { "$ref": "#/components/responses/ValidationError" }
+        }
+      }
+    },
+    "/artisans/{artisanId}/reviews": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "List reviews received by an artisan",
+        "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
+        "parameters": [
+          { "name": "artisanId", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Artisan's user id (or profile id)" },
+          { "name": "page", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "name": "pageSize", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 50, "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reviews, newest first",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "type": "array", "items": { "$ref": "#/components/schemas/Review" } }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "List own notifications, unread first",
+        "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
+        "parameters": [
+          { "name": "page", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "name": "pageSize", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 50, "default": 20 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notifications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "type": "array", "items": { "$ref": "#/components/schemas/Notification" } }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/notifications/{id}/read": {
+      "put": {
+        "tags": ["Notifications"],
+        "summary": "Mark own notification as read",
+        "security": [{ "cookieAuth": [] }, { "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated notification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "data": { "$ref": "#/components/schemas/Notification" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
     }
   },
   "components": {
@@ -918,6 +1044,14 @@
                 "type": "array",
                 "items": { "$ref": "#/components/schemas/OfferDetail" },
                 "description": "Empty for non-owners"
+              },
+              "review": {
+                "type": "object",
+                "nullable": true,
+                "description": "Present once the owner reviews a completed job",
+                "properties": {
+                  "id": { "type": "string" }
+                }
               }
             }
           }
@@ -968,6 +1102,52 @@
         "properties": {
           "price": { "type": "number", "exclusiveMinimum": 0 },
           "message": { "type": "string", "maxLength": 500 }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "jobId": { "type": "string" },
+          "reviewerId": { "type": "string" },
+          "revieweeId": { "type": "string" },
+          "rating": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "comment": { "type": "string", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "reviewer": { "$ref": "#/components/schemas/User" },
+          "job": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" }
+            }
+          }
+        }
+      },
+      "CreateReviewInput": {
+        "type": "object",
+        "required": ["rating"],
+        "properties": {
+          "rating": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "comment": { "type": "string", "maxLength": 500 }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "userId": { "type": "string" },
+          "type": { "type": "string", "example": "offer.accepted", "description": "offer.received | offer.accepted | offer.declined | job.completed" },
+          "payload": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "jobId": { "type": "string" },
+              "offerId": { "type": "string" }
+            }
+          },
+          "isRead": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" }
         }
       },
       "Error": {

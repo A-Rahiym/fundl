@@ -38,6 +38,7 @@ export function findJobById(id: string) {
     include: {
       category: true,
       offers: { include: { artisan: { select: publicUserSelect } }, orderBy: { createdAt: "asc" } },
+      review: { select: { id: true } },
     },
   });
 }

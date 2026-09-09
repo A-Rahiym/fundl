@@ -307,5 +307,9 @@
   "artisan.edit.errBio": "Bio suppose dey under 1000 characters",
   "artisan.edit.errRate": "Rate suppose pass zero",
   "artisan.edit.errUrl": "Enter correct image URL (http...)",
-  "artisan.edit.errCaption": "Caption suppose dey under 300 characters"
+  "artisan.edit.errCaption": "Caption suppose dey under 300 characters",
+  "offer.rating": "Your rating",
+  "offer.errRating": "Pick star from 1 to 5",
+  "offer.submitReview": "Submit review",
+  "jobDetail.reviewTitle": "Rate dis job"
 }

@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import { Prisma } from "@prisma/client";
 import { NotFoundError, ForbiddenError, ConflictError } from "../../lib/errors";
+import { notifyUser } from "../../lib/notifications";
 import type { CreateOfferInput } from "./offers.schema";
 
 const publicUserSelect = {
@@ -17,9 +18,11 @@ export async function createOffer(artisanId: string, jobId: string, input: Creat
   if (job.status !== "open") throw new ConflictError("This job is no longer open for offers");
 
   try {
-    return await prisma.offer.create({
+    const offer = await prisma.offer.create({
       data: { jobId, artisanId, price: input.price, message: input.message },
     });
+    await notifyUser(job.clientId, "offer.received", { jobId, offerId: offer.id });
+    return offer;
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
       throw new ConflictError("You already have an offer on this job");
@@ -51,6 +54,13 @@ export async function acceptOffer(offerId: string, clientId: string) {
     prisma.offer.updateMany({ where: { jobId: offer.jobId, status: "pending" }, data: { status: "declined" } }),
     prisma.offer.update({ where: { id: offerId }, data: { status: "accepted" } }),
     prisma.job.update({ where: { id: offer.jobId }, data: { status: "in_progress", acceptedOfferId: offerId } }),
+    prisma.notification.create({
+      data: {
+        userId: offer.artisanId,
+        type: "offer.accepted",
+        payload: { jobId: offer.jobId, offerId },
+      },
+    }),
   ]);
 
   return prisma.offer.findUnique({ where: { id: offerId } });
@@ -62,7 +72,9 @@ export async function declineOffer(offerId: string, clientId: string) {
   if (offer.job.clientId !== clientId) throw new ForbiddenError("Only the job owner can decline offers");
   if (offer.status !== "pending") throw new ConflictError("This offer is no longer pending");
 
-  return prisma.offer.update({ where: { id: offerId }, data: { status: "declined" } });
+  const declined = await prisma.offer.update({ where: { id: offerId }, data: { status: "declined" } });
+  await notifyUser(offer.artisanId, "offer.declined", { jobId: offer.jobId, offerId });
+  return declined;
 }
 
 export async function myOffers(artisanId: string, skip: number, take: number) {

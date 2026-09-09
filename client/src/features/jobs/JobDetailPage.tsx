@@ -15,6 +15,7 @@ import { useJob } from './hooks/useJobQueries'
 import { useAcceptOffer, useDeclineOffer } from './hooks/useOffersMutations'
 import { OfferCard } from './components/OfferCard'
 import { OfferForm } from './components/OfferForm'
+import { ReviewForm } from './components/ReviewForm'
 import { DashboardShell } from '@/features/dashboard/components/DashboardShell'
 
 const STATUS_BG: Record<JobStatus, string> = {
@@ -80,6 +81,11 @@ export function JobDetailPage() {
   const isOwner = user?.id === job.clientId
   const jobOpen = job.status === 'open'
   const offers = job.offers ?? []
+  // Server includes `{ id }` once the owner reviews a completed job.
+  const existingReview = (
+    job as unknown as { review?: { id: string } | null }
+  ).review
+  const canReview = isOwner && job.status === 'completed' && !existingReview
   const budgetMin = formatNaira(job.budgetMin)
   const budgetMax = formatNaira(job.budgetMax)
   const status = job.status ?? 'open'
@@ -186,6 +192,17 @@ export function JobDetailPage() {
             </div>
           )}
         </section>
+
+        {canReview && job.id && (
+          <section className="space-y-4">
+            <h2 className="font-display text-xl uppercase tracking-tight text-ink">
+              {t('jobDetail.reviewTitle')}
+            </h2>
+            <div className="rounded-3xl border-[2.5px] border-ink bg-white p-5 shadow-standard sm:p-6">
+              <ReviewForm jobId={job.id} />
+            </div>
+          </section>
+        )}
       </main>
     </DashboardShell>
   )

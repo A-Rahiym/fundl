@@ -13,6 +13,8 @@ import { categoriesRouter } from "./modules/categories/categories.routes";
 import { artisansRouter } from "./modules/artisans/artisans.routes";
 import { jobsRouter } from "./modules/jobs/jobs.routes";
 import { offersRouter } from "./modules/offers/offers.routes";
+import { reviewsRouter } from "./modules/reviews/reviews.routes";
+import { notificationsRouter } from "./modules/notifications/notifications.routes";
 
 export const app = express();
 
@@ -40,6 +42,8 @@ app.use("/api/v1/categories", categoriesRouter);
 app.use("/api/v1/artisans", artisansRouter);
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1", offersRouter);
+app.use("/api/v1", reviewsRouter);
+app.use("/api/v1/notifications", notificationsRouter);
 
 app.use("/api/v1/docs", apiReference({ content: openapiSpec }));
 

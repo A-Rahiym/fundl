@@ -307,5 +307,9 @@
   "artisan.edit.errBio": "Bio must be under 1000 characters",
   "artisan.edit.errRate": "Rate must be above zero",
   "artisan.edit.errUrl": "Enter a valid image URL (http...)",
-  "artisan.edit.errCaption": "Caption must be under 300 characters"
+  "artisan.edit.errCaption": "Caption must be under 300 characters",
+  "offer.rating": "Your rating",
+  "offer.errRating": "Pick a star rating from 1 to 5",
+  "offer.submitReview": "Submit review",
+  "jobDetail.reviewTitle": "Rate this job"
 }

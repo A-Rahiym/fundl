@@ -30,8 +30,20 @@ export async function searchArtisans(query: SearchArtisansQuery, skip: number, t
   return { items, total };
 }
 
-export async function getArtisanProfile(artisanUserId: string) {
-  const profile = await findProfileByUserId(artisanUserId);
+/** Resolve a profile by user id first, then by profile id (old links). */
+async function resolveProfile(artisanIdOrUserId: string) {
+  const byUser = await findProfileByUserId(artisanIdOrUserId);
+  if (byUser) return byUser;
+  const byProfile = await prisma.artisanProfile.findUnique({
+    where: { id: artisanIdOrUserId },
+    select: { userId: true },
+  });
+  if (!byProfile) return null;
+  return findProfileByUserId(byProfile.userId);
+}
+
+export async function getArtisanProfile(artisanIdOrUserId: string) {
+  const profile = await resolveProfile(artisanIdOrUserId);
   if (!profile) throw new NotFoundError("Artisan");
   return profile;
 }
@@ -107,8 +119,8 @@ export async function removePortfolioImage(userId: string, imageId: string) {
   return { id: imageId };
 }
 
-export async function getArtisanStamps(artisanUserId: string) {
-  const profile = await findProfileByUserId(artisanUserId);
+export async function getArtisanStamps(artisanIdOrUserId: string) {
+  const profile = await resolveProfile(artisanIdOrUserId);
   if (!profile) throw new NotFoundError("Artisan");
 
   const stamps = await prisma.artisanStamp.findMany({

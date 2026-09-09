@@ -4,7 +4,8 @@ import { ForbiddenError } from "../lib/errors";
 
 export function requireRole(...roles: Role[]) {
   return (req: Request, _res: Response, next: NextFunction) => {
-    if (!req.user || !roles.includes(req.user.role)) {
+    // A "both" account acts in either workspace, so it passes any role gate.
+    if (!req.user || (req.user.role !== "both" && !roles.includes(req.user.role))) {
       return next(new ForbiddenError());
     }
     next();

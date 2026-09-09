@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import type { Role } from "@prisma/client";
 import { NotFoundError, ForbiddenError, ConflictError } from "../../lib/errors";
+import { notifyUser } from "../../lib/notifications";
 import { findJobsByFilter, countJobsByFilter, findJobById, findJobsByClient } from "./jobs.repository";
 import type { CreateJobInput, UpdateJobInput } from "./jobs.schema";
 
@@ -74,7 +75,17 @@ export async function markJobComplete(jobId: string, clientId: string) {
   if (job.clientId !== clientId) throw new ForbiddenError("Only the job owner can mark it complete");
   if (job.status !== "in_progress") throw new ConflictError("Only in-progress jobs can be completed");
 
-  return prisma.job.update({ where: { id: jobId }, data: { status: "completed" } });
+  const completed = await prisma.job.update({ where: { id: jobId }, data: { status: "completed" } });
+  if (completed.acceptedOfferId) {
+    const acceptedOffer = await prisma.offer.findUnique({ where: { id: completed.acceptedOfferId } });
+    if (acceptedOffer) {
+      await notifyUser(acceptedOffer.artisanId, "job.completed", {
+        jobId,
+        offerId: acceptedOffer.id,
+      });
+    }
+  }
+  return completed;
 }
 
 export async function listMyJobs(clientId: string, skip: number, take: number) {
