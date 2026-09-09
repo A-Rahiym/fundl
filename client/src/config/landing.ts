@@ -78,17 +78,44 @@ export const LANDING_JOBS: Array<{
   { title: 'Tailor 3 corporate shirts', categoryKey: 'tailoring', categoryColor: 'red', location: 'Ikeja', time: '3 days ago', budget: '9,500', statusKey: 'completed', offers: 5 },
 ]
 
-export const LANDING_NOTES: Array<{ quote: string; attribution: string }> = [
-  { quote: 'She fixed my generator wiring in one hour and charged exactly what she quoted.', attribution: 'Tunde, Lekki' },
-  { quote: 'The carpenter showed up when he said he would. A miracle in this city.', attribution: 'Amara, Surulere' },
-  { quote: 'Finally found a tailor who understands "simple but sharp".', attribution: 'Yusuf, Ikeja' },
+export const LANDING_NOTES: Array<{ quoteKey: string; nameKey: string; roleKey: string }> = [
+  { quoteKey: 'landing:testi.q1', nameKey: 'landing:testi.n1', roleKey: 'landing:testi.r1' },
+  { quoteKey: 'landing:testi.q2', nameKey: 'landing:testi.n2', roleKey: 'landing:testi.r2' },
+  { quoteKey: 'landing:testi.q3', nameKey: 'landing:testi.n3', roleKey: 'landing:testi.r3' },
 ]
 
-export const LANDING_STEPS: Array<{ titleKey: string; descKey: string }> = [
-  { titleKey: 'landing:how.step1.title', descKey: 'landing:how.step1.desc' },
-  { titleKey: 'landing:how.step2.title', descKey: 'landing:how.step2.desc' },
-  { titleKey: 'landing:how.step3.title', descKey: 'landing:how.step3.desc' },
-  { titleKey: 'landing:how.step4.title', descKey: 'landing:how.step4.desc' },
+export const LANDING_STEPS: Array<{
+  icon: 'send' | 'shield-check' | 'check'
+  titleKey: string
+  descKey: string
+  footAKey: string
+  footBKey: string
+  pillTone: 'bg-ink text-white' | 'bg-red text-white' | 'bg-green text-white'
+}> = [
+  {
+    icon: 'send',
+    titleKey: 'landing:steps.s1t',
+    descKey: 'landing:steps.s1d',
+    footAKey: 'landing:steps.s1fa',
+    footBKey: 'landing:steps.s1fb',
+    pillTone: 'bg-ink text-white',
+  },
+  {
+    icon: 'shield-check',
+    titleKey: 'landing:steps.s2t',
+    descKey: 'landing:steps.s2d',
+    footAKey: 'landing:steps.s2fa',
+    footBKey: 'landing:steps.s2fb',
+    pillTone: 'bg-red text-white',
+  },
+  {
+    icon: 'check',
+    titleKey: 'landing:steps.s3t',
+    descKey: 'landing:steps.s3d',
+    footAKey: 'landing:steps.s3fa',
+    footBKey: 'landing:steps.s3fb',
+    pillTone: 'bg-green text-white',
+  },
 ]
 
 export const LANDING_JOB_STATUS_TONE: Record<'open' | 'inProgress' | 'completed', StampTone> = {

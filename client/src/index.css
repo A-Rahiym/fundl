@@ -149,8 +149,8 @@
     animation: fundi-float 7s ease-in-out infinite;
   }
 
-  .animate-marquee {
-    animation: fundi-marquee 28s linear infinite;
+  .animate-cta-pulse {
+    animation: fundi-cta-pulse 2.6s ease-in-out infinite;
   }
 
   .animate-pop-in {
@@ -168,12 +168,14 @@
   }
 }
 
-@keyframes fundi-marquee {
-  from {
-    transform: translateX(0);
+@keyframes fundi-cta-pulse {
+  0%,
+  100% {
+    box-shadow: 5px 5px 0 var(--color-ink);
   }
-  to {
-    transform: translateX(-50%);
+  50% {
+    box-shadow: 2px 2px 0 var(--color-ink);
+    transform: translate(2px, 2px);
   }
 }
 
