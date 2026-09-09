@@ -11,6 +11,7 @@ import { JobDetailPage } from '@/features/jobs/JobDetailPage'
 import { DashboardPage } from '@/features/dashboard/DashboardPage'
 import { SearchPage } from '@/features/search/SearchPage'
 import { ArtisanProfilePage } from '@/features/artisans/ArtisanProfilePage'
+import { ArtisanEditPage } from '@/features/artisans/ArtisanEditPage'
 import { MyOffersPage } from '@/features/offers/MyOffersPage'
 import { ProfilePage } from '@/features/profile/ProfilePage'
 import { NotFoundPage } from '@/features/errors/NotFoundPage'
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
       { path: 'jobs/:id', element: <JobDetailPage /> },
       { path: 'my-jobs', element: <RoleGate role="client"><DashboardPage /></RoleGate> },
       { path: 'search', element: <SearchPage /> },
+      { path: 'artisans/me/edit', element: <RoleGate role="artisan"><ArtisanEditPage /></RoleGate> },
       { path: 'artisans/:id', element: <ArtisanProfilePage /> },
       { path: 'offers/mine', element: <RoleGate role="artisan"><MyOffersPage /></RoleGate> },
       { path: 'notifications', element: <ComingSoonPage /> },

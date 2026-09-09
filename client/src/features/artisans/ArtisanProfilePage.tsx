@@ -10,6 +10,7 @@ import { STAMP_LABEL } from '@/config/status'
 import { formatDate, formatNaira } from '@/lib/utils/format'
 import { fundiPhoto } from '@/lib/placeholders'
 import { useArtisan, useArtisanReviews } from './hooks/useArtisansQueries'
+import { useSession } from '@/features/auth/hooks/useAuthQueries'
 import { DashboardShell } from '@/features/dashboard/components/DashboardShell'
 import type { ApiReview } from '@/lib/api'
 
@@ -50,6 +51,7 @@ export function ArtisanProfilePage() {
   const { t, i18n } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const location = useLocation()
+  const session = useSession()
   const artisanQuery = useArtisan(id)
   const reviewsQuery = useArtisanReviews(id)
 
@@ -57,6 +59,9 @@ export function ArtisanProfilePage() {
   const origin = fromDashboard
     ? { label: t('nav.hire'), to: '/app/my-jobs' }
     : { label: t('search.title'), to: '/app/search' }
+
+  // Owner view: the artisan looking at their own public page gets manage
+  // affordances instead of hire CTAs. Peers see the client hire view.
 
   if (artisanQuery.isLoading) {
     return (
@@ -87,11 +92,19 @@ export function ArtisanProfilePage() {
     : t('rateType.negotiable')
   const showTopMaster = artisan.isVerified && rating >= 4.5
   const reviews = reviewsQuery.data ?? []
+  const isOwn = !!session.data && !!artisan.userId && session.data.id === artisan.userId
 
   return (
     <DashboardShell>
       <main className="space-y-7 bg-paper p-4 md:p-6">
         <Breadcrumbs trail={[origin, { label: name }]} />
+
+        {isOwn && (
+          <p className="inline-flex items-center gap-2 self-start rounded-full border-2 border-ink bg-white px-4 py-2 text-xs font-extrabold uppercase tracking-wider shadow-small">
+            <Icon name="eye" size={16} />
+            {t('artisan.profile.ownerPreview')}
+          </p>
+        )}
 
         {/* Hero banner */}
         <section className="relative overflow-hidden rounded-3xl border-[2.5px] border-ink bg-banner p-6 shadow-window md:p-8">
@@ -126,7 +139,7 @@ export function ArtisanProfilePage() {
                     src={fundiPhoto(artisan.userId ?? artisan.id)}
                     alt={name}
                     name={name}
-                    className="h-48 w-48 !rounded-2xl !border-2 !shadow-none md:h-56 md:w-56"
+                    className="h-48 w-48 md:h-56 md:w-56"
                   />
                 </div>
                 <div
@@ -185,13 +198,23 @@ export function ArtisanProfilePage() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3 pt-2">
-                <Link
-                  to="/app/post"
-                  className="flex items-center gap-2 rounded-full border-2 border-ink bg-sun px-6 py-3 text-sm font-extrabold uppercase tracking-wider text-ink shadow-standard transition hover:brightness-95 active:scale-95"
-                >
-                  <Icon name="hammer" size={20} />
-                  {t('dashboard.hireNow')}
-                </Link>
+                {isOwn ? (
+                  <Link
+                    to="/app/artisans/me/edit"
+                    className="flex items-center gap-2 rounded-full border-2 border-ink bg-ink px-6 py-3 text-sm font-extrabold uppercase tracking-wider text-white shadow-standard transition hover:brightness-125 active:scale-95"
+                  >
+                    <Icon name="gear" size={20} />
+                    {t('artisan.edit.title')}
+                  </Link>
+                ) : (
+                  <Link
+                    to="/app/post"
+                    className="flex items-center gap-2 rounded-full border-2 border-ink bg-sun px-6 py-3 text-sm font-extrabold uppercase tracking-wider text-ink shadow-standard transition hover:brightness-95 active:scale-95"
+                  >
+                    <Icon name="hammer" size={20} />
+                    {t('dashboard.hireNow')}
+                  </Link>
+                )}
                 <Link
                   to="/app/notifications"
                   title={t('app.comingSoon')}
@@ -314,12 +337,21 @@ export function ArtisanProfilePage() {
             >
               {t('dashboard.escrowCta')}
             </Link>
-            <Link
-              to="/app/post"
-              className="rounded-full border-2 border-ink bg-red px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-small transition hover:brightness-110"
-            >
-              {t('dashboard.hireNow')}
-            </Link>
+            {isOwn ? (
+              <Link
+                to="/app/artisans/me/edit"
+                className="rounded-full border-2 border-ink bg-ink px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-small transition hover:brightness-125"
+              >
+                {t('artisan.edit.title')}
+              </Link>
+            ) : (
+              <Link
+                to="/app/post"
+                className="rounded-full border-2 border-ink bg-red px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-small transition hover:brightness-110"
+              >
+                {t('dashboard.hireNow')}
+              </Link>
+            )}
           </div>
         </section>
       </main>
