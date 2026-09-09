@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cx } from '@/lib/cx'
-import { setLocale } from '@/lib/i18n'
+import { getStoredLocale, setLocale } from '@/lib/i18n'
 import { Icon } from '@/components/ui/icons'
 import { LOCALES } from '@/config/locales'
 
@@ -11,12 +11,19 @@ import { LOCALES } from '@/config/locales'
  * localStorage now; DB-backed `users.locale` comes with the API.
  */
 
+function activeCode(i18n: { language?: string; resolvedLanguage?: string }): string {
+  // `language` updates synchronously on changeLanguage; `resolvedLanguage`
+  // can lag or carry a region suffix, so it is only a fallback.
+  const raw =
+    i18n.language ?? i18n.resolvedLanguage ?? getStoredLocale() ?? 'pcm'
+  return raw.toLowerCase().split('-')[0] ?? 'pcm'
+}
+
 export function LanguageSwitcher({ className }: { className?: string }) {
   const { i18n } = useTranslation()
   const [open, setOpen] = useState(false)
 
-  const current =
-    LOCALES.find((l) => i18n.resolvedLanguage?.toLowerCase() === l.code)?.label ?? 'PCM'
+  const current = LOCALES.find((l) => activeCode(i18n) === l.code)?.label ?? 'PCM'
 
   return (
     <div className={cx('relative', className)}>
