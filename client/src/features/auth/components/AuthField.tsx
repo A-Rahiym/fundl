@@ -20,7 +20,11 @@ export function AuthField({ label, type = 'text', error, className, ...rest }: P
       <span className="field__label">{label}</span>
       <input
         type={type}
-        className={cx('input', error && 'border-red', className)}
+        className={cx(
+          'w-full rounded-2xl border-2 border-ink bg-paper px-4 py-3 text-sm font-semibold text-ink outline-none transition placeholder:text-ink/40 focus:bg-white focus:shadow-small',
+          error && 'border-red',
+          className,
+        )}
         aria-invalid={error ? true : undefined}
         {...rest}
       />

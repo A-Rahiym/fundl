@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@/components/ui/Button'
 import { isEmail } from '@/lib/utils/validators'
 import type { Role } from '@/lib/api'
 import { AuthShell } from './components/AuthShell'
@@ -84,14 +83,18 @@ export function SignupPage() {
 
         <AuthError error={signup.error} />
 
-        <Button type="submit" disabled={signup.isPending} className="w-full">
+        <button
+          type="submit"
+          disabled={signup.isPending}
+          className="w-full rounded-full border-2 border-ink bg-sun px-6 py-3.5 text-sm font-extrabold uppercase tracking-wider text-ink shadow-standard transition hover:brightness-95 active:scale-95 disabled:opacity-60"
+        >
           {signup.isPending ? t('auth.creatingAccount') : t('auth.createAccount')}
-        </Button>
+        </button>
       </form>
 
-      <p className="text-center text-sm font-medium text-ink/70">
+      <p className="text-center text-sm font-medium text-ink/60">
         {t('auth.hasAccount')}{' '}
-        <Link to="/login" className="font-bold text-blue underline underline-offset-2">
+        <Link to="/login" className="font-extrabold text-ink underline underline-offset-2">
           {t('auth.logInLink')}
         </Link>
       </p>

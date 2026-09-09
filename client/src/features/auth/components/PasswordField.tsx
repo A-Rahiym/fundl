@@ -30,7 +30,10 @@ export function PasswordField({
       <div className="relative">
         <input
           type={visible ? 'text' : 'password'}
-          className={cx('input pr-12', error && 'border-red')}
+          className={cx(
+            'w-full rounded-2xl border-2 border-ink bg-paper py-3 pl-4 pr-12 text-sm font-semibold text-ink outline-none transition placeholder:text-ink/40 focus:bg-white focus:shadow-small',
+            error && 'border-red',
+          )}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           autoComplete={autoComplete}
@@ -42,7 +45,7 @@ export function PasswordField({
           aria-label={visible ? t('auth.hidePassword') : t('auth.showPassword')}
           aria-pressed={visible}
           onClick={() => setVisible((v) => !v)}
-          className="absolute right-1 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-md text-ink/60 transition-colors hover:bg-wall hover:text-ink"
+          className="absolute right-1 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full text-ink/60 transition-colors hover:bg-paper hover:text-ink"
         >
           <Icon name={visible ? 'eye-off' : 'eye'} size={19} />
         </button>

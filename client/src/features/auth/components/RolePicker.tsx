@@ -26,8 +26,8 @@ export function RolePicker({ value, onChange, disabled }: RolePickerProps) {
             disabled={disabled}
             onClick={() => onChange(role.value)}
             className={cx(
-              'rounded-md border-3 border-ink px-4 py-3 text-sm font-extrabold uppercase tracking-wide transition-colors',
-              active ? 'bg-yellow text-ink shadow-standard' : 'bg-white text-ink/70 hover:bg-wall',
+              'rounded-2xl border-2 border-ink px-4 py-3 text-sm font-extrabold uppercase tracking-wide shadow-small transition',
+              active ? 'bg-sky text-ink' : 'bg-white text-ink/60 hover:bg-paper hover:text-ink',
             )}
           >
             {t(role.labelKey)}

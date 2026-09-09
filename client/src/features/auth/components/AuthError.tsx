@@ -29,7 +29,7 @@ export function AuthError({ error }: { error: Error | null }) {
   return (
     <div
       role="alert"
-      className="rounded-md border-3 border-red bg-red/10 px-4 py-3 text-sm font-bold text-red-dark"
+      className="rounded-2xl border-2 border-red bg-red/10 px-4 py-3 text-sm font-bold text-red-dark"
     >
       {message}
     </div>
