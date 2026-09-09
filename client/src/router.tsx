@@ -8,7 +8,7 @@ import { ComingSoonPage } from '@/features/app/ComingSoonPage'
 import { HomePage } from '@/features/home/HomePage'
 import { PostJobPage } from '@/features/jobs/PostJobPage'
 import { JobDetailPage } from '@/features/jobs/JobDetailPage'
-import { MyJobsPage } from '@/features/jobs/MyJobsPage'
+import { DashboardPage } from '@/features/dashboard/DashboardPage'
 import { SearchPage } from '@/features/search/SearchPage'
 import { ArtisanProfilePage } from '@/features/artisans/ArtisanProfilePage'
 import { MyOffersPage } from '@/features/offers/MyOffersPage'
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'post', element: <RoleGate role="client"><PostJobPage /></RoleGate> },
       { path: 'jobs/:id', element: <JobDetailPage /> },
-      { path: 'my-jobs', element: <RoleGate role="client"><MyJobsPage /></RoleGate> },
+      { path: 'my-jobs', element: <RoleGate role="client"><DashboardPage /></RoleGate> },
       { path: 'search', element: <SearchPage /> },
       { path: 'artisans/:id', element: <ArtisanProfilePage /> },
       { path: 'offers/mine', element: <RoleGate role="artisan"><MyOffersPage /></RoleGate> },
