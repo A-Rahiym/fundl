@@ -122,6 +122,73 @@
 }
 
 /* ============================================================
+   Landing motion (§9.3) — scroll reveal, float, marquee.
+   The reduced-motion guard above neutralises all of these.
+   ============================================================ */
+
+@layer components {
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+    will-change: opacity, transform;
+  }
+
+  .reveal--shown {
+    opacity: 1;
+    transform: none;
+  }
+
+  .animate-float {
+    animation: fundi-float 5s ease-in-out infinite;
+  }
+
+  .animate-float-slow {
+    animation: fundi-float 7s ease-in-out infinite;
+  }
+
+  .animate-marquee {
+    animation: fundi-marquee 28s linear infinite;
+  }
+
+  .animate-pop-in {
+    animation: fundi-pop-in 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  }
+}
+
+@keyframes fundi-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--float-tilt, 0deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(var(--float-tilt, 0deg));
+  }
+}
+
+@keyframes fundi-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes fundi-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
    Panel primitive (§7.1)
    ============================================================ */
 
