@@ -36,6 +36,8 @@ export type IconName =
   | 'menu'
   | 'calendar'
   | 'wallet'
+  | 'gear'
+  | 'logout'
   /* stamps & badges */
   | 'flame'
   | 'shield-check'
@@ -173,6 +175,18 @@ const PATHS: Record<IconName, ReactNode> = {
       <path d="M3.5 8A2.5 2.5 0 0 1 6 5.5h9.5" />
       <rect x="3.5" y="8" width="17" height="11" rx="2" />
       <circle cx="16.5" cy="13.5" r="1.4" />
+    </>
+  ),
+  gear: (
+    <>
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1" />
+    </>
+  ),
+  logout: (
+    <>
+      <path d="M14 4H6.5A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20H14" />
+      <path d="M10 12h10M17.5 8.5 21 12l-3.5 3.5" />
     </>
   ),
 
