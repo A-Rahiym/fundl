@@ -8,7 +8,7 @@ export function Footer() {
   const { t } = useTranslation()
   const services = ['s1', 's2', 's3', 's4', 's5'] as const
   const security = ['e1', 'e2', 'e3', 'e4', 'e5'] as const
-  const hubs = ['h1', 'h2', 'h3', 'h4'] as const
+  const hubs = ['h1', 'h2', 'h3', 'h4', 'h5'] as const
 
   return (
     <footer className="overflow-x-clip border-t-2 border-ink bg-paper px-4 pb-8 pt-12 tablet:px-8">

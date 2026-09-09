@@ -110,7 +110,7 @@
   "bill.sub": "Join over 12,000 project owners and verified Naija craft masters. Funds remain protected until you give final approval.",
   "bill.ctaPost": "POST A JOB NOW",
   "bill.ctaJoin": "JOIN AS ARTISAN",
-  "bill.locations": "Lagos • Abuja • Port Harcourt",
+  "bill.locations": "Kaduna • Lagos • Abuja • Port Harcourt",
   "bill.helpline": "Helpline: 0800-FUNDI-NG",
   "foot.blurb": "Built rugged for Naija master craftsmen & trusted clients. Escrow infrastructure wey dey power safe trade nationwide.",
   "foot.guarantee": "No Story Story Guarantee!",
@@ -135,5 +135,8 @@
   "foot.cities": "Lagos • Abuja • Port Harcourt • Kano",
   "foot.copy": "© 2025 FUNDI NG. All Rights Reserved.",
   "landing:radar.live": "LIVE",
-  "landing:photoAlt": "Fundi at work"
+  "landing:photoAlt": "Fundi at work",
+  "map.title": "FIND FUNDIS NEAR YOU",
+  "map.sub": "Live coverage for our trade hubs — Kaduna dey lead.",
+  "foot.h5": "Kaduna: Kaduna Town, Barnawa, Zaria"
 }

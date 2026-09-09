@@ -8,10 +8,12 @@ import { Display } from '@/components/ui/Display'
 import { Reveal } from '@/components/ui/Reveal'
 import { Ticker } from '@/features/landing/components/Ticker'
 import { PriceRadarStatic, VerificationGrid, Billboard } from '@/features/landing/components/TrustSections'
+import { CoverageMap } from '@/features/landing/components/CoverageMap'
 import { PhotoTile } from '@/components/ui/PhotoTile'
 import { LANDING_CATEGORIES, LANDING_NOTES, LANDING_STEPS } from '@/config/landing'
 import { FALLBACK_CATEGORIES } from '@/config/categories'
 const HERO_ZONES = [
+  { label: 'Kaduna', value: 'Kaduna' },
   { label: 'Lagos — Island & Mainland', value: 'Lagos' },
   { label: 'Abuja FCT', value: 'Abuja' },
   { label: 'Port Harcourt', value: 'Port Harcourt' },
@@ -280,6 +282,10 @@ export function LandingPage() {
 
       <div className="my-16">
         <Billboard />
+      </div>
+
+      <div className="mb-16">
+        <CoverageMap />
       </div>
 
       <Footer />
