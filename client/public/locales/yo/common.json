@@ -326,5 +326,7 @@
   "profile.location": "Your location",
   "profile.saving": "Saving...",
   "profile.saveLocation": "Save location",
-  "profile.locationError": "Could not save location"
+  "profile.locationError": "Could not save location",
+  "auth.sideTitle": "Find work. Hire smart.",
+  "auth.sideBody": "Post a job or pick your trade — vetted fundis and ready clients meet here."
 }
