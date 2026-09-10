@@ -19,6 +19,10 @@ export interface SignupInput {
   role: components['schemas']['Role']
   locale?: components['schemas']['Locale']
   phone?: string
+  /** Composed as "LGA, State" on the signup screen. */
+  locationText?: string
+  /** Artisan trade; creates their profile at signup. */
+  categoryKey?: string
 }
 
 export const authApi = {

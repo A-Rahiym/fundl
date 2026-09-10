@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
-import { ConflictError, UnauthorizedError } from "../../lib/errors";
+import { ConflictError, NotFoundError, UnauthorizedError } from "../../lib/errors";
 import { hashPassword, comparePassword } from "../../lib/password";
 import { signAccessToken } from "../../lib/jwt";
 import { toPublicUser } from "../../lib/user";
@@ -18,8 +18,19 @@ export async function signup(input: SignupInput) {
       role: input.role,
       locale: input.locale,
       phone: input.phone,
+      locationText: input.locationText,
     },
   });
+
+  // Artisans who pick a trade at signup get their profile skeleton now;
+  // the edit screen fills in the rest later.
+  if ((input.role === "artisan" || input.role === "both") && input.categoryKey) {
+    const category = await prisma.category.findUnique({ where: { key: input.categoryKey } });
+    if (!category) throw new NotFoundError("Category");
+    await prisma.artisanProfile.create({
+      data: { userId: user.id, categoryId: category.id, rateType: "negotiable" },
+    });
+  }
 
   return authResponse(user);
 }

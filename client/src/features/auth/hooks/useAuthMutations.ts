@@ -11,6 +11,8 @@ interface SignupInput {
   role: Role
   locale?: LocaleCode
   phone?: string
+  locationText?: string
+  categoryKey?: string
 }
 
 /** Log in: the server sets the HttpOnly cookie; seed the session cache, then navigate home. */

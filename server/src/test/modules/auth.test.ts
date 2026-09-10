@@ -1,5 +1,6 @@
 import { api, authedApi, cookieApi, extractAuthCookie } from "../helpers/testClient";
-import { createTestUser } from "../helpers/factories";
+import { createTestUser, createTestCategory } from "../helpers/factories";
+import { prisma } from "../../lib/prisma";
 
 describe("Auth endpoints", () => {
   it("POST /auth/signup creates an account and returns a token", async () => {
@@ -38,6 +39,51 @@ describe("Auth endpoints", () => {
     });
 
     expect(res.status).toBe(422);
+  });
+
+  it("POST /auth/signup stores the composed location", async () => {
+    const res = await api.post("/api/v1/auth/signup").send({
+      name: "Lagos Client",
+      email: "lagos.client@example.com",
+      password: "Password123!",
+      role: "client",
+      locationText: "Ikeja, Lagos",
+    });
+
+    expect(res.status).toBe(201);
+    expect(res.body.data.user.locationText).toBe("Ikeja, Lagos");
+  });
+
+  it("POST /auth/signup creates an artisan profile when a trade is picked", async () => {
+    const category = await createTestCategory();
+
+    const res = await api.post("/api/v1/auth/signup").send({
+      name: "New Artisan",
+      email: "new.artisan@example.com",
+      password: "Password123!",
+      role: "artisan",
+      locationText: "Barnawa, Kaduna",
+      categoryKey: category.key,
+    });
+
+    expect(res.status).toBe(201);
+    const profile = await prisma.artisanProfile.findUnique({
+      where: { userId: res.body.data.user.id },
+    });
+    expect(profile).not.toBeNull();
+    expect(profile?.categoryId).toBe(category.id);
+  });
+
+  it("POST /auth/signup rejects an unknown trade", async () => {
+    const res = await api.post("/api/v1/auth/signup").send({
+      name: "Lost Artisan",
+      email: "lost.artisan@example.com",
+      password: "Password123!",
+      role: "artisan",
+      categoryKey: "no-such-trade",
+    });
+
+    expect(res.status).toBe(404);
   });
 
   it("POST /auth/login returns a token for valid credentials", async () => {

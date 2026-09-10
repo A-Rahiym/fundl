@@ -9,6 +9,9 @@ export const signupSchema = z.object({
   role: z.enum(["client", "artisan", "both"]),
   locale: localeSchema.default("en"),
   phone: z.string().optional(),
+  locationText: z.string().max(200).optional(),
+  // Trade for artisans: creates their profile skeleton at signup.
+  categoryKey: z.string().optional(),
 });
 export type SignupInput = z.infer<typeof signupSchema>;
 

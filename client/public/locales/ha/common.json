@@ -311,5 +311,12 @@
   "offer.rating": "Your rating",
   "offer.errRating": "Pick a star rating from 1 to 5",
   "offer.submitReview": "Submit review",
-  "jobDetail.reviewTitle": "Rate this job"
+  "jobDetail.reviewTitle": "Rate this job",
+  "auth.state": "State",
+  "auth.selectState": "Select your state...",
+  "auth.lga": "LGA",
+  "auth.optional": "optional",
+  "auth.selectLga": "Select LGA...",
+  "auth.trade": "Your trade",
+  "auth.errLocationRequired": "Pick your state"
 }

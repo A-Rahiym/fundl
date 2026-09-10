@@ -870,7 +870,9 @@
           "password": { "type": "string", "minLength": 8, "format": "password" },
           "role": { "$ref": "#/components/schemas/Role" },
           "locale": { "$ref": "#/components/schemas/Locale", "default": "en" },
-          "phone": { "type": "string" }
+          "phone": { "type": "string" },
+          "locationText": { "type": "string", "description": "Composed as 'LGA, State'" },
+          "categoryKey": { "type": "string", "description": "Artisan trade; creates their profile at signup" }
         }
       },
       "LoginInput": {
