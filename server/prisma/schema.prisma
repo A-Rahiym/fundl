@@ -50,6 +50,8 @@ model User {
   phone           String?
   locale          Locale    @default(en)
   locationText    String?   @map("location_text")
+  state           String?
+  lga             String?
   latitude        Float?
   longitude       Float?
   createdAt       DateTime  @default(now()) @map("created_at")
@@ -63,6 +65,7 @@ model User {
   notifications           Notification[]
 
   @@map("users")
+  @@index([state])
 }
 
 model Category {
@@ -118,6 +121,8 @@ model Job {
   description           String
   categoryId              Int      @map("category_id")
   locationText              String?  @map("location_text")
+  state                       String?
+  lga                         String?
   latitude                    Float?
   longitude                     Float?
   budgetMin                       Decimal? @map("budget_min") @db.Decimal(12, 2)
@@ -137,6 +142,7 @@ model Job {
 
   @@map("jobs")
   @@index([status, categoryId])
+  @@index([state])
 }
 
 model Offer {
