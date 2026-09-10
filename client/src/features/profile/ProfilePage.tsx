@@ -5,6 +5,7 @@ import { Icon } from '@/components/ui/icons'
 import { LoadingState } from '@/components/states/LoadingState'
 import { ErrorState } from '@/components/states/ErrorState'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
+import { LocationEditor } from './components/LocationEditor'
 import { PhotoTile } from '@/components/ui/PhotoTile'
 import { STAMP_LABEL } from '@/config/status'
 import { formatDate, formatNaira } from '@/lib/utils/format'
@@ -282,6 +283,8 @@ export function ProfilePage() {
             )}
           </section>
         )}
+
+        <LocationEditor key={`${user.id}-${user.updatedAt}`} user={user} />
 
         <div className="flex items-center justify-between rounded-3xl border-[2.5px] border-ink bg-white px-5 py-3 shadow-standard">
           <span className="text-sm font-bold text-ink">{t('profile.language')}</span>

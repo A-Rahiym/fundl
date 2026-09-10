@@ -18,6 +18,7 @@ export type ApiArtisanProfile = components['schemas']['ArtisanProfileDetail']
 export interface ArtisanSearchParams {
   category?: string
   location?: string
+  state?: string
   minRating?: number
   maxPrice?: number
   page?: number

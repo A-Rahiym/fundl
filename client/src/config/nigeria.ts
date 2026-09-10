@@ -975,3 +975,52 @@ export const NIGERIAN_STATES: NigerianState[] = [
 export function lgasOf(stateName: string): string[] {
   return NIGERIAN_STATES.find((s) => s.state === stateName)?.lgas ?? [];
 }
+
+/** State capital coordinates for map pins (area-level, not addresses).
+ * Assembled from public capital-city coordinates; bounds-checked (NG bbox)
+ * with independent anchor verification. Pins are approximate by design.
+ */
+export const STATE_COORDS: Record<string, [number, number]> = {
+  "Abia": [5.53, 7.49],
+  "Adamawa": [9.2, 12.46],
+  "Akwa Ibom": [5.01, 7.91],
+  "Anambra": [6.22, 7.07],
+  "Bauchi": [10.31, 9.84],
+  "Bayelsa": [4.92, 6.26],
+  "Benue": [7.73, 8.54],
+  "Borno": [11.83, 13.15],
+  "Cross River": [4.98, 8.33],
+  "Delta": [6.2, 6.73],
+  "Ebonyi": [6.32, 8.12],
+  "Edo": [6.34, 5.63],
+  "Ekiti": [7.62, 5.22],
+  "Enugu": [6.45, 7.51],
+  "Federal Capital Territory": [9.06, 7.49],
+  "Gombe": [10.29, 11.17],
+  "Imo": [5.48, 7.03],
+  "Jigawa": [11.76, 9.34],
+  "Kaduna": [10.52, 7.44],
+  "Kano": [12.0, 8.59],
+  "Katsina": [12.56, 7.62],
+  "Kebbi": [12.45, 4.2],
+  "Kogi": [7.79, 6.74],
+  "Kwara": [8.5, 4.55],
+  "Lagos": [6.6, 3.34],
+  "Nasarawa": [8.49, 8.52],
+  "Niger": [9.61, 6.56],
+  "Ogun": [7.15, 3.35],
+  "Ondo": [7.25, 5.21],
+  "Osun": [7.77, 4.56],
+  "Oyo": [7.38, 3.93],
+  "Plateau": [9.93, 8.89],
+  "Rivers": [4.82, 7.05],
+  "Sokoto": [13.06, 5.25],
+  "Taraba": [8.89, 11.36],
+  "Yobe": [11.75, 11.96],
+  "Zamfara": [12.17, 6.66],
+};
+
+export function coordsOf(stateName: string | null | undefined): [number, number] | null {
+  if (!stateName) return null;
+  return STATE_COORDS[stateName] ?? null;
+}

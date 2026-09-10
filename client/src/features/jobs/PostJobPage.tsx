@@ -8,6 +8,7 @@ import { useCategories } from '@/features/home/hooks/useJobsQueries'
 import { CategoryPicker } from '@/components/CategoryPicker'
 import { UrgencyPicker, type Urgency } from './components/UrgencyPicker'
 import { ZonePicker } from './components/ZonePicker'
+import { NIGERIAN_STATES } from '@/config/nigeria'
 import { PriceRadar } from './components/PriceRadar'
 import { NearbyPros } from './components/NearbyPros'
 import { usePostJob } from './hooks/useJobsMutations'
@@ -55,6 +56,7 @@ export function PostJobPage() {
   const [description, setDescription] = useState('')
   const [categoryKey, setCategoryKey] = useState<string | null>(null)
   const [location, setLocation] = useState('')
+  const [jobState, setJobState] = useState('')
   const [budgetMin, setBudgetMin] = useState('')
   const [budgetMax, setBudgetMax] = useState('')
   const [preferredDate, setPreferredDate] = useState('')
@@ -89,6 +91,7 @@ export function PostJobPage() {
       description: description.trim(),
       categoryKey,
       locationText: location.trim() || undefined,
+      state: jobState || undefined,
       budgetMin: budgetMin ? Number(budgetMin) : undefined,
       budgetMax: budgetMax ? Number(budgetMax) : undefined,
       preferredDate: preferredDate || undefined,
@@ -229,15 +232,33 @@ export function PostJobPage() {
                   {t('postJob.secLocation')}
                 </span>
                 <ZonePicker value={location} onChange={setLocation} disabled={postJob.isPending} />
-                <label className="field">
-                  <input
-                    type="text"
-                    className="input"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder={t('postJob.locationPh')}
-                  />
-                </label>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <label className="field">
+                    <span className="field__label">{t('auth.state')}</span>
+                    <select
+                      className="input"
+                      value={jobState}
+                      onChange={(e) => setJobState(e.target.value)}
+                    >
+                      <option value="">{t('auth.selectState')}</option>
+                      {NIGERIAN_STATES.map((s) => (
+                        <option key={s.state} value={s.state}>
+                          {s.state}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="field">
+                    <input
+                      type="text"
+                      className="input"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      placeholder={t('postJob.locationPh')}
+                      aria-label={t('postJob.secLocation')}
+                    />
+                  </label>
+                </div>
               </div>
 
               <div className="flex flex-col gap-3 pt-2">

@@ -23,7 +23,7 @@ export function useCategories() {
   })
 }
 
-export function useJobs(filters?: { status?: JobStatus; category?: string }, enabled = true) {
+export function useJobs(filters?: { status?: JobStatus; category?: string; state?: string }, enabled = true) {
   return useQuery({
     queryKey: queryKeys.jobs(filters),
     queryFn: async (): Promise<ApiJob[]> => {

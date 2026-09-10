@@ -10,6 +10,8 @@ import { EmptyState } from '@/components/states/EmptyState'
 import { useCategories } from '@/features/home/hooks/useJobsQueries'
 import { useArtisans } from '@/features/artisans/hooks/useArtisansQueries'
 import { ArtisanCard } from '@/components/cards/ArtisanCard'
+import { ResultsMap } from './components/ResultsMap'
+import { NIGERIAN_STATES } from '@/config/nigeria'
 
 const MIN_RATINGS = [
   { value: '', labelKey: 'search.any' },
@@ -24,6 +26,7 @@ export function SearchPage() {
 
   const category = searchParams.get('category') ?? ''
   const minRating = searchParams.get('minRating') ?? ''
+  const stateFilter = searchParams.get('state') ?? ''
   const locationParam = searchParams.get('location') ?? ''
 
   const [location, setLocation] = useState(locationParam)
@@ -54,6 +57,7 @@ export function SearchPage() {
     category: category || undefined,
     minRating: minRating ? Number(minRating) : undefined,
     location: locationParam || undefined,
+    state: stateFilter || undefined,
   })
 
   const setFilter = (key: string, value: string) => {
@@ -146,6 +150,19 @@ export function SearchPage() {
               {t(opt.labelKey)}
             </button>
           ))}
+          <select
+            className="ml-auto rounded-full border-2 border-ink/40 bg-white px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-ink/70"
+            value={stateFilter}
+            onChange={(e) => setFilter('state', e.target.value)}
+            aria-label={t('search.state')}
+          >
+            <option value="">{t('search.allStates')}</option>
+            {NIGERIAN_STATES.map((s) => (
+              <option key={s.state} value={s.state}>
+                {s.state}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -160,15 +177,25 @@ export function SearchPage() {
       )}
 
       {!artisans.isLoading && !artisans.isError && resultCount > 0 && (
-        <div className="grid gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
-          {artisans.data?.map((artisan) => (
-            <ArtisanCard
-              key={artisan.id}
-              artisan={artisan}
-              action={{ labelKey: 'card.view', tone: 'white', from: 'search' }}
-            />
-          ))}
-        </div>
+        <>
+          <ResultsMap
+            artisans={(artisans.data ?? []).map((a) => ({
+              id: a.id ?? '',
+              userId: a.userId ?? a.user?.id ?? '',
+              name: a.user?.name ?? t('offer.anonymous'),
+              state: a.user?.state ?? null,
+            }))}
+          />
+          <div className="grid gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
+            {artisans.data?.map((artisan) => (
+              <ArtisanCard
+                key={artisan.id}
+                artisan={artisan}
+                action={{ labelKey: 'card.view', tone: 'white', from: 'search' }}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   )

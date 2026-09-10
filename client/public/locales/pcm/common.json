@@ -318,5 +318,13 @@
   "auth.optional": "optional",
   "auth.selectLga": "Select LGA...",
   "auth.trade": "Your trade",
-  "auth.errLocationRequired": "Pick your state"
+  "auth.errLocationRequired": "Pick your state",
+  "search.state": "State",
+  "search.allStates": "All states",
+  "home.state": "State",
+  "home.allStates": "All states",
+  "profile.location": "Your location",
+  "profile.saving": "Saving...",
+  "profile.saveLocation": "Save location",
+  "profile.locationError": "Could not save location"
 }

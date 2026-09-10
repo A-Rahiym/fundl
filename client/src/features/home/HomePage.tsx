@@ -11,15 +11,15 @@ export function HomePage() {
   const { t, i18n } = useTranslation()
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<string | null>(null)
+  const [stateFilter, setStateFilter] = useState('')
 
   const categories = useCategories().data
   const session = useSession()
   const user = session.data
-  const jobs = useJobs(undefined, user?.role === 'artisan')
-
-  if (user?.role === 'client') {
-    return <Navigate to="/app/my-jobs" replace />
-  }
+  const jobs = useJobs(
+    { category: category ?? undefined, state: stateFilter || undefined },
+    user?.role === 'artisan',
+  )
 
   const filtered = useMemo(() => {
     const list = jobs.data ?? []
@@ -36,6 +36,10 @@ export function HomePage() {
     })
   }, [jobs.data, query, category, t])
 
+  if (user?.role === 'client') {
+    return <Navigate to="/app/my-jobs" replace />
+  }
+
   return (
     <div className="flex flex-col gap-5">
       <div>
@@ -49,6 +53,8 @@ export function HomePage() {
         onSelect={setCategory}
         query={query}
         onQuery={setQuery}
+        stateFilter={stateFilter}
+        onStateFilter={setStateFilter}
       />
 
       <JobList

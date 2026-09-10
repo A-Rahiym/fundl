@@ -13,6 +13,8 @@ export type UpdateJobInput = components['schemas']['UpdateJobInput']
 export interface ListJobsParams {
   status?: JobStatus
   category?: string
+  location?: string
+  state?: string
   page?: number
   pageSize?: number
 }

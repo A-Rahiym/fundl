@@ -49,7 +49,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create an account */
+        /** Create an account (sets HttpOnly auth cookie) */
         post: {
             parameters: {
                 query?: never;
@@ -63,7 +63,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description Account created */
+                /** @description Account created (also sets `fundi_token` HttpOnly cookie) */
                 201: {
                     headers: {
                         [name: string]: unknown;
@@ -91,7 +91,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Log in and receive a JWT */
+        /** Log in (sets HttpOnly auth cookie) */
         post: {
             parameters: {
                 query?: never;
@@ -105,7 +105,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description Logged in */
+                /** @description Logged in (also sets `fundi_token` HttpOnly cookie) */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -161,6 +161,49 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Log out (clears the auth cookie) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Logged out */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: {
+                                /** @example true */
+                                loggedOut?: boolean;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/me": {
         parameters: {
             query?: never;
@@ -190,7 +233,33 @@ export interface paths {
                 401: components["responses"]["Unauthorized"];
             };
         };
-        put?: never;
+        /** Update own profile (name, phone, state, lga) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateProfileInput"];
+                };
+            };
+            responses: {
+                /** @description Updated user */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
         post?: never;
         delete?: never;
         options?: never;
@@ -294,6 +363,8 @@ export interface paths {
                     category?: string;
                     /** @description Free-text location match */
                     location?: string;
+                    /** @description Exact state match */
+                    state?: string;
                     minRating?: number;
                     /** @description Maximum hourly/fixed rate */
                     maxPrice?: number;
@@ -513,7 +584,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Public artisan profile incl. reviews, portfolio and stamps */
+        /** Public artisan profile incl. reviews, portfolio and stamps. Accepts a user id or a profile id */
         get: {
             parameters: {
                 query?: never;
@@ -563,6 +634,8 @@ export interface paths {
                 query?: {
                     category?: string;
                     location?: string;
+                    /** @description Exact state match */
+                    state?: string;
                     status?: components["schemas"]["JobStatus"];
                     budgetMax?: number;
                     page?: number;
@@ -997,6 +1070,194 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/jobs/{jobId}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Review a completed job (owner only, once) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    jobId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CreateReviewInput"];
+                };
+            };
+            responses: {
+                /** @description Review created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["Review"];
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/artisans/{artisanId}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List reviews received by an artisan */
+        get: {
+            parameters: {
+                query?: {
+                    page?: number;
+                    pageSize?: number;
+                };
+                header?: never;
+                path: {
+                    /** @description Artisan's user id (or profile id) */
+                    artisanId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Reviews, newest first */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["Review"][];
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List own notifications, unread first */
+        get: {
+            parameters: {
+                query?: {
+                    page?: number;
+                    pageSize?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Notifications */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["Notification"][];
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notifications/{id}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Mark own notification as read */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Updated notification */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example true */
+                            success?: boolean;
+                            data?: components["schemas"]["Notification"];
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1026,6 +1287,8 @@ export interface components {
             locale?: components["schemas"]["Locale"];
             phone?: string | null;
             locationText?: string | null;
+            state?: string | null;
+            lga?: string | null;
             latitude?: number | null;
             longitude?: number | null;
             /** Format: date-time */
@@ -1048,6 +1311,10 @@ export interface components {
             /** @default en */
             locale: components["schemas"]["Locale"];
             phone?: string;
+            /** @description Composed as 'LGA, State' */
+            locationText?: string;
+            /** @description Artisan trade; creates their profile at signup */
+            categoryKey?: string;
         };
         LoginInput: {
             /** Format: email */
@@ -1066,6 +1333,14 @@ export interface components {
         };
         UpdateLocaleInput: {
             locale: components["schemas"]["Locale"];
+        };
+        UpdateProfileInput: {
+            name?: string;
+            phone?: string;
+            /** @description Must be a known Nigerian state */
+            state?: string;
+            /** @description Must belong to the state */
+            lga?: string;
         };
         Category: {
             id?: number;
@@ -1121,6 +1396,8 @@ export interface components {
             name?: string;
             phone?: string;
             locationText?: string;
+            state?: string;
+            lga?: string;
             latitude?: number;
             longitude?: number;
             bio?: string;
@@ -1142,6 +1419,8 @@ export interface components {
             description?: string;
             category?: components["schemas"]["Category"];
             locationText?: string | null;
+            state?: string | null;
+            lga?: string | null;
             latitude?: number | null;
             longitude?: number | null;
             budgetMin?: number | null;
@@ -1174,6 +1453,10 @@ export interface components {
         JobDetail: components["schemas"]["Job"] & {
             /** @description Empty for non-owners */
             offers?: components["schemas"]["OfferDetail"][];
+            /** @description Present once the owner reviews a completed job */
+            review?: {
+                id?: string;
+            } | null;
         };
         JobSearchResponse: {
             /** @example true */
@@ -1187,6 +1470,8 @@ export interface components {
             /** @example carpentry */
             categoryKey: string;
             locationText?: string;
+            state?: string;
+            lga?: string;
             latitude?: number;
             longitude?: number;
             budgetMin?: number;
@@ -1201,6 +1486,8 @@ export interface components {
             description?: string;
             categoryKey?: string;
             locationText?: string;
+            state?: string;
+            lga?: string;
             latitude?: number;
             longitude?: number;
             budgetMin?: number;
@@ -1213,6 +1500,41 @@ export interface components {
         CreateOfferInput: {
             price: number;
             message?: string;
+        };
+        Review: {
+            id?: string;
+            jobId?: string;
+            reviewerId?: string;
+            revieweeId?: string;
+            rating?: number;
+            comment?: string | null;
+            /** Format: date-time */
+            createdAt?: string;
+            reviewer?: components["schemas"]["User"];
+            job?: {
+                id?: string;
+                title?: string;
+            };
+        };
+        CreateReviewInput: {
+            rating: number;
+            comment?: string;
+        };
+        Notification: {
+            id?: string;
+            userId?: string;
+            /**
+             * @description offer.received | offer.accepted | offer.declined | job.completed
+             * @example offer.accepted
+             */
+            type?: string;
+            payload?: {
+                jobId?: string;
+                offerId?: string;
+            } | null;
+            isRead?: boolean;
+            /** Format: date-time */
+            createdAt?: string;
         };
         Error: {
             /** @example false */
