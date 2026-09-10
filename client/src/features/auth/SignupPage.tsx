@@ -157,6 +157,7 @@ export function SignupPage() {
           <div className="field">
             <span className="field__label">{t('auth.trade')}</span>
             <CategoryPicker
+              layout="rail"
               categories={categories.data ?? []}
               value={categoryKey}
               onChange={setCategoryKey}

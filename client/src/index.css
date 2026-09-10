@@ -149,6 +149,14 @@
     animation: fundi-float 7s ease-in-out infinite;
   }
 
+  .animate-orbit {
+    animation: fundi-orbit var(--orbit-duration, 24s) linear infinite;
+  }
+
+  .animate-orbit-reverse {
+    animation: fundi-orbit-reverse var(--orbit-duration, 24s) linear infinite;
+  }
+
   .animate-cta-pulse {
     animation: fundi-cta-pulse 2.6s ease-in-out infinite;
   }
@@ -168,6 +176,24 @@
 
   .animate-pop-in {
     animation: fundi-pop-in 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  }
+}
+
+@keyframes fundi-orbit {
+  from {
+    transform: rotate(var(--orbit-from, 0deg));
+  }
+  to {
+    transform: rotate(calc(var(--orbit-from, 0deg) + 360deg));
+  }
+}
+
+@keyframes fundi-orbit-reverse {
+  from {
+    transform: rotate(calc(var(--orbit-from, 0deg) * -1));
+  }
+  to {
+    transform: rotate(calc(var(--orbit-from, 0deg) * -1 - 360deg));
   }
 }
 
