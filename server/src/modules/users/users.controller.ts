@@ -11,3 +11,8 @@ export async function updateLocale(req: Request, res: Response) {
   const user = await usersService.updateLocale(req.user!.id, req.body);
   return ok(res, user);
 }
+
+export async function updateMe(req: Request, res: Response) {
+  const user = await usersService.updateProfile(req.user!.id, req.body);
+  return ok(res, user);
+}

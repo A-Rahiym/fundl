@@ -7,6 +7,8 @@ export const createJobSchema = z.object({
   description: z.string().min(10),
   categoryKey: z.string().min(1),
   locationText: z.string().optional(),
+  state: z.string().max(100).optional(),
+  lga: z.string().max(100).optional(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
   budgetMin: z.number().positive().optional(),
@@ -22,6 +24,7 @@ export type UpdateJobInput = z.infer<typeof updateJobSchema>;
 export const listJobsQuerySchema = z.object({
   category: z.string().optional(),
   location: z.string().optional(),
+  state: z.string().optional(),
   status: jobStatusSchema.optional(),
   budgetMax: z.coerce.number().optional(),
   page: z.coerce.number().int().min(1).default(1),

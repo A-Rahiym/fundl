@@ -15,7 +15,14 @@ import type {
 function buildSearchWhere(query: SearchArtisansQuery): Prisma.ArtisanProfileWhereInput {
   const where: Prisma.ArtisanProfileWhereInput = {};
   if (query.category) where.category = { key: query.category };
-  if (query.location) where.user = { locationText: { contains: query.location, mode: "insensitive" } };
+  if (query.location || query.state) {
+    where.user = {
+      ...(query.location
+        ? { locationText: { contains: query.location, mode: "insensitive" } }
+        : {}),
+      ...(query.state ? { state: query.state } : {}),
+    };
+  }
   if (query.minRating !== undefined) where.avgRating = { gte: query.minRating };
   if (query.maxPrice !== undefined) where.rateAmount = { lte: query.maxPrice };
   return where;
@@ -61,13 +68,15 @@ export async function updateOwnProfile(userId: string, input: UpdateArtisanProfi
     categoryId = category.id;
   }
 
-  if (input.name || input.phone || input.locationText || input.latitude !== undefined || input.longitude !== undefined) {
+  if (input.name || input.phone || input.locationText || input.state !== undefined || input.lga !== undefined || input.latitude !== undefined || input.longitude !== undefined) {
     await prisma.user.update({
       where: { id: userId },
       data: {
         ...(input.name ? { name: input.name } : {}),
         ...(input.phone !== undefined ? { phone: input.phone } : {}),
         ...(input.locationText !== undefined ? { locationText: input.locationText } : {}),
+        ...(input.state !== undefined ? { state: input.state } : {}),
+        ...(input.lga !== undefined ? { lga: input.lga } : {}),
         ...(input.latitude !== undefined ? { latitude: input.latitude } : {}),
         ...(input.longitude !== undefined ? { longitude: input.longitude } : {}),
       },

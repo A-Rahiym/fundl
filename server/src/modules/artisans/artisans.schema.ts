@@ -3,6 +3,7 @@ import { z } from "zod";
 export const searchArtisansQuerySchema = z.object({
   category: z.string().optional(),
   location: z.string().optional(),
+  state: z.string().optional(),
   minRating: z.coerce.number().min(0).max(5).optional(),
   maxPrice: z.coerce.number().positive().optional(),
   page: z.coerce.number().int().min(1).default(1),
@@ -18,6 +19,8 @@ export const updateArtisanProfileSchema = z.object({
   longitude: z.number().optional(),
   bio: z.string().max(1000).optional(),
   categoryKey: z.string().optional(),
+  state: z.string().max(100).optional(),
+  lga: z.string().max(100).optional(),
   rateType: z.enum(["hourly", "fixed", "negotiable"]).optional(),
   rateAmount: z.number().positive().optional(),
   isAvailable: z.boolean().optional(),

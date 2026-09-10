@@ -18,6 +18,7 @@ export async function listJobs(req: Request, res: Response) {
   if (query.status) where.status = query.status;
   if (query.category) where.category = { key: query.category };
   if (query.location) where.locationText = { contains: query.location, mode: "insensitive" };
+  if (query.state) where.state = query.state;
   if (query.budgetMax !== undefined) where.budgetMax = { lte: query.budgetMax };
 
   const [items, total] = await Promise.all([

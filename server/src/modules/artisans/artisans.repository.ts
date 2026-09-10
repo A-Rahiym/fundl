@@ -9,6 +9,8 @@ const publicUserSelect = {
   role: true,
   locale: true,
   locationText: true,
+  state: true,
+  lga: true,
   createdAt: true,
 } satisfies Prisma.UserSelect;
 
